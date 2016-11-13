@@ -1,0 +1,24 @@
+{
+  "nodes":[
+    {"name": "18,000 total listings"},
+    {"name": "14,700 legal listings"},
+    {"name": "10,000 apartments"},
+    {"name": "4,000 available for short-term bookings"},
+    {"name": "2,300 entire home rentals"},
+    {"name": "570 cases where host has multiple listings"},
+    {"name": "4,300 listings with host not in NYC"},
+    {"name": "3,300 illegal listings"},
+],
+  "links":[
+    {"source":0,"target":2,"value":10000},
+    {"source":0,"target":1,"value":8000},
+    {"source":2,"target":3,"value":4000},
+    {"source":2,"target":1,"value":6000},
+    {"source":3,"target":4,"value":2300},
+    {"source":3,"target":2,"value":570},
+    {"source":3,"target":2,"value":430},
+    {"source":3,"target":2,"value":700},
+    {"source":4,"target":7,"value":2300},
+    {"source":5,"target":7,"value":570},
+    {"source":6,"target":7,"value":430},
+  ]}

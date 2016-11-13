@@ -7,6 +7,9 @@ var airbnbMap;
 // Start application by loading the data
 loadData();
 
+// initialize the sankey diagram w dummy data
+initializeSankey("#sankey");
+
 
 function loadData() {
 
@@ -15,8 +18,6 @@ function loadData() {
 
         // extract array of stations
         allData = jsonData.slice(0,101);
-
-        console.log(allData)
 
         createVis();
 

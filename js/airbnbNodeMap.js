@@ -92,7 +92,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
 
     vis.svg.selectAll("path").data(vis.mapData.features).enter().append("path")
         .attr("d", path)
-        .style("fill", "#2ecc71")
+        .style("fill", "#3498db")
         .style("opacity", 0.5)
         .style("stroke-width", "1")
         .style("stroke", "black");

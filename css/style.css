@@ -1,3 +1,5 @@
+/** BODY **/
+
 body {
     font-family: 'Roboto', sans-serif;
     padding-left: 50px;
@@ -40,6 +42,8 @@ p {
     margin: auto;
 }
 
+/** NAV **/
+
 nav.horizontal-page-navigation ul {
     list-style-type: none;
     margin: 0;
@@ -72,6 +76,8 @@ nav.horizontal-page-navigation .current a {
     color: #fff;
 }
 
+/** AIRBNB MAP **/
+
 #airbnb-map {
     width: 80vw;
     height: 80vh;
@@ -97,4 +103,29 @@ nav.horizontal-page-navigation .current a {
 
 .link:hover {
     stroke-opacity: .5;
+}
+
+/** AXES **/
+
+.axis path,
+.axis line,
+.domain {
+    fill: none;
+    stroke: #41232f;
+    shape-rendering: crispEdges;
+}
+
+.axis text{
+    font-size: 11px;
+    fill: #41232f
+}
+
+.text{
+    font-size: 11px;
+}
+
+.vis-title {
+    font-size: 20px;
+    fill: #41232f;
+    font-weight: 200;
 }

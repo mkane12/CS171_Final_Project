@@ -107,10 +107,27 @@ AirBnBNodeMap.prototype.updateVis = function() {
         .attr("opacity", 0.5)
         .attr("transform", function(d) {
             return "translate(" + projection([d.longitude, d.latitude]) + ")";
+        })
+        // make node larger and darker on mouseover
+        .on("mouseover", function(d) {
+            d3.select(this)
+                .attr("r", 5)
+                .style("fill", "red")
+                .attr("opacity", 1)
+                .style("stroke", "black");
+        })
+        .on("mouseout", function(d) {
+            d3.select(this)
+                .attr("r", 2)
+                .style("fill", '#e74c3c')
+                .attr("opacity", 0.5)
+                .style("stroke", "none");
         });
 
     node
         .append("title")
-        .text(function(d) { return d.room_type; });
+        .text(function(d) {
+            return "ID: " + d.host_id;
+        });
 
 }

@@ -32,8 +32,6 @@ function loadData() {
 
 function createVis(error, mapData, airbnbData) {
 
-    console.log(mapData);
-
     // INSTANTIATE NODE MAP
     var airbnbNodeMap = new AirBnBNodeMap("airbnb-map", mapData, airbnbData);
 

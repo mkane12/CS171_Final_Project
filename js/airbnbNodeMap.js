@@ -25,8 +25,6 @@ AirBnBNodeMap.prototype.initVis = function() {
     vis.width = 1000;
     vis.height = 600;
 
-    console.log(this.airbnbData);
-
     vis.svg = d3.select("#airbnb-map").append("svg")
         .attr("width", vis.width)
         .attr("height", vis.height);
@@ -86,12 +84,16 @@ AirBnBNodeMap.prototype.updateVis = function() {
     path = path.projection(projection);
 
     // add a rectangle to see the bound of the svg
-    vis.svg.append("rect").attr('width', vis.width).attr('height', vis.height)
-        .style('stroke', 'black').style('fill', 'none');
+    vis.svg.append("rect")
+        .attr('width', vis.width)
+        .attr('height', vis.height)
+        .style('stroke', 'none')
+        .style('fill', 'none');
 
     vis.svg.selectAll("path").data(vis.mapData.features).enter().append("path")
         .attr("d", path)
-        .style("fill", "red")
+        .style("fill", "#2ecc71")
+        .style("opacity", 0.5)
         .style("stroke-width", "1")
         .style("stroke", "black");
 
@@ -101,7 +103,8 @@ AirBnBNodeMap.prototype.updateVis = function() {
         .enter().append("circle")
         .attr("class", "node")
         .attr("r", 2)
-        .attr("fill", 'blue')
+        .attr("fill", '#e74c3c')
+        .attr("opacity", 0.5)
         .attr("transform", function(d) {
             return "translate(" + projection([d.longitude, d.latitude]) + ")";
         });

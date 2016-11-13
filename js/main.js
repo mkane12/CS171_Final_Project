@@ -9,13 +9,12 @@ var allData = [],
 var airbnbMap,
     taxRevenue,
     housingPrices,
-    airbnbNodeMap;
+    airbnbNodeMap,
+    newestDataset;
 
 // Start application by loading the data
 loadData();
 
-// initialize the sankey diagram w dummy data
-initializeSankey("#sankey");
 
 
 function loadData() {
@@ -25,7 +24,8 @@ function loadData() {
         .defer(d3.json, "data/2014-05-10.json")
         .defer(d3.csv, "data/fy16-nyc-depts.csv")
         .defer(d3.csv, "data/NYC_Neighborhood_Prices_Transposed.csv")
-        .await(function(error, data1, data2, data3, data4) {
+        .defer(d3.json, "data/2016-10-01_with_analyses.json")
+        .await(function(error, data1, data2, data3, data4, data5) {
 
             if (error) throw error;
 
@@ -43,6 +43,8 @@ function loadData() {
 
             neighborhoodData = data4;
 
+            newestDataset = data5;
+
             console.log(neighborhoodData);
 
             createVis();
@@ -58,5 +60,11 @@ function createVis() {
     //airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
     taxRevenue = new TaxRevenue("tax-revenue", taxData);
     housingPrices = new HousingPrices("housing-prices", neighborhoodData);
+    illegalSankey = new listingSankey("#sankey", newestDataset);
 
 }
+
+
+
+// initialize the sankey diagram w dummy data
+// initializeSankey("#sankey");

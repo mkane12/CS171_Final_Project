@@ -11,23 +11,33 @@ loadData();
 function loadData() {
 
     // LOAD DATA
-    $.getJSON('data/2014-05-10.json', function(jsonData){
+    // $.getJSON('data/2014-05-10.json', function(jsonData){
+    //
+    //     // get first 100 airbnb listings because data is yuge
+    //     allData = jsonData.slice(0,101);
+    //
+    //     //console.log(allData)
+    //
+    //
+    // });
 
-        // extract array of stations
-        allData = jsonData.slice(0,101);
-
-        console.log(allData)
-
-        createVis();
-
-    });
+    // Load data parallel
+    queue()
+        .defer(d3.json, "data/ny-borough.json")
+        .defer(d3.json, "data/2014-05-10.json")
+        .await(createVis);
 
 }
 
 
-function createVis() {
+function createVis(error, mapData, airbnbData) {
 
-    // TO-DO: INSTANTIATE VISUALIZATION
-    var airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
+    console.log(mapData);
+
+    // INSTANTIATE NODE MAP
+    var airbnbNodeMap = new AirBnBNodeMap("airbnb-map", mapData, airbnbData);
+
+    // INSTANTIATE VISUALIZATION
+    // var airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
 
 }

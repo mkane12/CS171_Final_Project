@@ -1,8 +1,11 @@
 
-var allData = [];
+var allData = [],
+    taxData = [];
 
 // Variable for the visualization instance
-var airbnbMap;
+var airbnbMap,
+    taxRevenue,
+    housingPrices;
 
 // Start application by loading the data
 loadData();
@@ -10,24 +13,36 @@ loadData();
 
 function loadData() {
 
-    // LOAD DATA
-    $.getJSON('data/2014-05-10.json', function(jsonData){
+    queue()
+        .defer(d3.json, "data/2014-05-10.json")
+        .defer(d3.csv, "data/fy16-nyc-depts.csv")
+        .defer(d3.csv, "data/NYC_Neighborhood_Prices_Transposed.csv")
+        .await(function(error, data1, data2, data3) {
 
-        // extract array of stations
-        allData = jsonData.slice(0,101);
+            if (error) throw error;
 
-        console.log(allData)
+            allData = data1.slice(0, 101);
 
-        createVis();
+            console.log(allData);
 
-    });
+            taxData = data2;
 
+            console.log(taxData);
+
+            neighborhoodData = data3;
+
+            console.log(neighborhoodData);
+
+            createVis();
+        });
 }
 
 
 function createVis() {
 
     // TO-DO: INSTANTIATE VISUALIZATION
-    var airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
+    airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
+    taxRevenue = new TaxRevenue("tax-revenue", taxData);
+    housingPrices = new HousingPrices("housing-prices", neighborhoodData);
 
 }

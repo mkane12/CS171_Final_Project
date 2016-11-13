@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CS171 - Lab 8</title>
+    <title>CS171 - Final Project</title>
 
     <!-- Load Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
@@ -45,7 +45,6 @@
             <h2>So what's actually going on with Airbnb in New York?</h2>
             <p>Use this visualization to explore changes in Airbnb listings in New York over time.</p>
             <div id="vis1">
-                <!-- Visualization placeholder -->
                 <div id="airbnb-map"></div>
             </div>
         </div>
@@ -100,7 +99,7 @@
 
             <h2>New York City and State lose $X in unpaid taxes.</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
-            <div id="vis2"><img src="http://placehold.it/900x500?text=Vis+2:+Tax+projections+in+NY" class="center"></div>
+            <div id="vis2"><div id="tax-revenue"></div></div>
         </div>
 
         <div id="section4" class="section">
@@ -108,11 +107,9 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
             <p>Morbi ullamcorper nisi vel orci accumsan elementum. Fusce at nisi pellentesque, commodo magna id, tempor libero. Aenean sem odio, congue vitae nulla ut, sagittis maximus felis. Nunc pellentesque fermentum est, in porttitor lectus iaculis ut. Vestibulum mattis lacus lectus, id varius ipsum faucibus quis. Nullam eget dignissim lorem, sed sagittis quam. Etiam finibus, eros quis dictum fringilla, dui urna consectetur magna, et congue urna nibh in leo. Vestibulum varius felis at consequat sagittis. Vestibulum a vulputate ex. Phasellus ut nunc nunc. Praesent iaculis porttitor lobortis. Cras vestibulum.</p>
             <div id="vis3"><img src="http://placehold.it/900x500?text=Vis+3:+Illegal+Listings Sankey" class="center"></div>
-        </div>
 
-        <div id="section4" class="section">
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
-            <div id="vis4"><img src="http://placehold.it/900x500?text=Vis+4:+Housing+prices+by+Airbnb+density" class="center"></div>
+            <div id="vis4"><div id="housing-prices"></div></div>
         </div>
 
         <div id="section5" class="section">
@@ -128,6 +125,8 @@
     <script src="js/leaflet.js"></script>
     <script src="js/leaflet.markercluster.js"></script>
     <script src="js/jquery.combinedScroll.js"></script>
+    <script src="js/queue.min.js"></script>
+    <script src="js/d3.min.js"></script>
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
@@ -140,6 +139,8 @@
 
     <!-- Visualization objects -->
     <script src="js/airbnbMap.js"></script>
+    <script src="js/taxRevenue.js"></script>
+    <script src="js/housingPrices.js"></script>
 
     <!-- Load data, create visualizations -->
     <script src="js/main.js"></script>

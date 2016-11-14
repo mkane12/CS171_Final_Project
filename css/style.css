@@ -1,3 +1,5 @@
+/** BODY **/
+
 body {
     font-family: 'Roboto', sans-serif;
     padding-left: 50px;
@@ -40,6 +42,8 @@ p {
     margin: auto;
 }
 
+/** NAV **/
+
 nav.horizontal-page-navigation ul {
     list-style-type: none;
     margin: 0;
@@ -72,7 +76,94 @@ nav.horizontal-page-navigation .current a {
     color: #fff;
 }
 
+/** AIRBNB MAP **/
+
 #airbnb-map {
     width: 80vw;
     height: 80vh;
+}
+
+/* STYLES FOR SANKEY */
+.node rect {
+    cursor: move;
+    fill-opacity: .9;
+    shape-rendering: crispEdges;
+}
+
+.node text {
+    pointer-events: none;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.link {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .2;
+}
+
+.link:hover {
+    stroke-opacity: .5;
+}
+
+/** AXES **/
+
+.axis path,
+.axis line,
+.domain {
+    fill: none;
+    stroke: #41232f;
+    shape-rendering: crispEdges;
+}
+
+.axis text{
+    font-size: 11px;
+    fill: #41232f
+}
+
+.text{
+    font-size: 11px;
+}
+
+.vis-title {
+    font-size: 20px;
+    fill: #41232f;
+    font-weight: 200;
+}
+
+/*********************/
+/*  TOOLTIP OVERLAY  */
+/*********************/
+
+.tooltip-title {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.d3-tip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
 }

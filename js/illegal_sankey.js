@@ -119,8 +119,6 @@ listingSankey.prototype.wrangleData = function() {
     vis.displayData.links.push(new sankeyLink("apts", "legal", vis.displayData.nodes, apartments.length - shortTerm.length));
     vis.displayData.links.push(new sankeyLink("short", "legal", vis.displayData.nodes, shortTerm.length - totalIllegal));
 
-    console.log(vis.displayData);
-
     // Update the visualization
     vis.updateVis();
 

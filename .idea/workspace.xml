@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b223b5f-c094-4fbc-9dcc-d5b7fe8ecc60" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/airbnbNodeMap.js" afterPath="$PROJECT_DIR$/js/airbnbNodeMap.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/illegal_sankey.js" afterPath="$PROJECT_DIR$/js/illegal_sankey.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
     </list>
     <ignored path="CS171_Final_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,26 +31,26 @@
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-81">
-              <caret line="130" column="43" selection-start-line="130" selection-start-column="43" selection-end-line="130" selection-end-column="43" />
+              <caret line="131" column="40" selection-start-line="131" selection-start-column="40" selection-end-line="131" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="illegal_sankey.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="illegal_sankey.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/illegal_sankey.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="724">
-              <caret line="103" column="88" selection-start-line="103" selection-start-column="88" selection-end-line="103" selection-end-column="88" />
+            <state relative-caret-position="620">
+              <caret line="119" column="121" selection-start-line="119" selection-start-column="121" selection-end-line="119" selection-end-column="121" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#1855#1907#0" expanded="false" />
                 <element signature="e#2179#2243#0" expanded="false" />
-                <element signature="e#4955#7321#0" expanded="false" />
-                <element signature="e#7325#7420#0" expanded="false" />
-                <element signature="e#7525#7641#0" expanded="false" />
-                <element signature="e#7643#7699#0" expanded="false" />
-                <element signature="e#7852#8062#0" expanded="false" />
+                <element signature="e#4920#7286#0" expanded="false" />
+                <element signature="e#7290#7385#0" expanded="false" />
+                <element signature="e#7490#7606#0" expanded="false" />
+                <element signature="e#7608#7664#0" expanded="false" />
+                <element signature="e#7817#8027#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -78,8 +79,18 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6500">
-              <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+            <state relative-caret-position="8528">
+              <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="airbnbNodeMap.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/airbnbNodeMap.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="584">
+              <caret line="111" column="43" selection-start-line="111" selection-start-column="43" selection-end-line="111" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -102,6 +113,7 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/illegal_sankey.js" />
+        <option value="$PROJECT_DIR$/js/airbnbNodeMap.js" />
       </list>
     </option>
   </component>
@@ -306,12 +318,12 @@
       <workItem from="1478983089126" duration="15857000" />
       <workItem from="1479005729189" duration="313000" />
       <workItem from="1479057803288" duration="647000" />
-      <workItem from="1479074070586" duration="6760000" />
+      <workItem from="1479074070586" duration="8092000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24671000" />
+    <option name="totallyTimeSpent" value="26003000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-16" y="-16" width="3232" height="1732" extended-state="6" />
@@ -492,14 +504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/airbnbNodeMap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1429">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/airbnbMap.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
@@ -535,7 +539,7 @@
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-81">
-          <caret line="130" column="43" selection-start-line="130" selection-start-column="43" selection-end-line="130" selection-end-column="43" />
+          <caret line="131" column="40" selection-start-line="131" selection-start-column="40" selection-end-line="131" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -550,8 +554,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6500">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+        <state relative-caret-position="8528">
+          <caret line="164" column="0" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -574,18 +578,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/illegal_sankey.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="724">
-          <caret line="103" column="88" selection-start-line="103" selection-start-column="88" selection-end-line="103" selection-end-column="88" />
+        <state relative-caret-position="620">
+          <caret line="119" column="121" selection-start-line="119" selection-start-column="121" selection-end-line="119" selection-end-column="121" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#1855#1907#0" expanded="false" />
             <element signature="e#2179#2243#0" expanded="false" />
-            <element signature="e#4955#7321#0" expanded="false" />
-            <element signature="e#7325#7420#0" expanded="false" />
-            <element signature="e#7525#7641#0" expanded="false" />
-            <element signature="e#7643#7699#0" expanded="false" />
-            <element signature="e#7852#8062#0" expanded="false" />
+            <element signature="e#4920#7286#0" expanded="false" />
+            <element signature="e#7290#7385#0" expanded="false" />
+            <element signature="e#7490#7606#0" expanded="false" />
+            <element signature="e#7608#7664#0" expanded="false" />
+            <element signature="e#7817#8027#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/airbnbNodeMap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="584">
+          <caret line="111" column="43" selection-start-line="111" selection-start-column="43" selection-end-line="111" selection-end-column="43" />
+          <folding />
         </state>
       </provider>
     </entry>

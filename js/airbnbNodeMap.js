@@ -29,6 +29,16 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr("width", vis.width)
         .attr("height", vis.height);
 
+    // CREATE TOOLTIP //
+    vis.svg.selectAll(".d3-tip").remove();
+    // Initialize tooltip
+
+    vis.tip = d3.tip()
+        .attr('class', 'd3-tip');
+
+    // Invoke the tip in the context of your visualization
+    vis.svg.call(vis.tip);
+
     vis.wrangleData();
 
 
@@ -98,16 +108,10 @@ AirBnBNodeMap.prototype.updateVis = function() {
         .style("stroke", "black");
 
 
-
-    // CREATE TOOLTIP //
-    vis.svg.selectAll(".d3-tip").remove();
-    // Initialize tooltip
-
-    var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .html(function(d) {
-            return "Test";
-        });
+    vis.tip.html(function(d) {
+        var string = "<strong>Room type: </strong>" + d.room_type;
+        return string;
+    });
 
     // DRAW THE NODES (SVG CIRCLE)
     var node = vis.svg.selectAll(".node")
@@ -127,18 +131,16 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 .style("fill", "red")
                 .attr("opacity", 1)
                 .style("stroke", "black");
-            tip.show();
+            vis.tip.show(d);
         })
+
         .on("mouseout", function(d) {
             d3.select(this)
                 .attr("r", 2)
                 .style("fill", '#e74c3c')
                 .attr("opacity", 0.5)
                 .style("stroke", "none");
-            tip.hide();
+            vis.tip.hide(d);
         });
-
-    // Invoke the tip in the context of your visualization
-    vis.svg.call(tip);
 
 }

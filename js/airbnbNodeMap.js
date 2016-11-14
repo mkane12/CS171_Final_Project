@@ -97,6 +97,18 @@ AirBnBNodeMap.prototype.updateVis = function() {
         .style("stroke-width", "1")
         .style("stroke", "black");
 
+
+
+    // CREATE TOOLTIP //
+    vis.svg.selectAll(".d3-tip").remove();
+    // Initialize tooltip
+
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .html(function(d) {
+            return "Test";
+        });
+
     // DRAW THE NODES (SVG CIRCLE)
     var node = vis.svg.selectAll(".node")
         .data(vis.airbnbData)
@@ -115,6 +127,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 .style("fill", "red")
                 .attr("opacity", 1)
                 .style("stroke", "black");
+            tip.show();
         })
         .on("mouseout", function(d) {
             d3.select(this)
@@ -122,12 +135,10 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 .style("fill", '#e74c3c')
                 .attr("opacity", 0.5)
                 .style("stroke", "none");
+            tip.hide();
         });
 
-    node
-        .append("title")
-        .text(function(d) {
-            return "ID: " + d.host_id;
-        });
+    // Invoke the tip in the context of your visualization
+    vis.svg.call(tip);
 
 }

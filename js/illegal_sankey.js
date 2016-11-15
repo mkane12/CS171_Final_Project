@@ -31,8 +31,8 @@ listingSankey.prototype.initVis = function() {
 
     // Set the sankey diagram properties
     vis.sankey = d3.sankey()
-        .nodeWidth(36)
-        .nodePadding(40)
+        .nodeWidth(25)
+        .nodePadding(5)
         .size([vis.width, vis.height]);
 
     vis.path = vis.sankey.link();
@@ -86,6 +86,13 @@ listingSankey.prototype.wrangleData = function() {
         // if the location is null we give them the benefit of the doubt
         // and assume they're ok so we don't put them in this dataset
     });
+
+    /*****
+     * TODO
+     * this actually overestimates the total number of illegals
+     * because listings could be in more than one test of host being gone
+     * need to consolidate this to remove duplicates
+     */
 
     var totalIllegal = fullApt.length + hostMult.length + hostAway.length;
 

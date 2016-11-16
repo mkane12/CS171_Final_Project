@@ -23,7 +23,7 @@ function loadData() {
         .defer(d3.json, "data/ny-borough.json")
         .defer(d3.json, "data/2014-05-10.json")
         .defer(d3.csv, "data/fy16-nyc-depts.csv")
-        .defer(d3.csv, "data/NYC_Neighborhood_Prices_Transposed.csv")
+        .defer(d3.csv, "data/NYC_Neighborhood_Prices_Dummy.csv")
         .defer(d3.json, "data/2016-10-01_with_analyses.json")
         .await(function(error, data1, data2, data3, data4, data5) {
 

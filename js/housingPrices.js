@@ -16,7 +16,7 @@ HousingPrices = function(_parentElement, _data) {
 var formatDate = d3.time.format("%Y-%M");
 
 /*
- *  Initialize station map
+ *  Initialize line graph
  */
 
 HousingPrices.prototype.initVis = function() {
@@ -27,9 +27,9 @@ HousingPrices.prototype.initVis = function() {
     vis.width = 1000 - vis.margin.right - vis.margin.left;
 
     vis.svg = d3.select("#housing-prices").append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right + 100)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
-        vis.g = vis.svg.append("g")
+            .attr("width", vis.width + vis.margin.left + vis.margin.right + 100)
+            .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
     ;
 
@@ -39,12 +39,6 @@ HousingPrices.prototype.initVis = function() {
 
     vis.y = d3.scale.linear()
         .range([vis.height, 0])
-    ;
-
-    vis.lineFunction = d3.svg.line()
-        .x(function(d) { return vis.x(d.Year); })
-        .y(function(d) { return vis.y(d["4819"]); })
-        .interpolate("linear")
     ;
 
     vis.wrangleData();
@@ -81,6 +75,9 @@ HousingPrices.prototype.wrangleData = function() {
 
     vis.displayData = vis.data;
 
+    startYear = vis.data[0].Year;
+    endYear = vis.data[56].Year;
+
     console.log(vis.displayData);
 
     // Update the visualization
@@ -99,11 +96,9 @@ HousingPrices.prototype.updateVis = function() {
 
     var vis = this;
 
-    vis.x
-        .domain([d3.extent(vis.displayData, function(d) {return d.year; })]);
+    vis.x.domain([startYear, endYear]);
 
-    vis.y
-        .domain([d3.extent(vis.displayData, function(d) {return d["4819"]; })]);
+    vis.y.domain([0, d3.max(vis.displayData, function(d) {return d.Neighborhood1; })]);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
@@ -122,13 +117,13 @@ HousingPrices.prototype.updateVis = function() {
         .attr("class", "vis-title")
     ;
 
-    vis.g.append("g")
+    vis.xAxisGroup = vis.svg.append("g")
         .attr("class", "axis x-axis")
         .attr("transform", "translate(0," + vis.height + ")")
     ;
 
-    vis.g.append("g")
-            .attr("class", "axis axis--y")
+    vis.yAxisGroup = vis.svg.append("g")
+            .attr("class", "axis y-axis")
         .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 6)
@@ -148,20 +143,24 @@ HousingPrices.prototype.updateVis = function() {
         .call(vis.yAxis)
     ;
 
-    vis.neighborhood = vis.g.selectAll(".line")
+    vis.lineFunction = d3.svg.line()
+        .x(function(d) { return vis.x(d.Year); })
+        .y(function(d) { return vis.y(d.Neighborhood1); })
+        .interpolate("linear");
+
+    vis.lineGraph = vis.svg.selectAll(".line")
         .data(vis.displayData);
 
-    vis.neighborhood.enter()
+    vis.lineGraph.enter()
         .append("path")
         .attr("class", "line");
 
-    vis.neighborhood
+    vis.lineGraph
         .transition()
         .duration(800)
-        .attr("d", vis.lineFunction)
-    ;
+        .attr("d", vis.lineFunction);
 
-    vis.neighborhood.exit().remove();
+    vis.lineGraph.exit().remove();
 
 }
 

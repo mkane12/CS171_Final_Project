@@ -105,6 +105,15 @@ nav.horizontal-page-navigation .current a {
     stroke-opacity: .5;
 }
 
+
+/** LINE GRAPH **/
+
+.line {
+    fill: none;
+    stroke: #1C9A3D;
+    stroke-width: 2px;
+}
+
 /** AXES **/
 
 .axis path,

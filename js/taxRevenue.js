@@ -137,3 +137,9 @@ TaxRevenue.prototype.updateVis = function() {
 function kFormatter(num) {
     return '$' + (num/1000000) + 'M';
 }
+
+function changeData() {
+    selectValue = d3.select("#budgetData").property("value");
+
+    updateVisualization();
+}

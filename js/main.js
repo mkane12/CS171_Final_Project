@@ -75,14 +75,7 @@ function createVis() {
         });
 
         var NYCtext = JSON.stringify(NYC);
-
-        console.log(NYCtext);
-
-        var hiddenElement = document.createElement('a');
-        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(NYCtext);
-        hiddenElement.target = '_blank';
-        hiddenElement.download = "ny-neighborhoods.json";
-        hiddenElement.click();
+ 
     });
 
 }

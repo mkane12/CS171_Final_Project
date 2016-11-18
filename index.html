@@ -104,7 +104,35 @@
 
             <h2>New York City and State lose $X in unpaid taxes.</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
-            <div id="vis2"><div id="tax-revenue"></div></div>
+
+            <div id="vis2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="budgetUnit">City or State</label>
+                                <select class="form-control" id="budgetUnit" onChange="taxRevenue.changeData()">
+                                    <option value="city">New York City</option>
+                                    <option value="state">New York State</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="budgetYear">Fiscal Year</label>
+                                <select class="form-control" id="budgetYear" onChange="taxRevenue.changeData()">
+                                    <option value="2014">2014</option>
+                                    <option value="2015">2015</option>
+                                    <option value="2016">2016</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="tax-revenue"></div>
+            </div>
         </div>
 
         <div id="section4" class="section">

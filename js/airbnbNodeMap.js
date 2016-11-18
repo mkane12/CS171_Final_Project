@@ -97,32 +97,32 @@ AirBnBNodeMap.prototype.updateVis = function() {
 
     // create a first guess for the projection
     var center = d3.geo.centroid(vis.displayData)
-    var scale  = 150;
+    var scale  = 60000;
     var offset = [vis.width/2, vis.height/2];
     var projection = d3.geo.mercator().scale(scale).center(center)
         .translate(offset);
 
     // create the path
-    vis.path = d3.geo.path().projection(projection);
+    var path = d3.geo.path().projection(projection);
 
     // using the path determine the bounds of the current map and use
     // these to determine better values for the scale and translation
-    vis.bounds  = vis.path.bounds(vis.mapData);
-    var hscale  = scale*vis.width  / (vis.bounds[1][0] - vis.bounds[0][0]);
-    var vscale  = scale*vis.height / (vis.bounds[1][1] - vis.bounds[0][1]);
-    var scale   = (hscale < vscale) ? hscale : vscale;
-    var offset  = [vis.width - (vis.bounds[0][0] + vis.bounds[1][0])/2,
-        vis.height - (vis.bounds[0][1] + vis.bounds[1][1])/2];
+    // vis.bounds  = path.bounds(vis.mapData);
+    // var hscale  = scale*vis.width  / (vis.bounds[1][0] - vis.bounds[0][0]);
+    // var vscale  = scale*vis.height / (vis.bounds[1][1] - vis.bounds[0][1]);
+    // var scale   = (hscale < vscale) ? hscale : vscale;
+    // var offset  = [vis.width - (vis.bounds[0][0] + vis.bounds[1][0])/2,
+    //     vis.height - (vis.bounds[0][1] + vis.bounds[1][1])/2];
 
     // new projection
-    projection = d3.geo.mercator().center(center)
+    projection = d3.geo.mercator().center([-74.0059, 40.7128])
         .scale(scale).translate(offset);
-    vis.path = vis.path.projection(projection);
+    path = path.projection(projection);
 
     console.log(vis.mapData);
 
     vis.svg.selectAll("path").data(vis.mapData.features).enter().append("path")
-        .attr("d", vis.path)
+        .attr("d", path)
         .style("fill", "#3498db")
         .style("opacity", 0.5)
         .style("stroke-width", "1")

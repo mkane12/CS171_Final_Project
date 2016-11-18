@@ -25,27 +25,31 @@ function loadData() {
         .defer(d3.csv, "data/fy16-nyc-depts.csv")
         .defer(d3.csv, "data/NYC_Neighborhood_Prices_Dummy.csv")
         .defer(d3.json, "data/2016-10-01_with_analyses.json")
-        .await(function(error, data1, data2, data3, data4, data5) {
+        .defer(d3.json, "data/ny-neighborhoods.json")
+        .await(function(error, data1, data2, data3, data4, data5, data6) {
 
             if (error) throw error;
 
-            mapData = data1;
+            //mapData = data1;
+            console.log(data1);
 
             airbnbData = data2;
 
             allData = data2.slice(0, 101);
 
-            console.log(allData);
+            //console.log(allData);
 
             taxData = data3;
 
-            console.log(taxData);
+            //console.log(taxData);
 
             neighborhoodData = data4;
 
             newestDataset = data5;
 
-            console.log(neighborhoodData);
+            mapData = data6;
+
+            //console.log(neighborhoodData);
 
             createVis();
         });

@@ -67,21 +67,6 @@ function createVis() {
     illegalSankey = new listingSankey("#sankey2", newestDataset);
     mySankey = new customSankey("#sankey", newestDataset);
 
-    d3.json("data/neighborhoods.json", function(data) {
-        console.log(data);
-
-        var NYC = {
-            "type": "Feature Collection"
-        };
-
-        NYC.features = data.features.filter(function(d) {
-            return (~d.properties.CITY.indexOf("New York City"))  ;
-        });
-
-        var NYCtext = JSON.stringify(NYC);
- 
-    });
-
 }
 
 

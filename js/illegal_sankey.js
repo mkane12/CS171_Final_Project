@@ -152,13 +152,6 @@ listingSankey.prototype.updateVis = function() {
         .links(vis.displayData.links)
         .layout(32);
 
-    var savedCoordinates = vis.sankey.nodes().map(function(d) {
-        return {id:d.id, x:d.x, y:d.y};
-    });
-    console.log(vis.sankey.nodes());
-    console.log(vis.sankey.links());
-    console.log(savedCoordinates);
-
     // add in the links
     vis.link = vis.svg.append("g").selectAll(".link")
         .data(vis.displayData.links)
@@ -191,10 +184,7 @@ listingSankey.prototype.updateVis = function() {
     vis.node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", vis.sankey.nodeWidth())
-        .style("fill", function(d) {
-            return d.color = vis.color(d.name.replace(/ .*/, "")); })
-        .style("stroke", function(d) {
-            return d3.rgb(d.color).darker(2); })
+        <
         .append("title")
         .text(function(d) {
             return d.name + "\n" + d.value; });

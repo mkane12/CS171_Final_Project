@@ -31,8 +31,9 @@ listingSankey.prototype.initVis = function() {
 
     // Set the sankey diagram properties
     vis.sankey = d3.sankey()
-        .nodeWidth(25)
-        .nodePadding(5)
+        .nodeWidth(50)
+        .nodePadding(15)
+        .spacing(100)
         .size([vis.width, vis.height]);
 
     vis.path = vis.sankey.link();
@@ -67,34 +68,41 @@ listingSankey.prototype.wrangleData = function() {
     // 3 ways of figuring this out;
     // are you renting the entire apt,
     // does host have mult listings, or is host not in NYC
-    var fullApt = shortTerm.filter(function(d) {
+    // here are the helper functions to do this filtering
+    function isEntireApt(d) {
         return d.room_type == "Entire home/apt";
-    });
-
-    var hostMult = shortTerm.filter(function(d) {
+    }
+    function hostHasMult(d) {
         return d.calculated_host_listings_count > 1;
-    });
-
-    var hostAway = shortTerm.filter(function(d) {
+    }
+    function isHostAway(d) {
         // the tests don't work if the host location is null
         // so let's make sure there IS a location
         if (d.host_location) {
             return ((!(~d.host_location.indexOf("New York")))
-                    && (!(~d.host_location.indexOf("NY")))
-                    && (d.host_location != "US"));
+            && (!(~d.host_location.indexOf("NY")))
+            && (d.host_location != "US"));
         }
         // if the location is null we give them the benefit of the doubt
         // and assume they're ok so we don't put them in this dataset
+    }
+
+    // apply those functions one by one
+    var fullApt = shortTerm.filter(isEntireApt);
+
+    var hostMult = shortTerm.filter(function(d) {
+        return (hostHasMult(d) && !isEntireApt(d));
     });
 
-    /*****
-     * TODO
-     * this actually overestimates the total number of illegals
-     * because listings could be in more than one test of host being gone
-     * need to consolidate this to remove duplicates
-     */
+    var hostAway = shortTerm.filter(function(d) {
+        return (isHostAway(d) && !(isEntireApt(d) || hostHasMult(d)));
+    });
 
-    var totalIllegal = fullApt.length + hostMult.length + hostAway.length;
+    // apply all 3 to see all illegal listings
+    // the ORs make sure that there's no duplicates
+    var illegals = shortTerm.filter(function(d) {
+        return (isEntireApt(d) || hostHasMult(d) || isHostAway(d));
+    });
 
     /*******
      * now we can construct the needed data structure
@@ -108,8 +116,8 @@ listingSankey.prototype.wrangleData = function() {
     vis.displayData.nodes.push(new sankeyNode("full-apt", fullApt.length, "full-home rentals"));
     vis.displayData.nodes.push(new sankeyNode("host-mult", hostMult.length, "cases where host has multiple listings"));
     vis.displayData.nodes.push(new sankeyNode("host-away", hostAway.length, "listings with host not in NYC"));
-    vis.displayData.nodes.push(new sankeyNode("illegal", totalIllegal, "illegal listings"));
-    vis.displayData.nodes.push(new sankeyNode("legal", vis.dataset.length - totalIllegal, "legal listings"));
+    vis.displayData.nodes.push(new sankeyNode("illegal", illegals.length, "illegal listings"));
+    vis.displayData.nodes.push(new sankeyNode("legal", vis.dataset.length - illegals.length, "legal listings"));
 
     // now we create links between the nodes
     // for proper display, we create the ILLEGAL links first
@@ -124,7 +132,7 @@ listingSankey.prototype.wrangleData = function() {
     // now we create the LEGAL links
     vis.displayData.links.push(new sankeyLink("all", "legal", vis.displayData.nodes, vis.dataset.length - apartments.length));
     vis.displayData.links.push(new sankeyLink("apts", "legal", vis.displayData.nodes, apartments.length - shortTerm.length));
-    vis.displayData.links.push(new sankeyLink("short", "legal", vis.displayData.nodes, shortTerm.length - totalIllegal));
+    vis.displayData.links.push(new sankeyLink("short", "legal", vis.displayData.nodes, shortTerm.length - illegals.length));
 
     // Update the visualization
     vis.updateVis();
@@ -144,11 +152,18 @@ listingSankey.prototype.updateVis = function() {
         .links(vis.displayData.links)
         .layout(32);
 
+    var savedCoordinates = vis.sankey.nodes().map(function(d) {
+        return {id:d.id, x:d.x, y:d.y};
+    });
+    console.log(vis.sankey.nodes());
+    console.log(vis.sankey.links());
+    console.log(savedCoordinates);
+
     // add in the links
     vis.link = vis.svg.append("g").selectAll(".link")
         .data(vis.displayData.links)
         .enter().append("path")
-        .attr("class", "link")
+        .attr("class", function(d) { return "link " + d.endID; })
         .attr("d", vis.path)
         .style("stroke-width", function(d) { return Math.max(1, d.dy); })
         .sort(function(a, b) { return b.dy - a.dy; });
@@ -163,7 +178,7 @@ listingSankey.prototype.updateVis = function() {
     vis.node = vis.svg.append("g").selectAll(".node")
         .data(vis.displayData.nodes)
         .enter().append("g")
-        .attr("class", "node")
+        .attr("class", function(d) { return "node " + d.id; })
         .attr("transform", function(d) {
             return "translate(" + d.x + "," + d.y + ")"; })
         .call(d3.behavior.drag()
@@ -226,13 +241,15 @@ sankeyNode = function(_ID, _num, _description) {
 // so it automatically matches the correct things
 // and we don't have to keep track of indices
 sankeyLink = function(_startID, _endID, _nodeSet, _num) {
-    this.source = _nodeSet.findIndex(function(d) {
+    this.source = _nodeSet.find(function(d) {
         return d.id == _startID;
     });
 
-    this.target = _nodeSet.findIndex(function(d) {
+    this.target = _nodeSet.find(function(d) {
         return d.id == _endID;
     });
 
+    this.startID = _startID;
+    this.endID = _endID;
     this.value = _num;
 }

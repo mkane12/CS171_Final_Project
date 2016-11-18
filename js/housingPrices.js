@@ -13,7 +13,7 @@ HousingPrices = function(_parentElement, _data) {
     this.initVis();
 };
 
-var formatDate = d3.time.format("%Y-%M");
+var formatDate = d3.time.format("%Y-%m");
 
 /*
  *  Initialize line graph
@@ -22,7 +22,7 @@ var formatDate = d3.time.format("%Y-%M");
 HousingPrices.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 40, right: 0, bottom: 25, left: 25};
+    vis.margin = {top: 40, right: 0, bottom: 25, left: 40};
     vis.height = 500 - vis.margin.top - vis.margin.bottom;
     vis.width = 1000 - vis.margin.right - vis.margin.left;
 
@@ -108,7 +108,8 @@ HousingPrices.prototype.updateVis = function() {
 
     vis.yAxis = d3.svg.axis()
         .scale(vis.y)
-        .orient("left");
+        .orient("left")
+        .tickFormat(formatCurrency);
 
     vis.svg.append("text")
         .attr("x", 0)
@@ -125,11 +126,11 @@ HousingPrices.prototype.updateVis = function() {
     vis.yAxisGroup = vis.svg.append("g")
             .attr("class", "axis y-axis")
         .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
+            .attr("y", -15)
+            .attr("x", -40)
             .attr("dy", "0.71em")
             .attr("fill", "#000")
-            .text("Price");
+            .text("Average Monthly Rent");
 
     vis.svg.select(".x-axis")
         .transition()
@@ -158,24 +159,13 @@ HousingPrices.prototype.updateVis = function() {
     vis.lineGraph
         .transition()
         .duration(800)
-        .attr("d", vis.lineFunction);
+        .attr("d", vis.lineFunction(vis.displayData));
 
     vis.lineGraph.exit().remove();
 
+};
+
+
+function formatCurrency(d) {
+    return "$" + d;
 }
-
-//function filterData(a,b) {
-//    startYear = formatDate.parse(a);
-//    endYear = formatDate.parse(b);
-
-//    console.log(startYear);
-//    console.log(endYear);
-
-//    filteredData = data.filter(function(value) {
-//        return (value.YEAR >= startYear) && (value.YEAR <= endYear);
-//    });
-
-//    console.log(filteredData);
-
-//    updateVisualization(filteredData);
-//}

@@ -60,7 +60,30 @@ function createVis() {
     //airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
     taxRevenue = new TaxRevenue("tax-revenue", taxData);
     housingPrices = new HousingPrices("housing-prices", neighborhoodData);
-    illegalSankey = new listingSankey("#sankey", newestDataset);
+    illegalSankey = new listingSankey("#sankey2", newestDataset);
+    mySankey = new customSankey("#sankey", newestDataset);
+
+    d3.json("data/neighborhoods.json", function(data) {
+        console.log(data);
+
+        var NYC = {
+            "type": "Feature Collection"
+        };
+
+        NYC.features = data.features.filter(function(d) {
+            return (~d.properties.CITY.indexOf("New York City"))  ;
+        });
+
+        var NYCtext = JSON.stringify(NYC);
+
+        console.log(NYCtext);
+
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(NYCtext);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = "ny-neighborhoods.json";
+        hiddenElement.click();
+    });
 
 }
 

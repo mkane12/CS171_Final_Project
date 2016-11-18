@@ -60,7 +60,8 @@ function createVis() {
     //airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
     taxRevenue = new TaxRevenue("tax-revenue", taxData);
     housingPrices = new HousingPrices("housing-prices", neighborhoodData);
-    illegalSankey = new listingSankey("#sankey", newestDataset);
+    illegalSankey = new listingSankey("#sankey2", newestDataset);
+    mySankey = new customSankey("#sankey", newestDataset);
 
 }
 

@@ -4,7 +4,7 @@
  *  @param _dataset         -- Dataset to analyze for illegal listings
  */
 
-listingSankey = function(_parentElement, _dataset) {
+customSankey = function(_parentElement, _dataset) {
 
     this.parentElement = _parentElement;
     this.dataset = _dataset;
@@ -17,7 +17,7 @@ listingSankey = function(_parentElement, _dataset) {
  *  Initialize station map
  */
 
-listingSankey.prototype.initVis = function() {
+customSankey.prototype.initVis = function() {
     var vis = this;
 
     vis.width = $(vis.parentElement).width();
@@ -29,15 +29,6 @@ listingSankey.prototype.initVis = function() {
         .attr("width", vis.width)
         .attr("height", vis.height);
 
-    // Set the sankey diagram properties
-    vis.sankey = d3.sankey()
-        .nodeWidth(50)
-        .nodePadding(15)
-        .spacing(100)
-        .size([vis.width, vis.height]);
-
-    vis.path = vis.sankey.link();
-
     vis.wrangleData();
 }
 
@@ -46,7 +37,7 @@ listingSankey.prototype.initVis = function() {
  *  Data wrangling
  */
 
-listingSankey.prototype.wrangleData = function() {
+customSankey.prototype.wrangleData = function() {
     var vis = this;
 
     /*******
@@ -54,10 +45,10 @@ listingSankey.prototype.wrangleData = function() {
      * using tests for legality
      */
 
-    // first test: is it an apartment?
+        // first test: is it an apartment?
     var apartments = vis.dataset.filter(function(d) {
-        return d.property_type == "Apartment";
-    });
+            return d.property_type == "Apartment";
+        });
 
     // second test: is it a short term stay?
     var shortTerm = apartments.filter(function(d) {
@@ -144,82 +135,10 @@ listingSankey.prototype.wrangleData = function() {
  *  The drawing function
  */
 
-listingSankey.prototype.updateVis = function() {
+customSankey.prototype.updateVis = function() {
     var vis = this;
 
-    vis.sankey
-        .nodes(vis.displayData.nodes)
-        .links(vis.displayData.links)
-        .layout(32);
-
-    var savedCoordinates = vis.sankey.nodes().map(function(d) {
-        return {id:d.id, x:d.x, y:d.y};
-    });
-    console.log(vis.sankey.nodes());
-    console.log(vis.sankey.links());
-    console.log(savedCoordinates);
-
-    // add in the links
-    vis.link = vis.svg.append("g").selectAll(".link")
-        .data(vis.displayData.links)
-        .enter().append("path")
-        .attr("class", function(d) { return "link " + d.endID; })
-        .attr("d", vis.path)
-        .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-        .sort(function(a, b) { return b.dy - a.dy; });
-
-    // add the link titles
-    vis.link.append("title")
-        .text(function(d) {
-            return d.source.name + " → " +
-                d.target.name + "\n" + d.value; });
-
-    // add in the nodes
-    vis.node = vis.svg.append("g").selectAll(".node")
-        .data(vis.displayData.nodes)
-        .enter().append("g")
-        .attr("class", function(d) { return "node " + d.id; })
-        .attr("transform", function(d) {
-            return "translate(" + d.x + "," + d.y + ")"; })
-        .call(d3.behavior.drag()
-            .origin(function(d) { return d; })
-            .on("dragstart", function() {
-                this.parentNode.appendChild(this); })
-            .on("drag", dragmove));
-
-    // add the rectangles for the nodes
-    vis.node.append("rect")
-        .attr("height", function(d) { return d.dy; })
-        .attr("width", vis.sankey.nodeWidth())
-        .style("fill", function(d) {
-            return d.color = vis.color(d.name.replace(/ .*/, "")); })
-        .style("stroke", function(d) {
-            return d3.rgb(d.color).darker(2); })
-        .append("title")
-        .text(function(d) {
-            return d.name + "\n" + d.value; });
-
-    // add in the title for the nodes
-    vis.node.append("text")
-        .attr("x", -6)
-        .attr("y", function(d) { return d.dy / 2; })
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .attr("transform", null)
-        .text(function(d) { return d.name; })
-        .filter(function(d) { return d.x < vis.width / 2; })
-        .attr("x", 6 + vis.sankey.nodeWidth())
-        .attr("text-anchor", "start");
-
-    // the function for moving the nodes
-    function dragmove(d) {
-        d3.select(this).attr("transform",
-            "translate(" + d.x + "," + (
-                d.y = Math.max(0, Math.min(vis.height - d.dy, d3.event.y))
-            ) + ")");
-        vis.sankey.relayout();
-        vis.link.attr("d", vis.path);
-    }
+    
 }
 
 

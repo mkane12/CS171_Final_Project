@@ -152,13 +152,6 @@ listingSankey.prototype.updateVis = function() {
         .links(vis.displayData.links)
         .layout(32);
 
-    var savedCoordinates = vis.sankey.nodes().map(function(d) {
-        return {id:d.id, x:d.x, y:d.y};
-    });
-    console.log(vis.sankey.nodes());
-    console.log(vis.sankey.links());
-    console.log(savedCoordinates);
-
     // add in the links
     vis.link = vis.svg.append("g").selectAll(".link")
         .data(vis.displayData.links)

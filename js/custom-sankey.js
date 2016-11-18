@@ -29,6 +29,14 @@ customSankey.prototype.initVis = function() {
         .attr("width", vis.width)
         .attr("height", vis.height);
 
+    vis.barWidth = 40;
+
+    vis.barHeightScale = d3.scale.linear()
+        .range([0.05*vis.height, 0.6*vis.height]);
+
+    vis.xPosScale = d3.scale.linear()
+        .range([0, vis.width - vis.barWidth]);
+
     vis.wrangleData();
 }
 
@@ -101,14 +109,15 @@ customSankey.prototype.wrangleData = function() {
     vis.displayData = {"nodes":[], "links":[]};
 
     // we add all the nodes we need based on our tests
-    vis.displayData.nodes.push(new sankeyNode("all", vis.dataset.length, "total listings"));
-    vis.displayData.nodes.push(new sankeyNode("apts", apartments.length, "apartments"));
-    vis.displayData.nodes.push(new sankeyNode("short", shortTerm.length, "short-term listings"));
-    vis.displayData.nodes.push(new sankeyNode("full-apt", fullApt.length, "full-home rentals"));
-    vis.displayData.nodes.push(new sankeyNode("host-mult", hostMult.length, "cases where host has multiple listings"));
-    vis.displayData.nodes.push(new sankeyNode("host-away", hostAway.length, "listings with host not in NYC"));
-    vis.displayData.nodes.push(new sankeyNode("illegal", illegals.length, "illegal listings"));
-    vis.displayData.nodes.push(new sankeyNode("legal", vis.dataset.length - illegals.length, "legal listings"));
+    // the sankeyNode is below
+    vis.displayData.nodes.push(new sankeyNode("all", 1, vis.height/3.5, vis.dataset.length, "total listings"));
+    vis.displayData.nodes.push(new sankeyNode("apts", 2, vis.height/5, apartments.length, "apartments"));
+    vis.displayData.nodes.push(new sankeyNode("short", 3, vis.height/9, shortTerm.length, "short-term listings"));
+    vis.displayData.nodes.push(new sankeyNode("full-apt", 4, 15, fullApt.length, "full-home rentals"));
+    vis.displayData.nodes.push(new sankeyNode("host-mult", 4, 0, hostMult.length, "cases where host has multiple listings"));
+    vis.displayData.nodes.push(new sankeyNode("host-away", 4, 0, hostAway.length, "listings with host not in NYC"));
+    vis.displayData.nodes.push(new sankeyNode("illegal", 5, 0, illegals.length, "illegal listings"));
+    vis.displayData.nodes.push(new sankeyNode("legal", 5, vis.height, vis.dataset.length - illegals.length, "legal listings"));
 
     // now we create links between the nodes
     // for proper display, we create the ILLEGAL links first
@@ -125,6 +134,33 @@ customSankey.prototype.wrangleData = function() {
     vis.displayData.links.push(new sankeyLink("apts", "legal", vis.displayData.nodes, apartments.length - shortTerm.length));
     vis.displayData.links.push(new sankeyLink("short", "legal", vis.displayData.nodes, shortTerm.length - illegals.length));
 
+    // now we can set the domains for the scales
+    vis.xPosScale.domain(d3.extent(vis.displayData.nodes, function(d) { return d.level; }));
+    vis.barHeightScale.domain(d3.extent(vis.displayData.nodes, function(d) { return d.num; }));
+
+    // use the scales to set some spacing things
+    // the node for legal listings will be all the way at the bottom
+    var legalNode = findNode(vis.displayData.nodes, "legal");
+    legalNode.yStart= (vis.height - vis.barHeightScale(legalNode.num));
+
+
+    // these three nodes are all in the same level, and i want to space them evenly
+    // so access them all
+    fullNode = findNode(vis.displayData.nodes, "full-apt");
+    multNode = findNode(vis.displayData.nodes, "host-mult");
+    awayNode = findNode(vis.displayData.nodes, "host-away");
+
+    // calculate appropriate padding so that the three of them fill half the height
+    var nodePad = (vis.height/2 - (vis.barHeightScale(fullNode.num) + vis.barHeightScale(multNode.num) + vis.barHeightScale(awayNode.num))) / 2;
+    console.log(nodePad);
+
+    // apply new positions with that padding
+    multNode.yStart = vis.barHeightScale(fullNode.num) + nodePad + 15;
+    awayNode.yStart = vis.barHeightScale(fullNode.num) + vis.barHeightScale(multNode.num) + 2*nodePad + 15;
+
+
+
+
     // Update the visualization
     vis.updateVis();
 
@@ -138,7 +174,31 @@ customSankey.prototype.wrangleData = function() {
 customSankey.prototype.updateVis = function() {
     var vis = this;
 
-    
+    vis.node = vis.svg.selectAll(".node")
+        .data(vis.displayData.nodes);
+
+    vis.node.enter().append("rect")
+        .attr("class", "node");
+
+    vis.node
+        .attr("width", vis.barWidth)
+        .attr("height", function(d) {
+            d.height = vis.barHeightScale(d.num);
+            return d.height;
+        })
+        .attr("x", function (d) {
+            d.xStart = vis.xPosScale(d.level);
+            d.xEnd = d.xStart + vis.barWidth;
+            return d.xStart;
+        })
+        .attr("y", function(d) {
+            d.yEnd = d.yStart + d.height;
+            return d.yStart;
+        })
+        .style("fill", function(d) {
+            return d.color = vis.color(d.name.replace(/ .*/, "")); })
+        .style("stroke", function(d) {
+            return d3.rgb(d.color).darker(2); });
 }
 
 
@@ -149,9 +209,11 @@ customSankey.prototype.updateVis = function() {
  */
 
 // the ID exists so its easier to find the correct node
-sankeyNode = function(_ID, _num, _description) {
+sankeyNode = function(_ID, _level, _yStart, _num, _description) {
     this.id = _ID;
     this.num = _num;
+    this.level = _level;
+    this.yStart = _yStart;
     this.desc = _description;
     this.name = _num + " " + _description;
 }
@@ -171,4 +233,10 @@ sankeyLink = function(_startID, _endID, _nodeSet, _num) {
     this.startID = _startID;
     this.endID = _endID;
     this.value = _num;
+}
+
+function findNode(set, _id) {
+    return set.find(function(d) {
+        return d.id == _id;
+    });
 }

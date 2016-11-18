@@ -22,6 +22,8 @@ AirBnBNodeMap = function(_parentElement, _mapData, _airbnbData) {
 AirBnBNodeMap.prototype.initVis = function() {
     var vis = this;
 
+    this.displayData = this.mapData;
+
     vis.width = 1000;
     vis.height = 600;
 
@@ -38,6 +40,30 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     // Invoke the tip in the context of your visualization
     vis.svg.call(vis.tip);
+
+    // Add a slider to the page using the minimum and maximum years appearing in the data
+    // var slider = document.getElementById('slider');
+    //
+    // sliderVal =
+    // slidermin = parseInt(formatDate(d3.min(vis.airbnbData, function(d) {return d.YEAR})));
+    // slidermax = parseInt(formatDate(d3.max(data, function(d) {return d.YEAR})));
+    //
+    // noUiSlider.create(slider, {
+    //     start: sliderVal,
+    //     connect: true,
+    //     step: 1,
+    //     range: {
+    //         'min': slidermin,
+    //         'max': slidermax
+    //     }
+    //
+    // });
+    //
+    // // Dynamically update what the user has selected for the slider value
+    // var directionField1 = document.getElementById('field1');
+    // var directionField2 = document.getElementById('field2');
+
+    vis.active = d3.select(null);
 
     vis.wrangleData();
 
@@ -70,42 +96,47 @@ AirBnBNodeMap.prototype.updateVis = function() {
     var vis = this;
 
     // create a first guess for the projection
-    var center = d3.geo.centroid(vis.mapData)
+    var center = d3.geo.centroid(vis.displayData)
     var scale  = 150;
     var offset = [vis.width/2, vis.height/2];
     var projection = d3.geo.mercator().scale(scale).center(center)
         .translate(offset);
 
     // create the path
-    var path = d3.geo.path().projection(projection);
+    vis.path = d3.geo.path().projection(projection);
 
     // using the path determine the bounds of the current map and use
     // these to determine better values for the scale and translation
-    var bounds  = path.bounds(vis.mapData);
-    var hscale  = scale*vis.width  / (bounds[1][0] - bounds[0][0]);
-    var vscale  = scale*vis.height / (bounds[1][1] - bounds[0][1]);
+    vis.bounds  = vis.path.bounds(vis.mapData);
+    var hscale  = scale*vis.width  / (vis.bounds[1][0] - vis.bounds[0][0]);
+    var vscale  = scale*vis.height / (vis.bounds[1][1] - vis.bounds[0][1]);
     var scale   = (hscale < vscale) ? hscale : vscale;
-    var offset  = [vis.width - (bounds[0][0] + bounds[1][0])/2,
-        vis.height - (bounds[0][1] + bounds[1][1])/2];
+    var offset  = [vis.width - (vis.bounds[0][0] + vis.bounds[1][0])/2,
+        vis.height - (vis.bounds[0][1] + vis.bounds[1][1])/2];
 
     // new projection
     projection = d3.geo.mercator().center(center)
         .scale(scale).translate(offset);
-    path = path.projection(projection);
+    vis.path = vis.path.projection(projection);
 
-    // add a rectangle to see the bound of the svg
-    vis.svg.append("rect")
-        .attr('width', vis.width)
-        .attr('height', vis.height)
-        .style('stroke', 'none')
-        .style('fill', 'none');
+    console.log(vis.mapData);
 
     vis.svg.selectAll("path").data(vis.mapData.features).enter().append("path")
-        .attr("d", path)
+        .attr("d", vis.path)
         .style("fill", "#3498db")
         .style("opacity", 0.5)
         .style("stroke-width", "1")
-        .style("stroke", "black");
+        .style("stroke", "black")
+        .on("click", function(d) {
+            console.log(this);
+            //d3.select(this).style("fill", "orange");
+            vis.zoom(d);
+            }
+        );
+
+    // vis.active.attr("fill", "#cccccc");
+    // vis.active = d3.select(this)
+    //     .attr("fill", "#F77B15");
 
 
     vis.tip.html(function(d) {
@@ -143,4 +174,34 @@ AirBnBNodeMap.prototype.updateVis = function() {
             vis.tip.hide(d);
         });
 
+}
+
+
+/*
+ *  The zooming function
+ */
+
+AirBnBNodeMap.prototype.zoom = function(selected) {
+    var vis = this;
+
+    console.log(selected);
+
+    vis.selectedArea = selected.geometry.coordinates;
+    console.log(vis.selectedArea);
+
+    // var bounds = vis.path.bounds(),
+    //     dx = bounds[1][0] - bounds[0][0],
+    //     dy = bounds[1][1] - bounds[0][1],
+    //     x = (bounds[0][0] + bounds[1][0]) / 2,
+    //     y = (bounds[0][1] + bounds[1][1]) / 2,
+    //     scale = .9 / Math.max(dx / vis.width, dy / vis.height),
+    //     translate = [
+    //         vis.width / 2 - scale * x,
+    //         vis.height / 2 - scale * y];
+    //
+    // vis.svg.transition()
+    //     .duration(750)
+    //     .attr("transform", "translate(" +
+    //         translate + ")scale(" +
+    //         scale + ")");
 }

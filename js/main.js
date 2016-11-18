@@ -3,14 +3,16 @@ var allData = [],
     taxData = [],
     neighborhoodData = [],
     mapData = [],
-    airbnbData = [];
+    airbnbData = [],
+    timelineData;
 
 // Variable for the visualization instance
 var airbnbMap,
     taxRevenue,
     housingPrices,
     airbnbNodeMap,
-    newestDataset;
+    newestDataset,
+    timeline;
 
 // Start application by loading the data
 loadData();
@@ -26,7 +28,8 @@ function loadData() {
         .defer(d3.csv, "data/NYC_Neighborhood_Prices_Dummy.csv")
         .defer(d3.json, "data/2016-10-01_with_analyses.json")
         .defer(d3.json, "data/ny-neighborhoods.json")
-        .await(function(error, data1, data2, data3, data4, data5, data6) {
+        .defer(d3.csv, "data/timeline.csv")
+        .await(function(error, data1, data2, data3, data4, data5, data6, data7) {
 
             if (error) throw error;
 
@@ -49,6 +52,8 @@ function loadData() {
 
             mapData = data6;
 
+            timelineData = data7;
+
             //console.log(neighborhoodData);
 
             createVis();
@@ -64,8 +69,10 @@ function createVis() {
     //airbnbMap = new AirBnBMap("airbnb-map", allData, [40.712784, -74.005941]);
     taxRevenue = new TaxRevenue("tax-revenue", taxData);
     housingPrices = new HousingPrices("housing-prices", neighborhoodData);
+    timeline = new Timeline("timeline", timelineData);
     illegalSankey = new listingSankey("#sankey2", newestDataset);
     mySankey = new customSankey("#sankey", newestDataset);
+
 
 }
 

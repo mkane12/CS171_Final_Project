@@ -110,8 +110,8 @@ nav.horizontal-page-navigation .current a {
 
 .line {
     fill: none;
-    stroke: #1C9A3D;
-    stroke-width: 2px;
+    stroke: black;
+    stroke-width: 1px;
 }
 
 /** AXES **/

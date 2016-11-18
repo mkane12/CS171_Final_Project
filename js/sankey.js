@@ -2,6 +2,7 @@ d3.sankey = function() {
     var sankey = {},
         nodeWidth = 24,
         nodePadding = 8,
+        spacing = 10;
         size = [1, 1],
         nodes = [],
         links = [];
@@ -15,6 +16,12 @@ d3.sankey = function() {
     sankey.nodePadding = function(_) {
         if (!arguments.length) return nodePadding;
         nodePadding = +_;
+        return sankey;
+    };
+
+    sankey.spacing = function(_) {
+        if (!arguments.length) return spacing;
+        spacing = +_;
         return sankey;
     };
 
@@ -173,7 +180,7 @@ d3.sankey = function() {
 
         function initializeNodeDepth() {
             var ky = d3.min(nodesByBreadth, function(nodes) {
-                return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value);
+                return (size[1] - (nodes.length - 1) * spacing) / d3.sum(nodes, value);
             });
 
             nodesByBreadth.forEach(function(nodes) {
@@ -235,6 +242,14 @@ d3.sankey = function() {
                     y0 = node.y + node.dy + nodePadding;
                 }
 
+/*                nodes.sort(descendingDepth);
+                for (i = 0; i < n; ++i) {
+                    node = nodes[i];
+                    dy = y0 - node.y;
+                    if (dy > 0) node.y += dy;
+                    y0 = node.y + node.dy + nodePadding;
+                }*/
+
                 // If the bottommost node goes outside the bounds, push it back up.
                 dy = y0 - nodePadding - size[1];
                 if (dy > 0) {
@@ -243,12 +258,16 @@ d3.sankey = function() {
                     // Push any overlapping nodes back up.
                     for (i = n - 2; i >= 0; --i) {
                         node = nodes[i];
-                        dy = node.y + node.dy + nodePadding - y0;
+                        dy = node.y + node.dy + spacing - y0;
                         if (dy > 0) node.y -= dy;
                         y0 = node.y;
                     }
                 }
             });
+        }
+
+        function descendingDepth(a, b) {
+            return b.y - a.y;
         }
 
         function ascendingDepth(a, b) {

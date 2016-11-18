@@ -147,7 +147,7 @@ HousingPrices.prototype.updateVis = function() {
     vis.lineFunction = d3.svg.line()
         .x(function(d) { return vis.x(d.Year); })
         .y(function(d) { return vis.y(d.Neighborhood1); })
-        //.interpolate("cardinal");
+        .interpolate("linear");
 
     vis.lineGraph = vis.svg.selectAll(".line")
         .data(vis.displayData);
@@ -165,21 +165,6 @@ HousingPrices.prototype.updateVis = function() {
 
 };
 
-//function filterData(a,b) {
-//    startYear = formatDate.parse(a);
-//    endYear = formatDate.parse(b);
-
-//    console.log(startYear);
-//    console.log(endYear);
-
-//    filteredData = data.filter(function(value) {
-//        return (value.YEAR >= startYear) && (value.YEAR <= endYear);
-//    });
-
-//    console.log(filteredData);
-
-//    updateVisualization(filteredData);
-//}
 
 function formatCurrency(d) {
     return "$" + d;

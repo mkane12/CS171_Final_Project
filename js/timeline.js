@@ -13,7 +13,7 @@ Timeline = function(_parentElement, _data) {
     this.initVis();
 };
 
-var formatDate = d3.time.format("%Y-%m-%d");
+var formatDate = d3.time.format("%B %d, %Y");
 
 /*
  *  Initialize
@@ -23,7 +23,7 @@ Timeline.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 0, right: 0, bottom: 0, left: 0};
-    vis.height = 300 - vis.margin.top - vis.margin.bottom;
+    vis.height = 310 - vis.margin.top - vis.margin.bottom;
     vis.width = 1100 - vis.margin.right - vis.margin.left;
 
     vis.svg = d3.select("#timeline").append("svg")
@@ -33,16 +33,17 @@ Timeline.prototype.initVis = function() {
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
     ;
 
-    vis.x = d3.scale.linear()
+    vis.x = d3.time.scale()
         .range([0, vis.width])
     ;
 
     // CREATE TOOLTIP //
     vis.svg.selectAll(".d3-tip").remove();
-    // Initialize tooltip
 
+    // Initialize tooltip
     vis.tip = d3.tip()
-        .attr('class', 'd3-tip');
+        //.attr('class', 'd3-tip')
+        .attr("class", "timelineTip");
 
     // Invoke the tip in the context of your visualization
     vis.svg.call(vis.tip);
@@ -60,13 +61,13 @@ Timeline.prototype.wrangleData = function() {
 
     vis.data.forEach(function(d) {
         d.position = +d.position;
-        d.date = formatDate.parse(d.date);
+        d.date = new Date(d.date)
     });
 
     vis.displayData = vis.data;
 
     console.log(vis.displayData);
-    // Update the visualization
+
     vis.updateVis();
 
 };
@@ -76,70 +77,76 @@ Timeline.prototype.wrangleData = function() {
  *  The drawing function
  */
 
+var startDate = new Date("01/01/13");
+var endDate = new Date("01/01/17");
+
 Timeline.prototype.updateVis = function() {
 
     var vis = this;
 
-    vis.barHeight = vis.height/vis.displayData.length;
-
-    vis.x.domain([0, d3.max(vis.displayData, function(d) {return d.amount;})]);
+    vis.x.domain([startDate, endDate]);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom")
-        .tickFormat(kFormatter)
-        .ticks(5);
+        .ticks(0);
 
     vis.svg.append("g")
-        .attr("class", "axis x-axis")
-        .attr("transform", "translate(0," + vis.height + ")");
+        .attr("class", "axis x-axis eventAxis")
+        .attr("transform", "translate(0," + vis.height/2 + ")");
 
     vis.svg.select(".x-axis")
-        .transition()
-        .duration(800)
         .call(vis.xAxis);
 
-    vis.svg.append("text")
-        .transition()
-        .duration(800)
-        .attr("x", -10)
-        .attr("y", 30 - vis.margin.top)
-        .style("text-anchor", "end")
-        .text("Budget Line Items")
-        .attr("class", "vis-title");
-
     vis.tip.html(function(d) {
-        return formatCurrency(d.amount.toLocaleString());
+        return (d.caption)
     });
 
-    vis.bars = vis.svg.selectAll(".bar")
+    vis.eventLine = vis.svg.selectAll(".eventLine")
         .data(vis.displayData);
 
-    vis.bars
+    vis.eventLine
         .enter()
-        .append("rect")
-        .attr("class", "bar");
+        .append("line")
+        .attr("class", "eventLine");
 
-    vis.bars
-        .transition()
-        .duration(800)
-        .attr("fill", function(d) {
-            if (d.dept == "Airbnb Tax Revenue - Airbnb Projection" || d.dept == "Actual Hotel Tax Revenue" || d.dept == "Airbnb Tax Revenue - Our Projection") {
-                return "#F16664";
+    vis.eventLine
+        .attr("x1", function(d) { return vis.x(d.date); })
+        .attr("x2", function(d) { return vis.x(d.date); })
+        .attr("y1", vis.height/2)
+        .attr("y2", function(d) {
+            if (d.position == 0) {
+                return vis.height/2 - 50;
             }
             else {
-                return "#FFF6E6";
+                return vis.height/2 + 50;
             }
         })
-        .attr("x", 0)
-        .attr("y", function(d, index) {
-            return (index * vis.barHeight);
-        })
-        .attr("height", vis.barHeight - 3)
-        .attr("width", function(d) { return vis.x(d.amount); })
     ;
 
-    vis.bars
+    vis.eventImg = vis.svg.selectAll(".eventImg")
+        .data(vis.displayData);
+
+    vis.eventImg
+        .enter()
+        .append("image")
+        .attr("class", "eventImg");
+
+    vis.eventImg
+        .attr("xlink:href", function(d) { return d.img; })
+        .attr("x", function(d) { return (vis.x(d.date) - 50); })
+        .attr("y", function(d) {
+            if (d.position == 0) {
+                return vis.height / 2 - 150;
+            }
+            else {
+                return vis.height / 2 + 50;
+            }
+        })
+        .attr("height", 100)
+        .attr("width", 100);
+
+    vis.eventImg
         .on("mouseover", function(d) {
             d3.select(this)
                 .attr("opacity", .5);
@@ -152,23 +159,44 @@ Timeline.prototype.updateVis = function() {
         })
     ;
 
-    vis.bars.exit().remove();
-
-    vis.labels = vis.svg.selectAll(".text")
+    vis.eventCircle = vis.svg.selectAll(".eventCircle")
         .data(vis.displayData);
 
-    vis.labels
+    vis.eventCircle
+        .enter()
+        .append("circle")
+        .attr("class", "eventCircle");
+
+    vis.eventCircle
+        .attr("cx", function(d) { return vis.x(d.date); })
+        .attr("cy", function(d) {
+            if (d.position == 0) {
+                return vis.height / 2 - 100;
+            }
+            else {
+                return vis.height / 2 + 100;
+            }
+        })
+        .attr("r", 50);
+
+    vis.eventLabels = vis.svg.selectAll(".eventText")
+        .data(vis.displayData);
+
+    vis.eventLabels
         .enter()
         .append("text")
-        .attr("class", "text");
+        .attr("class", "eventText");
 
-    vis.labels
-        .attr("x", -10)
-        .attr("y", function(d, index) {
-            return (index * vis.barHeight + (vis.barHeight + 3)/2);
+    vis.eventLabels
+        .attr("x", function(d) { return vis.x(d.date); })
+        .attr("y", function(d) {
+            if (d.position == 0) {
+                return vis.height / 2 + 20;
+            }
+            else {
+                return vis.height / 2 - 10;
+            }
         })
-        .style("text-anchor", "end")
-        .text(function(d) { return d.dept; });
-
-    vis.labels.exit().remove();
+        .style("text-anchor", "middle")
+        .text(function(d) { return formatDate(d.date); });
 };

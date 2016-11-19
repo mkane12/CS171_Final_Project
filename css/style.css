@@ -116,6 +116,10 @@ nav.horizontal-page-navigation .current a {
 
 /** TIMELINE **/
 
+.timelineBackground {
+    fill: #FFF6E6;
+}
+
 .eventLine {
     fill: none;
     stroke: black;

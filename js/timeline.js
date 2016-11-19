@@ -22,8 +22,8 @@ var formatDate = d3.time.format("%B %d, %Y");
 Timeline.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 0, right: 0, bottom: 0, left: 0};
-    vis.height = 310 - vis.margin.top - vis.margin.bottom;
+    vis.margin = {top: 0, right: 10, bottom: 0, left: 10};
+    vis.height = 320 - vis.margin.top - vis.margin.bottom;
     vis.width = 1100 - vis.margin.right - vis.margin.left;
 
     vis.svg = d3.select("#timeline").append("svg")
@@ -78,13 +78,20 @@ Timeline.prototype.wrangleData = function() {
  */
 
 var startDate = new Date("01/01/13");
-var endDate = new Date("01/01/17");
+var endDate = new Date("02/21/17");
 
 Timeline.prototype.updateVis = function() {
 
     var vis = this;
 
     vis.x.domain([startDate, endDate]);
+
+    vis.svg.append("rect")
+        .attr("class", "timelineBackground")
+        .attr("x", -10)
+        .attr("y", 0)
+        .attr("height", vis.height)
+        .attr("width", vis.width + vis.margin.right + vis.margin.left);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)

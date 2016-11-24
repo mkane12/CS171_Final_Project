@@ -28,7 +28,6 @@ function loadData() {
         .defer(d3.csv, "data/NYC_Neighborhood_Prices_Dummy.csv")
         .defer(d3.json, "data/2016-10-01_with_analyses.json")
         .defer(d3.json, "data/AirBNB-neighbourhoods.geojson")
-        .await(function(error, data1, data2, data3, data4, data5, data6) {
         .defer(d3.json, "data/ny-neighborhoods.json")
         .defer(d3.csv, "data/timeline.csv")
         .await(function(error, data1, data2, data3, data4, data5, data6, data7) {

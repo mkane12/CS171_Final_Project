@@ -13,7 +13,7 @@ Timeline = function(_parentElement, _data) {
     this.initVis();
 };
 
-var formatDate = d3.time.format("%B %d, %Y");
+var formatDate = d3.time.format("%b %d, %Y");
 
 /*
  *  Initialize
@@ -78,7 +78,7 @@ Timeline.prototype.wrangleData = function() {
  */
 
 var startDate = new Date("01/01/13");
-var endDate = new Date("02/21/17");
+var endDate = new Date("03/21/17");
 
 Timeline.prototype.updateVis = function() {
 

@@ -58,6 +58,7 @@ nav.horizontal-page-navigation {
     position: fixed;
     top:0;
     left:0;
+    text-align: center;
 }
 
 nav.horizontal-page-navigation li {

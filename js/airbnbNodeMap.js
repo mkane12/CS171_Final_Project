@@ -5,10 +5,11 @@
  *  @param _data            -- Array with all stations of the bike-sharing network
  */
 
-AirBnBNodeMap = function(_parentElement, _mapData, _airbnbData) {
+AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbData) {
 
     this.parentElement = _parentElement;
-    this.mapData = _mapData;
+    this.boroughMap = _boroughMap
+    this.neighborhoodMap = _neighborhoodMap
     this.airbnbData = _airbnbData;
 
     this.initVis();
@@ -21,8 +22,6 @@ AirBnBNodeMap = function(_parentElement, _mapData, _airbnbData) {
 
 AirBnBNodeMap.prototype.initVis = function() {
     var vis = this;
-
-    this.displayData = this.mapData;
 
     vis.width = 1000;
     vis.height = 600;
@@ -63,8 +62,6 @@ AirBnBNodeMap.prototype.initVis = function() {
     // var directionField1 = document.getElementById('field1');
     // var directionField2 = document.getElementById('field2');
 
-    vis.active = d3.select(null);
-
     vis.wrangleData();
 
 
@@ -96,11 +93,9 @@ AirBnBNodeMap.prototype.updateVis = function() {
     var vis = this;
 
     // create a first guess for the projection
-    var center = d3.geo.centroid(vis.displayData)
+    var center = d3.geo.centroid(vis.neighborhoodMap)
     var scale  = 60000;
     var offset = [vis.width/2, vis.height/2];
-    var projection = d3.geo.mercator().scale(scale).center(center)
-        .translate(offset);
 
     // create the path
     var path = d3.geo.path().projection(projection);
@@ -115,24 +110,37 @@ AirBnBNodeMap.prototype.updateVis = function() {
     //     vis.height - (vis.bounds[0][1] + vis.bounds[1][1])/2];
 
     // new projection
-    projection = d3.geo.mercator().center([-74.0059, 40.7128])
+    var projection = d3.geo.mercator().center([-74.0059, 40.7128])
         .scale(scale).translate(offset);
     path = path.projection(projection);
 
-    console.log(vis.mapData);
 
-    vis.svg.selectAll("path").data(vis.mapData.features).enter().append("path")
+    // group for neighborhoods
+    vis.neigh = vis.svg.append("g")
+        .attr("class", "neighborhood");
+    // group for boroughs
+    vis.bor = vis.svg.append("g")
+        .attr("class", "borough");
+
+
+    vis.neigh.selectAll("path").data(vis.neighborhoodMap.features).enter().append("path")
         .attr("d", path)
         .style("fill", "#3498db")
-        .style("opacity", 0.5)
         .style("stroke-width", "1")
-        .style("stroke", "black")
+        .style("stroke", "black");
+
+    // draw boroughs
+    vis.bor.selectAll("path").data(vis.boroughMap.features).enter().append("path")
+        .attr("d", path)
+        .style("fill", "gray")
+        .style("opacity", 0.2)
         .on("click", function(d) {
-            console.log(this);
-            //d3.select(this).style("fill", "orange");
-            vis.zoom(d);
+                //d3.select(this).style("fill", "orange");
+                vis.zoom(d);
             }
         );
+
+
 
     // vis.active.attr("fill", "#cccccc");
     // vis.active = d3.select(this)

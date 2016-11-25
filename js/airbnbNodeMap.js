@@ -98,7 +98,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
     var offset = [vis.width/2, vis.height/2];
 
     // create the path
-    var path = d3.geo.path().projection(projection);
+    vis.path = d3.geo.path().projection(vis.projection);
 
     // using the path determine the bounds of the current map and use
     // these to determine better values for the scale and translation
@@ -110,9 +110,9 @@ AirBnBNodeMap.prototype.updateVis = function() {
     //     vis.height - (vis.bounds[0][1] + vis.bounds[1][1])/2];
 
     // new projection
-    var projection = d3.geo.mercator().center([-74.0059, 40.7128])
+    vis.projection = d3.geo.mercator().center([-74.0059, 40.7128])
         .scale(scale).translate(offset);
-    path = path.projection(projection);
+    vis.path = vis.path.projection(vis.projection);
 
 
     // group for neighborhoods
@@ -124,27 +124,21 @@ AirBnBNodeMap.prototype.updateVis = function() {
 
 
     vis.neigh.selectAll("path").data(vis.neighborhoodMap.features).enter().append("path")
-        .attr("d", path)
+        .attr("d", vis.path)
         .style("fill", "#3498db")
         .style("stroke-width", "1")
         .style("stroke", "black");
 
     // draw boroughs
     vis.bor.selectAll("path").data(vis.boroughMap.features).enter().append("path")
-        .attr("d", path)
+        .attr("d", vis.path)
         .style("fill", "gray")
         .style("opacity", 0.2)
         .on("click", function(d) {
                 //d3.select(this).style("fill", "orange");
-                vis.zoom(d);
+                vis.clicked(d);
             }
         );
-
-
-
-    // vis.active.attr("fill", "#cccccc");
-    // vis.active = d3.select(this)
-    //     .attr("fill", "#F77B15");
 
 
     vis.tip.html(function(d) {
@@ -152,16 +146,18 @@ AirBnBNodeMap.prototype.updateVis = function() {
         return string;
     });
 
+    // group for nodes
+    vis.node = vis.svg.append("g")
+        .attr("class", "node");
+
     // DRAW THE NODES (SVG CIRCLE)
-    var node = vis.svg.selectAll(".node")
-        .data(vis.airbnbData)
-        .enter().append("circle")
+    vis.svg.selectAll(".node").data(vis.airbnbData).enter().append("circle")
         .attr("class", "node")
         .attr("r", 2)
         .attr("fill", '#e74c3c')
         .attr("opacity", 0.5)
         .attr("transform", function(d) {
-            return "translate(" + projection([d.longitude, d.latitude]) + ")";
+            return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         })
         // make node larger and darker on mouseover
         .on("mouseover", function(d) {
@@ -172,7 +168,6 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 .style("stroke", "black");
             vis.tip.show(d);
         })
-
         .on("mouseout", function(d) {
             d3.select(this)
                 .attr("r", 2)
@@ -189,27 +184,53 @@ AirBnBNodeMap.prototype.updateVis = function() {
  *  The zooming function
  */
 
-AirBnBNodeMap.prototype.zoom = function(selected) {
+AirBnBNodeMap.prototype.clicked = function(d) {
     var vis = this;
 
-    console.log(selected);
+    var x, y, k;
 
-    vis.selectedArea = selected.geometry.coordinates;
-    console.log(vis.selectedArea);
+    if (d && vis.centered !== d) {
+        var centroid = vis.path.centroid(d);
+        x = centroid[0];
+        y = centroid[1];
+        k = 2;
+        vis.centered = d;
+    } else {
+        x = vis.width / 2;
+        y = vis.height / 2;
+        k = 1;
+        vis.centered = null;
+    }
 
-    // var bounds = vis.path.bounds(),
-    //     dx = bounds[1][0] - bounds[0][0],
-    //     dy = bounds[1][1] - bounds[0][1],
-    //     x = (bounds[0][0] + bounds[1][0]) / 2,
-    //     y = (bounds[0][1] + bounds[1][1]) / 2,
-    //     scale = .9 / Math.max(dx / vis.width, dy / vis.height),
-    //     translate = [
-    //         vis.width / 2 - scale * x,
-    //         vis.height / 2 - scale * y];
-    //
-    // vis.svg.transition()
-    //     .duration(750)
-    //     .attr("transform", "translate(" +
-    //         translate + ")scale(" +
-    //         scale + ")");
+
+    vis.neigh.selectAll("path")
+        .classed("active", vis.centered && function(d) {
+            return d === vis.centered;
+        });
+
+    vis.bor.selectAll("path")
+        .classed("active", vis.centered && function(d) {
+                return d === vis.centered;
+            });
+
+    // zoom into neighborhoods
+    vis.neigh.transition()
+        .duration(1000)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom into borough
+    vis.bor.transition()
+        .duration(1000)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(1000)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
+
 }

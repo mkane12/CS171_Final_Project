@@ -151,8 +151,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
         .attr("class", "node");
 
     // DRAW THE NODES (SVG CIRCLE)
-    vis.svg.selectAll(".node").data(vis.airbnbData).enter().append("circle")
-        .attr("class", "node")
+    vis.node.selectAll("circle").data(vis.airbnbData).enter().append("circle")
         .attr("r", 2)
         .attr("fill", '#e74c3c')
         .attr("opacity", 0.5)
@@ -201,17 +200,6 @@ AirBnBNodeMap.prototype.clicked = function(d) {
         k = 1;
         vis.centered = null;
     }
-
-
-    vis.neigh.selectAll("path")
-        .classed("active", vis.centered && function(d) {
-            return d === vis.centered;
-        });
-
-    vis.bor.selectAll("path")
-        .classed("active", vis.centered && function(d) {
-                return d === vis.centered;
-            });
 
     // zoom into neighborhoods
     vis.neigh.transition()

@@ -30,7 +30,7 @@ function loadData() {
         .defer(d3.json, "data/AirBNB-neighbourhoods.geojson")
         .defer(d3.json, "data/ny-neighborhoods.json")
         .defer(d3.csv, "data/timeline.csv")
-        .await(function(error, data1, data2, data3, data4, data5, data6, data7) {
+        .await(function(error, data1, data2, data3, data4, data5, data6, data7, data8) {
 
             if (error) throw error;
 
@@ -52,7 +52,7 @@ function loadData() {
 
             neighborhoodMap = data6;
 
-            timelineData = data7;
+            timelineData = data8;
 
             //console.log(neighborhoodData);
 

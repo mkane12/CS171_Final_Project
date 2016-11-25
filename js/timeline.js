@@ -59,6 +59,8 @@ Timeline.prototype.initVis = function() {
 Timeline.prototype.wrangleData = function() {
     var vis = this;
 
+    console.log(vis.data);
+
     vis.data.forEach(function(d) {
         d.position = +d.position;
         d.date = new Date(d.date)

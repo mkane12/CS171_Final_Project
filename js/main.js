@@ -54,7 +54,8 @@ function loadData() {
 
             timelineData = data8;
 
-            //console.log(neighborhoodData);
+            // print number of listings to listing-count
+            $("#listing-count").text(airbnbData.length);
 
             createVis();
         });
@@ -74,6 +75,11 @@ function createVis() {
     mySankey = new customSankey("#sankey", newestDataset);
 
 
+}
+
+// update visualization to select filter for node coloring
+function dataManipulation() {
+    airbnbNodeMap.dataManipulation();
 }
 
 

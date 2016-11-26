@@ -10,9 +10,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/leaflet.css">
-    <link rel="stylesheet" href="css/MarkerCluster.css">
-    <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="css/colorbrewer.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -46,13 +44,28 @@
             <h2>So what's actually going on with Airbnb in New York?</h2>
             <p>Use this visualization to explore changes in Airbnb listings in New York over time.</p>
 
-            <!--<div id="field1" class="col-sm-2 slider-field"> </div>-->
-            <!--<div id="slider" class="col-sm-3"> </div>-->
-            <!--<div class="col-sm-2"> <button id="slider-submit-button" type="button">Filter Years</button>  </div>-->
-
-            <div id="vis1">
-                <div id="airbnb-map"></div>
+            <div class="row">
+                <h3>Number of Listings: <span id="listing-count"></span> </h3>
             </div>
+
+            <div class="row">
+                <!-- Choropleth Category Selector -->
+                <div class="col-md-6" class="user-control" onchange="dataManipulation()">
+                    <select id="type" class="form-control">
+                        <option value="None">None</option>
+                        <option value="Legality">Legality</option>
+                        <option value="Price">Price</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12" id="vis1">
+                    <div id="airbnb-map"></div>
+                </div>
+            </div>
+
+
         </div>
 
         <div id="section3" class="section">
@@ -160,12 +173,11 @@
     <script src="js/d3.min.js"></script>
     <script src="js/topojson.v1.min.js"></script>
     <script src="js/queue.v1.min.js"></script>
-    <script src="js/leaflet.js"></script>
-    <script src="js/leaflet.markercluster.js"></script>
     <script src="js/jquery.combinedScroll.js"></script>
     <script src="js/queue.min.js"></script>
     <script src="js/sankey.js"></script>
     <script src="js/d3.tip.js"></script>
+    <script src="js/colorbrewer.min.js"></script>
 
     <script type="text/javascript">
         jQuery(document).ready(function() {

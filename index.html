@@ -158,7 +158,35 @@
             <div id="sankey2"><!--<img src="http://placehold.it/900x500?text=Vis+3:+Illegal+Listings Sankey" class="center">--></div>
 
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
-            <div id="vis4"><div id="housing-prices"></div></div>
+            <div id="vis4">
+                
+                </div>
+                <div id="contents" class="row">
+                    <div id="neighborhood-line-chart-area" class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label for="dataType">Group by</label>
+                                        <select class="form-control" id="neighborhood-line-selected-borough">
+                                            <option value="all">All</option>
+                                            <option value="Bronx">Bronx</option>
+                                            <option value="Brooklyn">Brooklyn</option>
+                                            <option value="Manhattan">Manhattan</option>
+                                            <option value="Queens">Queens</option>
+                                            <option value="Staten Island">Staten Island</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        
+                        <div class="row" id="neighborhood-line-legend"> </div>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
 
         <div id="section5" class="section">
@@ -198,6 +226,7 @@
     <script src="js/airbnbNodeMap.js"></script>
     <script src="js/nouislider.js"></script>
     <script src="js/timeline.js"></script>
+    <script src="js/neighborhood_rent.js"></script>
 
     <!-- Load data, create visualizations -->
     <script src="js/main.js"></script>

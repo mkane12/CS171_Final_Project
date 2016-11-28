@@ -184,7 +184,6 @@ listingSankey.prototype.updateVis = function() {
     vis.node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", vis.sankey.nodeWidth())
-        <
         .append("title")
         .text(function(d) {
             return d.name + "\n" + d.value; });

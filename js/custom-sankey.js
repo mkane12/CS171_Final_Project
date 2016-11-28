@@ -25,6 +25,10 @@ customSankey.prototype.initVis = function() {
 
     vis.color = d3.scale.category20();
 
+    // pretty shape to links
+    var diagonal = d3.svg.diagonal()
+        .projection(function(d) { return [d.y, d.x]; });
+
     vis.svg = d3.select(vis.parentElement).append("svg")
         .attr("width", vis.width)
         .attr("height", vis.height);
@@ -199,6 +203,40 @@ customSankey.prototype.updateVis = function() {
             return d.color = vis.color(d.name.replace(/ .*/, "")); })
         .style("stroke", function(d) {
             return d3.rgb(d.color).darker(2); });
+
+    vis.node.exit().remove();
+
+    vis.displayData.links.forEach(function(d) {
+        d.xStart = d.source.xEnd;
+        d.yStart = d.source.yStart + vis.barHeightScale(d.source.num)/2;
+        d.xEnd = d.target.xStart;
+        d.yEnd = d.target.yStart + vis.barHeightScale(d.target.num)/2;
+        d.weight = vis.barHeightScale(d.value);
+    });
+
+    // this function should draw pretty links???
+    function linkHorizontal(d) {
+        return "M" + d.xStart + "," + d.yStart
+            + "C" + d.xStart +  "," + (d.yStart + d.yEnd) / 2
+            + " " + d.xEnd + "," + (d.yStart + d.yEnd) / 2
+            + " " + d.xEnd + "," + d.yEnd;
+    }
+
+    function linkVertical(d) {
+        return "M" + d.xStart + "," + d.yStart
+            + "C" + (d.xStart + d.xEnd) / 2 + "," + d.yStart
+            + " " + (d.xStart + d.xEnd) / 2 + "," + d.yEnd
+            + " " + d.xEnd + "," + d.yEnd;
+    }
+
+    vis.links = vis.svg.selectAll(".link")
+        .data(vis.displayData.links);
+
+    vis.links.enter().append("path")
+        .attr("class", "link")
+        .attr("stroke", "black")
+        .attr("stroke-width", function(d) { return d.weight; })
+        .attr("d", linkVertical);
 }
 
 

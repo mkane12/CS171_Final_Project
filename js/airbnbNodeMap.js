@@ -105,6 +105,41 @@ AirBnBNodeMap.prototype.dataManipulation = function() {
 };
 
 
+// function to get color scale based on user-selected category
+AirBnBNodeMap.prototype.getColorScheme = function() {
+    var vis = this;
+
+    if (vis.val == "None") {
+        var color = ['#9b59b6'];
+    }
+    else if (vis.val == "illegal") {
+        var color = ['white', 'black'];
+    }
+    else {
+        var color = colorbrewer.Reds[9];
+    }
+    return color;
+
+}
+
+// function to get variable extent based on user-selected category
+AirBnBNodeMap.prototype.getExtent = function() {
+    var vis = this;
+
+    if (vis.val == "None") {
+        var extent = [0, 0];
+    }
+    else if (vis.val == "illegal") {
+        var extent = [0, 1];
+    }
+    else {
+        var extent = [0, 500];
+    }
+
+    return extent;
+}
+
+
 /*
  *  The drawing function
  */
@@ -112,6 +147,10 @@ AirBnBNodeMap.prototype.dataManipulation = function() {
 AirBnBNodeMap.prototype.updateVis = function() {
 
     var vis = this;
+
+    vis.colorScale = d3.scale.quantize()
+        .domain(vis.getExtent())
+        .range(vis.getColorScheme());
 
     vis.svg.selectAll(".node").remove();
 
@@ -126,22 +165,8 @@ AirBnBNodeMap.prototype.updateVis = function() {
             if (vis.val == "None") {
                 return '#9b59b6';
             }
-            else if (vis.val == "Legality") {
-                // listing is legal
-                if (d.illegal == 0) {
-                    return 'white';
-                }
-                // listing is illegal
-                else {
-                    return 'black';
-                }
-            }
             else {
-                var color = colorbrewer.Reds[9];
-                var colorScale = d3.scale.quantize()
-                    .domain([0, 500])
-                    .range(color);
-                return colorScale(d.price);
+                return vis.colorScale(d[vis.val]);
             }
         })
         .attr("opacity", 0.5)
@@ -162,6 +187,40 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 .attr("opacity", 0.5)
                 .style("stroke", "none");
             vis.tip.hide(d);
+        });
+
+    // DRAW LEGEND
+    vis.svg.selectAll(".legendEntry").remove();
+
+    // append legend
+    vis.legend = vis.svg.selectAll('g.legendEntry')
+        .data(vis.colorScale.range())
+        .enter().append('g')
+        .attr('class', 'legendEntry');
+
+    vis.legend
+        .append('rect')
+        .attr("x", 1)
+        .attr("y", function(d, i) {
+            return i * 20 + 200;
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("fill", function(d){return d;});
+
+    //the data objects are the fill colors
+    vis.legend
+        .append('text')
+        .attr("x", 20)
+        .attr("y", function(d, i) {
+            return i * 20 + 210;
+        })
+        .text(function(d,i) {
+            var extent = vis.colorScale.invertExtent(d);
+            var format = d3.format("0.2f");
+            return format(+extent[0]) + " - " + format(+extent[1]);
         });
 
 }

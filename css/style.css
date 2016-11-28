@@ -111,8 +111,7 @@ nav.horizontal-page-navigation .current a {
 
 .line {
     fill: none;
-    stroke: black;
-    stroke-width: 1px;
+    stroke-width: 3px;
 }
 
 /** TIMELINE **/

@@ -190,6 +190,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
         });
 
     // DRAW LEGEND
+
     vis.svg.selectAll(".legendEntry").remove();
 
     // append legend
@@ -218,9 +219,18 @@ AirBnBNodeMap.prototype.updateVis = function() {
             return i * 20 + 210;
         })
         .text(function(d,i) {
-            var extent = vis.colorScale.invertExtent(d);
-            var format = d3.format("0.2f");
-            return format(+extent[0]) + " - " + format(+extent[1]);
+            if (vis.val == "None") {
+                return "Listing";
+            }
+            else if (vis.val == "illegal") {
+                return "Illegal";
+            }
+            else {
+                var extent = vis.colorScale.invertExtent(d);
+                //extent will be a two-element array, format it however you want:
+                var format = d3.format("0.2f");
+                return "$" + format(+extent[0]) + " - $" + format(+extent[1]);
+            }
         });
 
 }

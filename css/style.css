@@ -86,7 +86,6 @@ nav.horizontal-page-navigation .current a {
 
 /* STYLES FOR SANKEY */
 .node rect {
-    cursor: move;
     fill-opacity: .9;
     shape-rendering: crispEdges;
 }

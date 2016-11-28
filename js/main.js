@@ -71,7 +71,7 @@ function createVis() {
     taxRevenue = new TaxRevenue("tax-revenue", taxData);
     housingPrices = new HousingPrices("housing-prices", neighborhoodData);
     timeline = new Timeline("timeline", timelineData);
-    illegalSankey = new listingSankey("#sankey2", newestDataset);
+   // illegalSankey = new listingSankey("#sankey2", newestDataset);
     mySankey = new customSankey("#sankey", newestDataset);
 
 

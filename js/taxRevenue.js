@@ -9,6 +9,8 @@ TaxRevenue = function(_parentElement, _data) {
 
     this.parentElement = _parentElement;
     this.data = _data;
+    this.unitValue = "city";
+    this.yearValue = 2016;
 
     this.initVis();
 };
@@ -21,7 +23,7 @@ TaxRevenue = function(_parentElement, _data) {
 TaxRevenue.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 40, right: 0, bottom: 25, left: 25};
+    vis.margin = {top: 40, right: 0, bottom: 25, left: 200};
     vis.height = 500 - vis.margin.top - vis.margin.bottom;
     vis.width = 1000 - vis.margin.right - vis.margin.left;
 
@@ -40,8 +42,18 @@ TaxRevenue.prototype.initVis = function() {
         .rangeRoundBands([vis.height, 0], .2)
     ;
 
+    // CREATE TOOLTIP //
+    vis.svg.selectAll(".d3-tip").remove();
+    // Initialize tooltip
+
+    vis.tip = d3.tip()
+        .attr('class', 'd3-tip');
+
+    // Invoke the tip in the context of your visualization
+    vis.svg.call(vis.tip);
+
     vis.wrangleData();
-}
+};
 
 
 /*
@@ -51,21 +63,26 @@ TaxRevenue.prototype.initVis = function() {
 TaxRevenue.prototype.wrangleData = function() {
     var vis = this;
 
-    vis.data.forEach(function(d) {
-        d.amount = +d.amount;
+    vis.filteredData = vis.data.filter(function(d) {
+        return (d.unit == vis.unitValue && d.fy == vis.yearValue);
     });
 
-    vis.data.sort(function (a,b) {
+    vis.filteredData.forEach(function(d) {
+        d.amount = +d.amount;
+        d.fy = +d.fy;
+    });
+
+    vis.filteredData.sort(function (a,b) {
         return a.amount - b.amount;
     });
 
-    vis.displayData = vis.data;
+    vis.displayData = vis.filteredData;
 
     console.log(vis.displayData);
     // Update the visualization
     vis.updateVis();
 
-}
+};
 
 
 /*
@@ -78,36 +95,49 @@ TaxRevenue.prototype.updateVis = function() {
 
     vis.barHeight = vis.height/vis.displayData.length;
 
-    vis.x
-        .domain([0, d3.max(vis.displayData, function(d) {return d.amount;})]);
+    vis.x.domain([0, d3.max(vis.displayData, function(d) {return d.amount;})]);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom")
         .tickFormat(kFormatter)
-        .ticks(5)
-    ;
-
-    vis.svg.append("text")
-        .attr("x", 0)
-        .attr("y", 20 - vis.margin.top)
-        .text("FY16 New York City Budget Line Items")
-        .attr("class", "vis-title")
-    ;
+        .ticks(5);
 
     vis.svg.append("g")
         .attr("class", "axis x-axis")
-        .call(vis.xAxis)
-        .attr("transform", "translate(0," + vis.height + ")")
-    ;
+        .attr("transform", "translate(0," + vis.height + ")");
 
-    vis.svg.selectAll(".bar")
-        .data(vis.displayData)
+    vis.svg.select(".x-axis")
+        .transition()
+        .duration(800)
+        .call(vis.xAxis);
+
+    vis.svg.append("text")
+        .transition()
+        .duration(800)
+        .attr("x", -10)
+        .attr("y", 30 - vis.margin.top)
+        .style("text-anchor", "end")
+        .text("Budget Line Items")
+        .attr("class", "vis-title");
+
+    vis.tip.html(function(d) {
+        return formatCurrency(d.amount.toLocaleString());
+    });
+
+    vis.bars = vis.svg.selectAll(".bar")
+        .data(vis.displayData);
+
+    vis.bars
         .enter()
         .append("rect")
-        .attr("class", "bar")
+        .attr("class", "bar");
+
+    vis.bars
+        .transition()
+        .duration(800)
         .attr("fill", function(d) {
-            if (d.dept == "Airbnb Projected Tax Revenue" || d.dept == "Actual Hotel Tax Revenue") {
+            if (d.dept == "Airbnb Tax Revenue - Airbnb Projection" || d.dept == "Actual Hotel Tax Revenue" || d.dept == "Airbnb Tax Revenue - Our Projection") {
                 return "#F16664";
             }
             else {
@@ -122,18 +152,53 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("width", function(d) { return vis.x(d.amount); })
     ;
 
-    vis.svg.selectAll(".text")
-        .data(vis.displayData)
+    vis.bars
+        .on("mouseover", function(d) {
+            d3.select(this)
+                .attr("opacity", .5);
+            vis.tip.show(d);
+        })
+        .on("mouseout", function(d) {
+            d3.select(this)
+                .attr("opacity", 1);
+            vis.tip.hide(d);
+        })
+    ;
+
+    vis.bars.exit().remove();
+
+    vis.labels = vis.svg.selectAll(".text")
+        .data(vis.displayData);
+
+    vis.labels
         .enter()
         .append("text")
-        .attr("class", "text")
-        .attr("x", 5)
+        .attr("class", "text");
+
+    vis.labels
+        .attr("x", -10)
         .attr("y", function(d, index) {
             return (index * vis.barHeight + (vis.barHeight + 3)/2);
         })
+        .style("text-anchor", "end")
         .text(function(d) { return d.dept; });
-}
+
+    vis.labels.exit().remove();
+};
 
 function kFormatter(num) {
     return '$' + (num/1000000) + 'M';
 }
+
+function formatCurrency(d) {
+    return "$" + d;
+}
+
+TaxRevenue.prototype.changeData = function() {
+    var vis = this;
+
+    vis.unitValue = d3.select("#budgetUnit").property("value");
+    vis.yearValue = d3.select("#budgetYear").property("value");
+
+    vis.wrangleData();
+};

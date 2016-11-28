@@ -58,6 +58,7 @@ nav.horizontal-page-navigation {
     position: fixed;
     top:0;
     left:0;
+    text-align: center;
 }
 
 nav.horizontal-page-navigation li {
@@ -112,6 +113,36 @@ nav.horizontal-page-navigation .current a {
     fill: none;
     stroke: black;
     stroke-width: 1px;
+}
+
+/** TIMELINE **/
+
+.timelineBackground {
+    fill: #FFF6E6;
+}
+
+.eventLine {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.eventCircle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.eventText {
+    font-weight: bold;
+}
+
+.eventAxis path,
+.eventAxis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
 }
 
 /** AXES **/
@@ -175,4 +206,13 @@ nav.horizontal-page-navigation .current a {
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
+}
+
+.timelineTip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    width: 300px;
+    border-radius: 2px;
 }

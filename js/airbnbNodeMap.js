@@ -5,11 +5,13 @@
  *  @param _data            -- Array with all stations of the bike-sharing network
  */
 
-AirBnBNodeMap = function(_parentElement, _mapData, _airbnbData) {
+AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbData) {
 
     this.parentElement = _parentElement;
-    this.mapData = _mapData;
+    this.boroughMap = _boroughMap;
+    this.neighborhoodMap = _neighborhoodMap;
     this.airbnbData = _airbnbData;
+    this.val = "None";
 
     this.initVis();
 }
@@ -21,8 +23,6 @@ AirBnBNodeMap = function(_parentElement, _mapData, _airbnbData) {
 
 AirBnBNodeMap.prototype.initVis = function() {
     var vis = this;
-
-    this.displayData = this.mapData;
 
     vis.width = 1000;
     vis.height = 600;
@@ -41,50 +41,68 @@ AirBnBNodeMap.prototype.initVis = function() {
     // Invoke the tip in the context of your visualization
     vis.svg.call(vis.tip);
 
-    // Add a slider to the page using the minimum and maximum years appearing in the data
-    // var slider = document.getElementById('slider');
-    //
-    // sliderVal =
-    // slidermin = parseInt(formatDate(d3.min(vis.airbnbData, function(d) {return d.YEAR})));
-    // slidermax = parseInt(formatDate(d3.max(data, function(d) {return d.YEAR})));
-    //
-    // noUiSlider.create(slider, {
-    //     start: sliderVal,
-    //     connect: true,
-    //     step: 1,
-    //     range: {
-    //         'min': slidermin,
-    //         'max': slidermax
-    //     }
-    //
-    // });
-    //
-    // // Dynamically update what the user has selected for the slider value
-    // var directionField1 = document.getElementById('field1');
-    // var directionField2 = document.getElementById('field2');
+    // create a projection
+    var scale  = 60000;
+    var offset = [vis.width/2, vis.height/2];
 
-    vis.active = d3.select(null);
+    // create new path
+    vis.path = d3.geo.path().projection(vis.projection);
 
-    vis.wrangleData();
+    // new projection
+    vis.projection = d3.geo.mercator().center([-74.0059, 40.7128])
+        .scale(scale).translate(offset);
+    vis.path = vis.path.projection(vis.projection);
 
 
-}
+    // group for neighborhoods
+    vis.neigh = vis.svg.append("g")
+        .attr("class", "neighborhood");
+
+    // group for boroughs
+    vis.bor = vis.svg.append("g")
+        .attr("class", "borough");
+
+    // group for nodes
+    vis.node = vis.svg.append("g")
+        .attr("class", "node");
 
 
-/*
- *  Data wrangling
- */
+    vis.neigh.selectAll("path").data(vis.neighborhoodMap.features).enter().append("path")
+        .attr("d", vis.path)
+        .style("fill", "#3498db")
+        .style("stroke-width", "1")
+        .style("stroke", "black");
 
-AirBnBNodeMap.prototype.wrangleData = function() {
-    var vis = this;
+    // draw boroughs
+    vis.bor.selectAll("path").data(vis.boroughMap.features).enter().append("path")
+        .attr("d", vis.path)
+        .style("fill", "gray")
+        .style("opacity", 0.2)
+        .on("click", function(d) {
+                vis.clicked(d);
+            }
+        );
 
-    // Currently no data wrangling/filtering needed
-    // vis.displayData = vis.data;
 
-    // Update the visualization
+    vis.tip.html(function(d) {
+        var string = "<strong>Room type: </strong>" + d.room_type;
+        return string;
+    });
+
     vis.updateVis();
 
+
 }
+
+// function to determine what category the user selected
+AirBnBNodeMap.prototype.dataManipulation = function() {
+    var vis = this;
+    var box = document.getElementById("type");
+
+    vis.val = box.options[box.selectedIndex].value;
+
+    vis.updateVis();
+};
 
 
 /*
@@ -95,80 +113,52 @@ AirBnBNodeMap.prototype.updateVis = function() {
 
     var vis = this;
 
-    // create a first guess for the projection
-    var center = d3.geo.centroid(vis.displayData)
-    var scale  = 150;
-    var offset = [vis.width/2, vis.height/2];
-    var projection = d3.geo.mercator().scale(scale).center(center)
-        .translate(offset);
+    vis.svg.selectAll(".node").remove();
 
-    // create the path
-    vis.path = d3.geo.path().projection(projection);
-
-    // using the path determine the bounds of the current map and use
-    // these to determine better values for the scale and translation
-    vis.bounds  = vis.path.bounds(vis.mapData);
-    var hscale  = scale*vis.width  / (vis.bounds[1][0] - vis.bounds[0][0]);
-    var vscale  = scale*vis.height / (vis.bounds[1][1] - vis.bounds[0][1]);
-    var scale   = (hscale < vscale) ? hscale : vscale;
-    var offset  = [vis.width - (vis.bounds[0][0] + vis.bounds[1][0])/2,
-        vis.height - (vis.bounds[0][1] + vis.bounds[1][1])/2];
-
-    // new projection
-    projection = d3.geo.mercator().center(center)
-        .scale(scale).translate(offset);
-    vis.path = vis.path.projection(projection);
-
-    console.log(vis.mapData);
-
-    vis.svg.selectAll("path").data(vis.mapData.features).enter().append("path")
-        .attr("d", vis.path)
-        .style("fill", "#3498db")
-        .style("opacity", 0.5)
-        .style("stroke-width", "1")
-        .style("stroke", "black")
-        .on("click", function(d) {
-            console.log(this);
-            //d3.select(this).style("fill", "orange");
-            vis.zoom(d);
-            }
-        );
-
-    // vis.active.attr("fill", "#cccccc");
-    // vis.active = d3.select(this)
-    //     .attr("fill", "#F77B15");
-
-
-    vis.tip.html(function(d) {
-        var string = "<strong>Room type: </strong>" + d.room_type;
-        return string;
-    });
+    // group for nodes
+    vis.node = vis.svg.append("g")
+        .attr("class", "node");
 
     // DRAW THE NODES (SVG CIRCLE)
-    var node = vis.svg.selectAll(".node")
-        .data(vis.airbnbData)
-        .enter().append("circle")
-        .attr("class", "node")
+    vis.node.selectAll("circle").data(vis.airbnbData).enter().append("circle")
         .attr("r", 2)
-        .attr("fill", '#e74c3c')
+        .attr("fill", function(d) {
+            if (vis.val == "None") {
+                return '#9b59b6';
+            }
+            else if (vis.val == "Legality") {
+                // listing is legal
+                if (d.illegal == 0) {
+                    return 'white';
+                }
+                // listing is illegal
+                else {
+                    return 'black';
+                }
+            }
+            else {
+                var color = colorbrewer.Reds[9];
+                var colorScale = d3.scale.quantize()
+                    .domain([0, 500])
+                    .range(color);
+                return colorScale(d.price);
+            }
+        })
         .attr("opacity", 0.5)
         .attr("transform", function(d) {
-            return "translate(" + projection([d.longitude, d.latitude]) + ")";
+            return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         })
         // make node larger and darker on mouseover
         .on("mouseover", function(d) {
             d3.select(this)
                 .attr("r", 5)
-                .style("fill", "red")
                 .attr("opacity", 1)
                 .style("stroke", "black");
             vis.tip.show(d);
         })
-
         .on("mouseout", function(d) {
             d3.select(this)
                 .attr("r", 2)
-                .style("fill", '#e74c3c')
                 .attr("opacity", 0.5)
                 .style("stroke", "none");
             vis.tip.hide(d);
@@ -181,27 +171,44 @@ AirBnBNodeMap.prototype.updateVis = function() {
  *  The zooming function
  */
 
-AirBnBNodeMap.prototype.zoom = function(selected) {
+AirBnBNodeMap.prototype.clicked = function(d) {
     var vis = this;
 
-    console.log(selected);
+    var x, y, k;
 
-    vis.selectedArea = selected.geometry.coordinates;
-    console.log(vis.selectedArea);
+    if (d && vis.centered !== d) {
+        var centroid = vis.path.centroid(d);
+        x = centroid[0];
+        y = centroid[1];
+        k = 2;
+        vis.centered = d;
+    } else {
+        x = vis.width / 2;
+        y = vis.height / 2;
+        k = 1;
+        vis.centered = null;
+    }
 
-    // var bounds = vis.path.bounds(),
-    //     dx = bounds[1][0] - bounds[0][0],
-    //     dy = bounds[1][1] - bounds[0][1],
-    //     x = (bounds[0][0] + bounds[1][0]) / 2,
-    //     y = (bounds[0][1] + bounds[1][1]) / 2,
-    //     scale = .9 / Math.max(dx / vis.width, dy / vis.height),
-    //     translate = [
-    //         vis.width / 2 - scale * x,
-    //         vis.height / 2 - scale * y];
-    //
-    // vis.svg.transition()
-    //     .duration(750)
-    //     .attr("transform", "translate(" +
-    //         translate + ")scale(" +
-    //         scale + ")");
+    // zoom into neighborhoods
+    vis.neigh.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom into borough
+    vis.bor.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(750)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
+
+    // REDRAW TIPS ****
+
 }

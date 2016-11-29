@@ -166,6 +166,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 return '#9b59b6';
             }
             else {
+                console.log(d[vis.val]);
                 return vis.colorScale(d[vis.val]);
             }
         })

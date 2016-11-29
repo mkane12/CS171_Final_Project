@@ -222,7 +222,7 @@ customSankey.prototype.updateVis = function() {
         .append("rect")
         .attr("width", vis.barWidth)
         .attr("height", function(d) { return d.height; })
-        .style("fill", function(d) { return d.color; })
+        .style("fill", function(d) { return "#79CCCD"; })
         .style("stroke", function(d) { return d3.rgb(d.color).darker(2); });
 
     // add in the title for the nodes

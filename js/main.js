@@ -86,7 +86,7 @@ function createVis() {
 
     // HAD TO COMMENT OUT ILLEGAL SANKEY BC IT WAS THROWING ERRORS
     //illegalSankey = new listingSankey("#sankey2", newestDataset);
-    
+
     mySankey = new customSankey("#sankey", newestDataset);
 
     neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodData, neighborhood_dict);

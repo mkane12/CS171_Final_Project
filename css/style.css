@@ -79,11 +79,6 @@ nav.horizontal-page-navigation .current a {
 
 /** AIRBNB MAP **/
 
-#airbnb-map {
-    width: 80vw;
-    height: 80vh;
-}
-
 /* STYLES FOR SANKEY */
 .node rect {
     fill-opacity: .9;

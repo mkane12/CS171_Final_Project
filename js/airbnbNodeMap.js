@@ -12,6 +12,7 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
     this.neighborhoodMap = _neighborhoodMap;
     this.airbnbData = _airbnbData;
     this.val = "None";
+    this.sel_bor = "All"
 
     this.initVis();
 }
@@ -79,6 +80,7 @@ AirBnBNodeMap.prototype.initVis = function() {
         .style("fill", "gray")
         .style("opacity", 0.2)
         .on("click", function(d) {
+                console.log(d);
                 vis.clicked(d);
             }
         );
@@ -133,7 +135,7 @@ AirBnBNodeMap.prototype.getExtent = function() {
         var extent = [0, 1];
     }
     else {
-        var extent = [0, 500];
+        var extent = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
     }
 
     return extent;
@@ -144,7 +146,7 @@ AirBnBNodeMap.prototype.getExtent = function() {
  *  The drawing function
  */
 
-AirBnBNodeMap.prototype.updateVis = function() {
+AirBnBNodeMap.prototype.updateVis = function(d) {
 
     var vis = this;
 
@@ -166,7 +168,6 @@ AirBnBNodeMap.prototype.updateVis = function() {
                 return '#9b59b6';
             }
             else {
-                console.log(d[vis.val]);
                 return vis.colorScale(d[vis.val]);
             }
         })
@@ -242,16 +243,75 @@ AirBnBNodeMap.prototype.updateVis = function() {
  */
 
 AirBnBNodeMap.prototype.clicked = function(d) {
+    // var vis = this;
+    //
+    // var x, y, k;
+    //
+    // if (d && vis.centered !== d) {
+    //     var centroid = vis.path.centroid(d);
+    //     x = centroid[0];
+    //     y = centroid[1];
+    //     k = 2;
+    //     vis.centered = d;
+    // } else {
+    //     x = vis.width / 2;
+    //     y = vis.height / 2;
+    //     k = 1;
+    //     vis.centered = null;
+    // }
+    //
+    // // zoom into neighborhoods
+    // vis.neigh.transition()
+    //     .duration(750)
+    //     .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+    //     .style("stroke-width", 1.5 / k + "px");
+    //
+    // // zoom into borough
+    // vis.bor.transition()
+    //     .duration(750)
+    //     .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+    //     .style("stroke-width", 1.5 / k + "px");
+    //
+    //
+    // // REDRAW NODES
+    // vis.node.transition()
+    //     .duration(750)
+    //     .attr("transform", function(d) {
+    //         return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+    //     });
+
+    // REDRAW TIPS ****
+
     var vis = this;
+
+    var box = document.getElementById("borough_sel");
+
+    vis.sel_bor = box.options[box.selectedIndex].value;
+
+    var e = vis.boroughMap.features.filter(function (n, i) {
+        return n.properties.borough === vis.sel_bor;
+    });
+
+    // get index for largest (most complicated/coordinates) land mass - main land mass
+    var max_val = 0;
+    var max_ind = 0;
+    for (var i = 0; i < e.length; i++) {
+        if (e[i].geometry.coordinates[0].length > max_val) {
+            max_val = e[i].geometry.coordinates[0].length;
+            max_ind = i;
+        };
+    }
+
+    e = e[max_ind];
 
     var x, y, k;
 
-    if (d && vis.centered !== d) {
-        var centroid = vis.path.centroid(d);
+    if (e && vis.centered !== e) {
+        var centroid = vis.path.centroid(e);
         x = centroid[0];
         y = centroid[1];
         k = 2;
-        vis.centered = d;
+        vis.centered = e;
     } else {
         x = vis.width / 2;
         y = vis.height / 2;

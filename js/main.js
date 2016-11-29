@@ -104,6 +104,11 @@ function dataManipulation() {
     airbnbNodeMap.dataManipulation();
 }
 
+// update airbnb node map to zoom into borough
+function zoom() {
+    airbnbNodeMap.clicked();
+}
+
 
 
 // initialize the sankey diagram w dummy data

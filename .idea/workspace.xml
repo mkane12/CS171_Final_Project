@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0fbf05c1-8524-40dc-bbc2-93aee70e856c" name="Default" comment="">
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/fy16-nyc-depts.csv" afterPath="$PROJECT_DIR$/data/fy16-nyc-depts.csv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/taxRevenue.js" afterPath="$PROJECT_DIR$/js/taxRevenue.js" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/custom-sankey.js" afterPath="$PROJECT_DIR$/js/custom-sankey.js" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
     </list>
     <ignored path="CS171_Final_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,28 +35,53 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="120">
               <caret line="121" column="12" selection-start-line="121" selection-start-column="12" selection-end-line="121" selection-end-column="12" />
+=======
+            <state relative-caret-position="503">
+              <caret line="149" column="27" selection-start-line="149" selection-start-column="21" selection-end-line="149" selection-end-column="27" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="taxRevenue.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/taxRevenue.js">
+      <file leaf-file-name="custom-sankey.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/custom-sankey.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="210">
               <caret line="187" column="52" selection-start-line="187" selection-start-column="52" selection-end-line="187" selection-end-column="52" />
               <folding />
+=======
+            <state relative-caret-position="-4510">
+              <caret line="123" column="51" selection-start-line="123" selection-start-column="51" selection-end-line="123" selection-end-column="51" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#431#1389#0" expanded="false" />
+                <element signature="e#1497#3416#0" expanded="false" />
+                <element signature="e#3513#6231#0" expanded="false" />
+                <element signature="e#9608#12362#0" expanded="false" />
+              </folding>
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="fy16-nyc-depts-stacked.csv" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data/fy16-nyc-depts-stacked.csv">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
               <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+=======
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="647">
+              <caret line="101" column="2" selection-start-line="101" selection-start-column="0" selection-end-line="103" selection-end-column="3" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
               <folding />
             </state>
           </provider>
@@ -77,12 +107,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/js/timeline.js" />
         <option value="$PROJECT_DIR$/data/timeline.csv" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/taxRevenue.js" />
+        <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/js/custom-sankey.js" />
       </list>
     </option>
   </component>
@@ -93,10 +124,17 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="190" />
     <option name="y" value="23" />
     <option name="width" value="1222" />
     <option name="height" value="824" />
+=======
+    <option name="x" value="-16" />
+    <option name="y" value="-16" />
+    <option name="width" value="3232" />
+    <option name="height" value="1732" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -123,8 +161,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -187,6 +223,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -272,18 +310,31 @@
       <workItem from="1480378795415" duration="1829000" />
       <workItem from="1480444416828" duration="74000" />
       <workItem from="1480444621739" duration="21000" />
+<<<<<<< HEAD
       <workItem from="1480444680576" duration="8514000" />
+=======
+      <workItem from="1480444680576" duration="3099000" />
+      <workItem from="1480448598019" duration="3966000" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="10438000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="190" y="23" width="1222" height="824" extended-state="0" />
     <editor active="true" />
+=======
+    <option name="totallyTimeSpent" value="8989000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-16" y="-16" width="3232" height="1732" extended-state="6" />
+    <editor active="false" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22585924" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.225625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -325,6 +376,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/taxRevenue.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6396">
+          <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -353,7 +420,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="54" selection-start-line="8" selection-start-column="54" selection-end-line="8" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -365,14 +431,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/style.css">
+    <entry file="file://$PROJECT_DIR$/js/taxRevenue.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="140" column="0" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+        <state relative-caret-position="6396">
+          <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -385,12 +452,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="149" column="27" selection-start-line="149" selection-start-column="21" selection-end-line="149" selection-end-column="27" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="120">
           <caret line="121" column="12" selection-start-line="121" selection-start-column="12" selection-end-line="121" selection-end-column="12" />
           <folding />
@@ -419,7 +493,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+=======
+        <state relative-caret-position="647">
+          <caret line="101" column="2" selection-start-line="101" selection-start-column="0" selection-end-line="103" selection-end-column="3" />
+>>>>>>> 6356fe06f69ee2c07e765d083438a37daef12eb6
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/custom-sankey.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4510">
+          <caret line="123" column="51" selection-start-line="123" selection-start-column="51" selection-end-line="123" selection-end-column="51" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#431#1389#0" expanded="false" />
+            <element signature="e#1497#3416#0" expanded="false" />
+            <element signature="e#3513#6231#0" expanded="false" />
+            <element signature="e#9608#12362#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -133,6 +133,10 @@ nav.horizontal-page-navigation .current a {
     shape-rendering: crispEdges;
 }
 
+.eventAxis text {
+    font-weight: bold;
+}
+
 /** AXES **/
 
 .axis path,

@@ -23,10 +23,11 @@ Timeline.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 0, right: 10, bottom: 0, left: 10};
-    vis.height = 320 - vis.margin.top - vis.margin.bottom;
-    vis.width = 1100 - vis.margin.right - vis.margin.left;
 
-    vis.svg = d3.select("#timeline").append("svg")
+    vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
+        vis.height = 320 - vis.margin.top - vis.margin.bottom;
+
+    vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
         .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
         .append("g")
@@ -79,8 +80,8 @@ Timeline.prototype.wrangleData = function() {
  *  The drawing function
  */
 
-var startDate = new Date("01/01/13");
-var endDate = new Date("03/21/17");
+var startDate = new Date("02/01/13");
+var endDate = new Date("02/21/17");
 
 Timeline.prototype.updateVis = function() {
 
@@ -98,7 +99,7 @@ Timeline.prototype.updateVis = function() {
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom")
-        .ticks(0);
+        .ticks(d3.time.year);
 
     vis.svg.append("g")
         .attr("class", "axis x-axis eventAxis")
@@ -125,10 +126,10 @@ Timeline.prototype.updateVis = function() {
         .attr("y1", vis.height/2)
         .attr("y2", function(d) {
             if (d.position == 0) {
-                return vis.height/2 - 50;
+                return vis.height/2 - 25;
             }
             else {
-                return vis.height/2 + 50;
+                return vis.height/2 + 25;
             }
         })
     ;
@@ -138,18 +139,20 @@ Timeline.prototype.updateVis = function() {
 
     vis.eventImg
         .enter()
-        .append("image")
-        .attr("class", "eventImg");
+        .append("a")
+        .attr("xlink:href", function(d) { return d.url;});
 
     vis.eventImg
+        .append("image")
+        .attr("class", "eventImg")
         .attr("xlink:href", function(d) { return d.img; })
         .attr("x", function(d) { return (vis.x(d.date) - 50); })
         .attr("y", function(d) {
             if (d.position == 0) {
-                return vis.height / 2 - 150;
+                return vis.height / 2 - 125;
             }
             else {
-                return vis.height / 2 + 50;
+                return vis.height / 2 + 25;
             }
         })
         .attr("height", 100)
@@ -180,10 +183,10 @@ Timeline.prototype.updateVis = function() {
         .attr("cx", function(d) { return vis.x(d.date); })
         .attr("cy", function(d) {
             if (d.position == 0) {
-                return vis.height / 2 - 100;
+                return vis.height / 2 - 75;
             }
             else {
-                return vis.height / 2 + 100;
+                return vis.height / 2 + 75;
             }
         })
         .attr("r", 50);
@@ -200,10 +203,10 @@ Timeline.prototype.updateVis = function() {
         .attr("x", function(d) { return vis.x(d.date); })
         .attr("y", function(d) {
             if (d.position == 0) {
-                return vis.height / 2 + 20;
+                return vis.height / 2 - 135;
             }
             else {
-                return vis.height / 2 - 10;
+                return vis.height / 2 + 145;
             }
         })
         .style("text-anchor", "middle")

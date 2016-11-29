@@ -24,8 +24,10 @@ TaxRevenue.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 40, right: 0, bottom: 25, left: 200};
-    vis.height = 500 - vis.margin.top - vis.margin.bottom;
-    vis.width = 1000 - vis.margin.right - vis.margin.left;
+
+    vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
+        vis.height = 500 - vis.margin.top - vis.margin.bottom;
+
 
     vis.svg = d3.select("#tax-revenue").append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right + 100)

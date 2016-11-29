@@ -1,9 +1,9 @@
-date,img,position,caption
-5/1/13,img/0.png,1,Airbnb hires lobbyists to persuade the New York State legislature to change the multiple dwelling law.
-10/3/13,img/1.png,0,"The New York Attorney General subpoenas Airbnb's host records, looking for multiple dwelling law violations. "
-10/16/14,img/2.png,1,"The New York Attorney General releases a report stating that three-quarters of all Airbnb rentals in the city are illegal, and most hosts are commercial operators."
-7/1/15,img/3.png,0,The NYC Office of Special Enforcement doubles its budget to investigate illegal hotels.
-11/17/15,img/4.png,1,"Airbnb purges 1,000 potentially illegal listings before releasing data about its listings."
-6/17/16,img/5.png,0,"The New York State Legislature passes a bill banning the advertising of illegal rentals on sites like Airbnb, fining anyone who does up to $7,500."
-10/21/16,img/6.png,1,"New York Governor Andrew Cuomo signs the bill into law. Hours later, Airbnb responded with a lawsuit in Manhattan federal court."
-11/22/16,img/7.png,0,"Airbnb ends its lawsuit with New York State on the grounds that New York City is responsible for enforcing the law. It continues negotiations with the city."
+date,img,position,caption,url
+5/1/13,img/0.png,1,"Airbnb hires lobbyists to persuade the New York State legislature to change the multiple dwelling law.",http://ny.curbed.com/2013/5/13/10244428/airbnb-heads-to-albany-to-change-short-term-rental-laws
+10/3/13,img/1.png,0,"The New York Attorney General subpoenas Airbnb's host records, looking for multiple dwelling law violations.",http://www.wsj.com/articles/SB10001424052702304441404579121864021592746
+10/16/14,img/2.png,1,"The New York Attorney General releases a report stating that three-quarters of all Airbnb rentals in the city are illegal, and most hosts are commercial operators.",http://www.nytimes.com/2014/10/16/business/airbnb-listings-mostly-illegal-state-contends.html
+7/1/15,img/3.png,0,"The NYC Office of Special Enforcement doubles its budget to investigate illegal hotels.",http://rew-online.com/2015/07/21/mayor-doubles-ose-budget-for-airbnb-fight/
+11/17/15,img/4.png,1,"Airbnb purges 1,000 potentially illegal listings before releasing data about its listings.",http://www.recode.net/2016/2/10/11587752/did-airbnb-purge-potentially-illegal-nyc-listings-ahead-of-its-own
+6/17/16,img/5.png,0,"The New York State Legislature passes a bill banning the advertising of illegal rentals on sites like Airbnb, fining anyone who does up to $7,500.",https://skift.com/2016/06/17/airbnb-loses-political-battle-in-new-york-as-legislature-passes-advertising-law/
+10/21/16,img/6.png,1,"New York Governor Andrew Cuomo signs the bill into law. Hours later, Airbnb responded with a lawsuit in Manhattan federal court.",https://www.bloomberg.com/news/articles/2016-10-21/n-y-governor-cuomo-signs-bill-to-fine-illegal-airbnb-hosts
+11/22/16,img/7.png,0,"Airbnb ends its lawsuit with New York State on the grounds that New York City is responsible for enforcing the law. It continues negotiations with the city.",http://www.wsj.com/articles/airbnb-drops-new-york-state-suit-focusing-on-city-1479849933

@@ -118,7 +118,7 @@ TaxRevenue.prototype.updateVis = function() {
         .transition()
         .duration(800)
         .attr("x", -10)
-        .attr("y", 30 - vis.margin.top)
+        .attr("y", 20 - vis.margin.top)
         .style("text-anchor", "end")
         .text("Budget Line Items")
         .attr("class", "vis-title");

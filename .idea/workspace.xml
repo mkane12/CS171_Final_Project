@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0fbf05c1-8524-40dc-bbc2-93aee70e856c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/timeline.csv" afterPath="$PROJECT_DIR$/data/timeline.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/taxRevenue.js" afterPath="$PROJECT_DIR$/js/taxRevenue.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/timeline.js" afterPath="$PROJECT_DIR$/js/timeline.js" />
     </list>
     <ignored path="CS171_Final_Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,8 +29,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state relative-caret-position="210">
+              <caret line="119" column="52" selection-start-line="119" selection-start-column="52" selection-end-line="119" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -41,8 +39,8 @@
       <file leaf-file-name="taxRevenue.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/taxRevenue.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-990">
-              <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
+            <state relative-caret-position="510">
+              <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -56,11 +54,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/taxRevenue.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/js/timeline.js" />
         <option value="$PROJECT_DIR$/data/timeline.csv" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/taxRevenue.js" />
       </list>
     </option>
   </component>
@@ -71,8 +69,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="59" />
-    <option name="y" value="255" />
+    <option name="x" value="82" />
+    <option name="y" value="23" />
     <option name="width" value="1222" />
     <option name="height" value="824" />
   </component>
@@ -250,15 +248,15 @@
       <workItem from="1480378795415" duration="1829000" />
       <workItem from="1480444416828" duration="74000" />
       <workItem from="1480444621739" duration="21000" />
-      <workItem from="1480444680576" duration="2709000" />
+      <workItem from="1480444680576" duration="3099000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4633000" />
+    <option name="totallyTimeSpent" value="5023000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="255" width="1222" height="824" extended-state="0" />
+    <frame x="82" y="23" width="1222" height="824" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22585924" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -327,14 +325,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/taxRevenue.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-990">
-          <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/timeline.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -359,10 +349,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/taxRevenue.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        <state relative-caret-position="210">
+          <caret line="119" column="52" selection-start-line="119" selection-start-column="52" selection-end-line="119" selection-end-column="52" />
           <folding />
         </state>
       </provider>

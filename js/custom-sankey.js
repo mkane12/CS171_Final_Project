@@ -354,7 +354,8 @@ customSankey.prototype.initAnim = function() {
 
     // wrapper for center text
     vis.textCenter = vis.main.append("g")
-        .attr("class", "explanationWrapper");
+        .attr("class", "explanationWrapper")
+        .attr("opacity", 0);
 
     var bgW = vis.width * 0.5;
     var bgH = vis.height * 0.85;
@@ -366,6 +367,9 @@ customSankey.prototype.initAnim = function() {
         .attr("fill", "white")
         .attr("opacity", 0.7);
 
+    vis.startTopText = "As of Oct 1, 2016, there were " + vis.formatNum(vis.dataset.length) + " Airbnb listings in NYC.";
+    vis.startBottomText = (vis.illegals.length/vis.dataset.length * 100).toFixed(1) + "% of them were illegal.";
+
     // initial top text
     vis.textTop = vis.textCenter.append("text")
         .attr("class", "explanation")
@@ -374,7 +378,7 @@ customSankey.prototype.initAnim = function() {
         .attr("y", vis.height/2 - 50)
         .attr("dy", "0.5em")
         .attr("opacity", 1)
-        .text("As of Oct 1, 2016, there were " + vis.formatNum(vis.dataset.length) + " Airbnb listings in NYC.")
+        .text(vis.startTopText)
         .call(wrap, vis.width*0.4);
 
     // initial bottom text
@@ -385,15 +389,24 @@ customSankey.prototype.initAnim = function() {
         .attr("y", vis.height/2 + 40)
         .attr("dy", "0.5em")
         .attr('opacity', 1)
-        .text((vis.illegals.length/vis.dataset.length * 100).toFixed(1) + "% of them were illegal.")
+        .text(vis.startBottomText)
         .call(wrap, vis.width*0.4);
 
-    var buttonWidth = 50;
-    var buttonHeight = 30;
+    // make the center text show up in a pretty way
+    vis.textCenter
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    var buttonWidth = 45;
+    var buttonWidthPlus = 65;
+    var buttonHeight = 25;
 
     // now we have to add some buttons...
+
+    // this is the main button that just says next
     vis.nextBtn = vis.controls.append("g")
-        .attr("class", "button");
+        .attr("class", "button")
+        .attr("transform", "translate(" + (vis.width - buttonWidth)/2 + "," + 0 + ")");
 
     vis.nextBtn
         .append("rect")
@@ -409,6 +422,47 @@ customSankey.prototype.initAnim = function() {
         .attr("x", buttonWidth/2)
         .attr("y", buttonHeight/2 + 7)
         .text("Start");
+
+
+    // this is a button that skips the whole intro
+    vis.skipBtn = vis.controls.append("g")
+        .attr("class", "button")
+        .attr("transform", "translate(" + (buttonWidthPlus + 10) + "," + 0 + ")");
+
+    vis.skipBtn
+        .append("rect")
+        .attr("height", buttonHeight)
+        .attr("width", buttonWidth)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.75);
+
+    vis.skipText = vis.skipBtn
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", buttonWidth/2)
+        .attr("y", buttonHeight/2 + 7)
+        .text("Skip");
+
+    // this button resets the intro
+    vis.resetBtn = vis.controls.append("g")
+        .attr("class", "button")
+        .attr("transform", "translate(" + 0 + "," + 0 + ")");
+
+    vis.resetBtn
+        .append("rect")
+        .attr("height", buttonHeight)
+        .attr("width", buttonWidthPlus)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.75);
+
+    vis.resetText = vis.resetBtn
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", buttonWidthPlus/2)
+        .attr("y", buttonHeight/2 + 7)
+        .text("Restart");
 
     vis.counter = 1,
         vis.opacityValueBase = 0.8,
@@ -426,6 +480,14 @@ customSankey.prototype.initAnim = function() {
 
             vis.counter = vis.counter + 1;
         });
+
+    // skip button just jumps to the end
+    vis.skipBtn
+        .on("click", function() { vis.DrawLast(); })
+
+    // reset button just jumps to the end
+    vis.resetBtn
+        .on("click", function() { vis.DrawReset(); })
 }
 
 
@@ -437,76 +499,87 @@ customSankey.prototype.Draw1 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(300).attr("opacity", 0);
-
-    vis.node.selectAll(".all")
-        .transition().delay(300).duration(1400).attr("opacity", 1);
-
-    vis.main.selectAll(".link-all-apts")
-        .transition().delay(300).duration(1400).attr("stroke-opacity", 0.1);
-
-    vis.main.selectAll(".link-all-legal")
-        .transition().delay(300).duration(1400).attr("stroke-opacity", 0.1);
-
-    vis.node.selectAll(".apts")
-        .transition().delay(300).duration(1400).attr("opacity", 1);
-
-    vis.node.selectAll(".legal")
-        .transition().delay(300).duration(1400).attr("opacity", 1);
+        .transition().duration(1400).attr("opacity", 0);
 
     vis.nextText
-        .transition().delay(300).text("Next");
+        .transition().duration(1400).text("Next");
+
+    vis.node.selectAll(".all")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.main.selectAll(".link-all-apts")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.main.selectAll(".link-all-legal")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.node.selectAll(".apts")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.node.selectAll(".legal")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
 
     vis.textTop
-        .transition().delay(300)
+        .transition().delay(1400)
         .text("Renting a house or condo is always legal.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(300)
+        .transition().delay(1400)
         .text("However, the " + vis.formatNum(vis.apartments.length) + " apartments listed might be illegal.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(900).duration(1400).attr("opacity", 1);
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
 }
 
 customSankey.prototype.Draw2 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(300).attr("opacity", 0);
+        .transition().duration(1400).attr("opacity", 0);
 
     vis.node.selectAll(".short")
-        .transition().duration(900).attr("opacity", 1);
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
 
     vis.main.selectAll(".link-apts-short")
-        .transition().duration(900).attr("stroke-opacity", 0.1);
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.main.selectAll(".link-apts-legal")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(300)
+        .transition().delay(1400)
         .text("It's usually illegal to rent an apartment for fewer than 30 days.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(300)
+        .transition().delay(1400)
         .text("Only " + vis.formatNum(vis.apartments.length - vis.shortTerm.length) + " listed apartments were above this limit.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(900).duration(1400).attr("opacity", 1);
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
 }
 
 customSankey.prototype.Draw3 = function() {
     var vis = this;
 
+    vis.textCenter
+        .transition().duration(1400).attr("opacity", 0);
+
     vis.textTop
+        .transition().delay(1400)
         .text("A short-term apartment rental is still legal if the host is on the premises.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
+        .transition().delay(1400)
         .text("We had three methods of estimating when they're not.")
         .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
 
 }
 
@@ -535,7 +608,64 @@ customSankey.prototype.DrawLast = function() {
 
     vis.nextBtn
         .transition().duration(1400)
+        .attr("class", "button-off")
         .attr("opacity", 0);
+
+    vis.skipBtn
+        .transition().duration(1400)
+        .attr("class", "button-off")
+        .attr("opacity", 0);
+
+}
+
+customSankey.prototype.DrawReset = function() {
+    var vis = this;
+
+    vis.counter = 1;
+
+    vis.textCenter
+        .transition().duration(1400)
+        .attr("opacity", 0);
+
+    vis.main.selectAll(".node")
+        .transition().duration(1400)
+        .attr("opacity", 0);
+
+    vis.main.selectAll(".node-label")
+        .transition().duration(1400)
+        .attr("opacity", 0);
+
+    vis.legendLabels
+        .transition().duration(1400)
+        .attr("opacity", 0);
+
+    vis.main.selectAll(".link")
+        .transition().duration(1400)
+        .attr("stroke-opacity", 0);
+
+    vis.textTop
+        .transition().delay(1400)
+        .text(vis.startTopText)
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(1400)
+        .text(vis.startBottomText)
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(1400).duration(1400)
+        .attr("opacity", 1);
+
+    vis.nextBtn
+        .transition().duration(1400)
+        .attr("class", "button")
+        .attr("opacity", 1);
+
+    vis.skipBtn
+        .transition().duration(1400)
+        .attr("class", "button")
+        .attr("opacity", 1);
 
 }
 
@@ -596,3 +726,30 @@ function findLink(set, args) {
         return (d.startID == _startID) && (d.endID == _endID);
     });
 }
+
+
+/*Taken from http://bl.ocks.org/mbostock/7555321
+ //Wraps SVG text*/
+function wrap(text, width) {
+    var text = d3.select(this[0][0]),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.4,
+        y = text.attr("y"),
+        x = text.attr("x"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+
+    while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+        };
+    };
+};

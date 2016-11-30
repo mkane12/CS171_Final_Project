@@ -101,11 +101,16 @@ nav.horizontal-page-navigation .current a {
 }
 
 #sankey .button {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 300;
     cursor: pointer;
 }
 
+#sankey .button-off {
+    font-size: 18px;
+    font-weight: 300;
+    cursor: default;
+}
 
 /** LINE GRAPH **/
 

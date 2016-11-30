@@ -164,35 +164,38 @@
 
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
             <div id="vis4">
-                
-                </div>
-                <div id="contents" class="row">
-                    <div id="neighborhood-line-chart-area" class="col-sm-10"></div>
-                    <div class="col-sm-2">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <form class="form-inline">
-                                    <div class="form-group">
-                                        <label for="dataType">Group by</label>
-                                        <select class="form-control" id="neighborhood-line-selected-borough">
-                                            <option value="all">All</option>
-                                            <option value="Bronx">Bronx</option>
-                                            <option value="Brooklyn">Brooklyn</option>
-                                            <option value="Manhattan">Manhattan</option>
-                                            <option value="Queens">Queens</option>
-                                            <option value="Staten Island">Staten Island</option>
-                                        </select>
-                                    </div>
-                                </form>
+                <div id="neighborhood-line-chart-area" class="col-sm-10"></div>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="dataType">Group by</label>
+                                <select class="form-control" id="neighborhood-line-selected-borough">
+                                    <option value="all">All</option>
+                                    <option value="Bronx">Bronx</option>
+                                    <option value="Brooklyn">Brooklyn</option>
+                                    <option value="Manhattan">Manhattan</option>
+                                    <option value="Queens">Queens</option>
+                                    <option value="Staten Island">Staten Island</option>
+                                </select>
                             </div>
-                        
-                        <div class="row" id="neighborhood-line-legend"> </div>
+                        </form>
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="dataType">Show data for</label>
+                                <select class="form-control" id="neighborhood-line-data-type">
+                                    <option value="abs_price">Price</option>
+                                    <option value="percent_change">Percent Change</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
-
-
+                    <div class="row" id="neighborhood-line-legend"> </div>
                 </div>
+
+
             </div>
-        </div>
+
 
         <div id="section5" class="section">
             <h2>Some concluding thoughts</h2>

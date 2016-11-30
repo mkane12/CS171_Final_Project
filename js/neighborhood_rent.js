@@ -2,11 +2,13 @@
  * Created by nbw on 11/24/16.
  */
 
-NeighborhoodLine = function(_parentElement, _data, _neighborhood_dict){
+NeighborhoodLine = function(_parentElement, _raw_price_data, _raw_change_data, _neighborhood_dict){
     this.parentElement = _parentElement;
-    this.data = _data;
-    this.displayData = _data;
+    this.raw_price_data = _raw_price_data;
+    this.raw_change_data = _raw_change_data;
+    this.displayData = [];
     this.neighborhood_dict = _neighborhood_dict
+
 
     this.initVis();
 }
@@ -84,10 +86,6 @@ NeighborhoodLine.prototype.initVis = function(){
         .attr("class", "axis axis--y");
 
 
-
-
-
-
     vis.svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -vis.height/2)
@@ -138,9 +136,37 @@ NeighborhoodLine.prototype.initVis = function(){
         .attr("offset", "100%")
         .attr("stop-color", "black")
         .attr("stop-opacity", .8);
-    // (Filter, aggregate, modify data)
+
+    vis.initialWrangleData();
     vis.wrangleData();
 }
+
+
+
+
+// Reformat all data -- this only needs to be done once
+NeighborhoodLine.prototype.initialWrangleData = function(){
+    var vis = this;
+    vis.neighborhoods = {};
+
+    var dtypes = ["abs_price", "percent_change"];
+    var dtypes_data = [vis.raw_price_data, vis.raw_change_data];
+    for (idx in dtypes) {
+        vis.neighborhoods[dtypes[idx]] = [];
+        for (var prop in dtypes_data[idx][0]) {
+            if (prop != "Date") {
+                
+                vis.neighborhoods[dtypes[idx]].push(
+                    {
+                        id: prop,
+                        values: dtypes_data[idx].map(function (d) {
+                            return {date: vis.parseTime.parse(d.Date), price: d[prop], neighborhood: prop};
+                        })
+                    });
+            };
+        };
+    };
+};
 
 
 
@@ -150,59 +176,27 @@ NeighborhoodLine.prototype.initVis = function(){
 
 NeighborhoodLine.prototype.wrangleData = function(){
     var vis = this;
+    
 
+    // Filter For Selected Borough
+    borough_selectBox_area = document.getElementById("neighborhood-line-selected-borough");
+    selected_borough = borough_selectBox_area.options[borough_selectBox_area.selectedIndex].value;
 
-    selectBox_area = document.getElementById("neighborhood-line-selected-borough");
-    selected_borough = selectBox_area.options[selectBox_area.selectedIndex].value;
-
-
-    if (selected_borough != "all") {
-
-        neighborhoods = []
-        for (var prop in vis.data[0]) {
-            if (prop != "Date" && vis.neighborhood_dict[prop].borough == selected_borough) {
-                //console.log(prop)
-                neighborhoods.push(
-                    {
-                        id: prop,
-                        values: vis.data.map(function (d) {
-                            return {date: vis.parseTime.parse(d.Date), price: d[prop], neighborhood: prop};
-                        })
-                    });
-            }
-        }
-    }
-    else {
-        neighborhoods = []
-        for (var prop in vis.data[0]) {
-            if (prop != "Date") {
-                neighborhoods.push(
-                    {
-                        id: prop,
-                        values: vis.data.map(function (d) {
-                            return {date: vis.parseTime.parse(d.Date), price: d[prop], neighborhood: prop};
-                        })
-                    });
-            }
+    var in_borough = function(borough) {
+        return function(datum) {
+            return vis.neighborhood_dict[datum.id].borough==borough;
         }
     }
 
-    vis.displayData = neighborhoods
-    //
-    // // FILTER BY BRUSH VALUES
-    // // if filter is not empty, filter by its bounds. Otherwise, don't filter the data
-    // if (vis.filter) {
-    //     vis.data_to_show = vis.displayData.filter(function (d) {
-    //         return d.survey >= vis.filter[0] && d.survey <= vis.filter[1]
-    //     });
-    // }
-    // else {vis.data_to_show = vis.displayData;}
 
-    //console.log("wrangled data: ", vis.displayData)
-
-    // Update the visualization
+    // Filter for selected datatype
+    dtype_selectBox_area = document.getElementById("neighborhood-line-data-type");
+    selected_dtype = dtype_selectBox_area.options[dtype_selectBox_area.selectedIndex].value;
+    
+    if (selected_borough != "all") {vis.displayData = vis.neighborhoods[selected_dtype].filter(in_borough(selected_borough))}
+    else {vis.displayData = vis.neighborhoods[selected_dtype]}
+    
     vis.updateVis();
-
 }
 
 
@@ -214,12 +208,13 @@ NeighborhoodLine.prototype.wrangleData = function(){
 NeighborhoodLine.prototype.updateVis = function(){
     var vis = this;
 
-    vis.x.domain(d3.extent(vis.data, function(d) { return vis.parseTime.parse(d.Date); }));
+    vis.x.domain(d3.extent(vis.raw_price_data, function(d) { return vis.parseTime.parse(d.Date); }));
 
     vis.y.domain([
         d3.min(vis.displayData, function(c) { return d3.min(c.values, function(d) { return d.price; }); }),
         d3.max(vis.displayData, function(c) { return d3.max(c.values, function(d) { return d.price; }); })
     ]);
+
 
     vis.z.domain(vis.displayData.map(function(c) { return c.id; }));
 

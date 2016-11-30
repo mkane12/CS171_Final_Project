@@ -20,6 +20,9 @@ customSankey = function(_parentElement, _dataset) {
 customSankey.prototype.initVis = function() {
     var vis = this;
 
+    // number formatter
+    vis.formatNum = d3.format(",d");
+
     vis.fullWidth = $(vis.parentElement).width();
     vis.fullHeight = 350;
 
@@ -37,6 +40,10 @@ customSankey.prototype.initVis = function() {
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
     vis.legend = vis.svg.append("g")
+        .attr("transform", "translate(" + (vis.margin.left) + "," + (vis.margin.top + vis.height) + ")");
+
+    vis.controls = vis.svg.append("g")
+        .attr("class", "controls")
         .attr("transform", "translate(" + (vis.margin.left) + "," + (vis.margin.top + vis.height) + ")");
 
     vis.barWidth = 40;
@@ -134,9 +141,9 @@ customSankey.prototype.structureData = function () {
     vis.displayData.nodes.push(new sankeyNode("all", 1, vis.height/3.5, vis.dataset.length, "total listings"));
     vis.displayData.nodes.push(new sankeyNode("apts", 2, vis.height/5, vis.apartments.length, "apartments"));
     vis.displayData.nodes.push(new sankeyNode("short", 3, vis.height/9, vis.shortTerm.length, "short-term listings"));
-    vis.displayData.nodes.push(new sankeyNode("full-apt", 4, 15, vis.fullApt.length, "C"));
+    vis.displayData.nodes.push(new sankeyNode("full-apt", 4, 15, vis.fullApt.length, "A"));
     vis.displayData.nodes.push(new sankeyNode("host-mult", 4, 0, vis.hostMult.length, "B"));
-    vis.displayData.nodes.push(new sankeyNode("host-away", 4, 0, vis.hostAway.length, "A"));
+    vis.displayData.nodes.push(new sankeyNode("host-away", 4, 0, vis.hostAway.length, "C"));
     vis.displayData.nodes.push(new sankeyNode("illegal", 5, 0, vis.illegals.length, "illegal"));
     vis.displayData.nodes.push(new sankeyNode("legal", 5, vis.height, vis.dataset.length - vis.illegals.length, "legal"));
 
@@ -190,9 +197,9 @@ customSankey.prototype.formatData = function() {
     awayNode.yStart = vis.barHeightScale(fullNode.num) + vis.barHeightScale(multNode.num) + 2*nodePad + 15;
 
     // need to set up a holder for the legend info
-    vis.legendInfo = [{code: "A", label: "host not in NYC", num: vis.hostAway.length},
-        {code: "B", label: "host has multiple listings", num: vis.hostMult.length},
-        {code: "C", label: "full home rentals", num: vis.fullApt.length}];
+    vis.legendInfo = [{code: "A", label: "full home rentals", num: vis.fullApt.length, id: "full-apt"},
+        {code: "B", label: "host has multiple listings", num: vis.hostMult.length, id: "host-mult"},
+        {code: "C", label: "host not in NYC", num: vis.hostAway.length, id: "host-away"}];
 
     // this will help us generally position things further on
     vis.displayData.nodes.forEach(function(d) {
@@ -251,21 +258,23 @@ customSankey.prototype.updateVis = function() {
         .data(vis.displayData.nodes);
 
     vis.node.enter().append("g")
-        .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + d.xStart + ", " + d.yStart + ")"; });
 
     vis.node
         .append("rect")
+        .attr("class", function(d) { return "node " + d.id; })
         .attr("width", vis.barWidth)
         .attr("height", function(d) { return d.height; })
-        .style("fill", "#79CCCD")
-        .style("stroke", d3.rgb("#79CCCD").darker(2));
+        .attr("fill", "#79CCCD")
+        .attr("stroke", d3.rgb("#79CCCD").darker(2))
+        .attr("opacity", 0);
 
     // add in the title for the nodes
     // this is word label
     // if statement means that small ABC label will be fully centered
     // also it shifts the A a little bit
     vis.node.append("text")
+        .attr("class", function(d) { return "node-label " + d.id; })
         .attr("text-anchor", "middle")
         .attr("transform", function(d) {
             var xpos = vis.barWidth/2;
@@ -275,23 +284,26 @@ customSankey.prototype.updateVis = function() {
             } else {
                 xpos -= 4;
             }
-            if (d.desc == "A") {
+            if (d.desc == "C") {
                 ypos = d.height + 7;
             } else {
                 ypos = d.height/2
             }
             return "translate(" + xpos + "," + ypos + ")rotate(-90)"; })
-        .text(function(d) { return d.desc; });
+        .text(function(d) { return d.desc; })
+        .attr("opacity", 0);
 
     // this is number label
     // the if statement means this will only show up on sufficiently large rects
     vis.node.append("text")
+        .attr("class", function(d) { return "node-label " + d.id; })
         .attr("text-anchor", "middle")
         .attr("transform", function(d) { return "translate(" + (vis.barWidth/2 + 14) + "," + d.height/2 + ")rotate(-90)"; })
         .text(function(d) {
             if (d.desc.length != 1) {
-                return "(" + d.num + ")";
-            }});
+                return "(" + vis.formatNum(d.num) + ")";
+            }})
+        .attr("opacity", 0);
 
     vis.node.exit().remove();
 
@@ -307,25 +319,233 @@ customSankey.prototype.updateVis = function() {
         .data(vis.displayData.links);
 
     vis.links.enter().append("path")
-        .attr("class", "link")
+        .attr("class", function(d) { return "link link-" + d.startID + "-" + d.endID; })
         .attr("stroke", "black")
         .attr("stroke-width", function(d) { return d.weight; })
-        .attr("d", linkVertical);
+        .attr("d", linkVertical)
+        .attr("stroke-opacity", 0);
 
     // add legend labels
     vis.legendLabels = vis.legend.selectAll("text")
         .data(vis.legendInfo);
 
-    vis.legendLabels.enter().append("text")
-        .attr("class", "sankey-legend");
+    vis.legendLabels.enter().append("text");
 
     vis.legendLabels
+        .attr("class", function(d) { return "sankey-legend" + d.id; })
         .attr("text-anchor", "start")
         .attr("transform", function(d, i) { return "translate(" + (vis.width - 200) + "," + (20 + i * 16) + ")";})
-        .text(function(d) { return d.code + " = " + d.label + " (" + d.num + ")"; });
+        .text(function(d) { return d.code + " = " + d.label + " (" + vis.formatNum(d.num) + ")"; })
+        .attr("opacity", 0);
 
     vis.legendLabels.exit().remove();
+
+    vis.initAnim();
 }
+
+
+/*
+ *  Initializes labels and things for the animation
+ *  adapted from https://github.com/nbremer/Chord-Diagram-Storytelling/
+ */
+
+customSankey.prototype.initAnim = function() {
+    var vis = this;
+
+    // wrapper for center text
+    vis.textCenter = vis.main.append("g")
+        .attr("class", "explanationWrapper");
+
+    var bgW = vis.width * 0.5;
+    var bgH = vis.height * 0.85;
+    vis.textBackground = vis.textCenter.append("rect")
+        .attr("height", bgH)
+        .attr("width", bgW)
+        .attr("x", vis.width/2 - bgW/2)
+        .attr("y", vis.height/2 - bgH/2)
+        .attr("fill", "white")
+        .attr("opacity", 0.7);
+
+    // initial top text
+    vis.textTop = vis.textCenter.append("text")
+        .attr("class", "explanation")
+        .attr("text-anchor", "middle")
+        .attr("x", vis.width/2)
+        .attr("y", vis.height/2 - 50)
+        .attr("dy", "0.5em")
+        .attr("opacity", 1)
+        .text("As of Oct 1, 2016, there were " + vis.formatNum(vis.dataset.length) + " Airbnb listings in NYC.")
+        .call(wrap, vis.width*0.4);
+
+    // initial bottom text
+    vis.textBottom = vis.textCenter.append("text")
+        .attr("class", "explanation")
+        .attr("text-anchor", "middle")
+        .attr("x", vis.width/2)
+        .attr("y", vis.height/2 + 40)
+        .attr("dy", "0.5em")
+        .attr('opacity', 1)
+        .text((vis.illegals.length/vis.dataset.length * 100).toFixed(1) + "% of them were illegal.")
+        .call(wrap, vis.width*0.4);
+
+    var buttonWidth = 50;
+    var buttonHeight = 30;
+
+    // now we have to add some buttons...
+    vis.nextBtn = vis.controls.append("g")
+        .attr("class", "button");
+
+    vis.nextBtn
+        .append("rect")
+        .attr("height", buttonHeight)
+        .attr("width", buttonWidth)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.75);
+
+    vis.nextText = vis.nextBtn
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("x", buttonWidth/2)
+        .attr("y", buttonHeight/2 + 7)
+        .text("Start");
+
+    vis.counter = 1,
+        vis.opacityValueBase = 0.8,
+        vis.opacityValue = 0.4;
+
+    vis.nextBtn
+        .on("click", function () {
+
+            if(vis.counter == 1) vis.Draw1();
+            else if(vis.counter == 2) vis.Draw2();
+            else if(vis.counter == 3) vis.Draw3();
+            //else if(vis.counter == 4) vis.Draw4();
+
+            else vis.DrawLast();
+
+            vis.counter = vis.counter + 1;
+        });
+}
+
+
+/*
+ *  BELOW ARE ALL THE DRAWING FUNCTIONS
+ */
+
+customSankey.prototype.Draw1 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(300).attr("opacity", 0);
+
+    vis.node.selectAll(".all")
+        .transition().delay(300).duration(1400).attr("opacity", 1);
+
+    vis.main.selectAll(".link-all-apts")
+        .transition().delay(300).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.main.selectAll(".link-all-legal")
+        .transition().delay(300).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.node.selectAll(".apts")
+        .transition().delay(300).duration(1400).attr("opacity", 1);
+
+    vis.node.selectAll(".legal")
+        .transition().delay(300).duration(1400).attr("opacity", 1);
+
+    vis.nextText
+        .transition().delay(300).text("Next");
+
+    vis.textTop
+        .transition().delay(300)
+        .text("Renting a house or condo is always legal.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(300)
+        .text("However, the " + vis.formatNum(vis.apartments.length) + " apartments listed might be illegal.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(900).duration(1400).attr("opacity", 1);
+}
+
+customSankey.prototype.Draw2 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(300).attr("opacity", 0);
+
+    vis.node.selectAll(".short")
+        .transition().duration(900).attr("opacity", 1);
+
+    vis.main.selectAll(".link-apts-short")
+        .transition().duration(900).attr("stroke-opacity", 0.1);
+
+    vis.textTop
+        .transition().delay(300)
+        .text("It's usually illegal to rent an apartment for fewer than 30 days.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(300)
+        .text("Only " + vis.formatNum(vis.apartments.length - vis.shortTerm.length) + " listed apartments were above this limit.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(900).duration(1400).attr("opacity", 1);
+}
+
+customSankey.prototype.Draw3 = function() {
+    var vis = this;
+
+    vis.textTop
+        .text("A short-term apartment rental is still legal if the host is on the premises.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .text("We had three methods of estimating when they're not.")
+        .call(wrap, vis.width*0.4);
+
+}
+
+customSankey.prototype.DrawLast = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(1400)
+        .attr("opacity", 0);
+
+    vis.main.selectAll(".node")
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    vis.main.selectAll(".node-label")
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    vis.legendLabels
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    vis.main.selectAll(".link")
+        .transition().duration(1400)
+        .attr("stroke-opacity", 0.1);
+
+    vis.nextBtn
+        .transition().duration(1400)
+        .attr("opacity", 0);
+
+}
+
+
+
+
+
+
+
+
 
 
 

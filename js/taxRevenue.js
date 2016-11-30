@@ -80,9 +80,19 @@ TaxRevenue.prototype.wrangleData = function() {
         return a.total - b.total;
     });
 
-    vis.displayData = vis.filteredData;
+    vis.name = ["actual", "projection"];
 
-    console.log(vis.displayData);
+    vis.transposedData = vis.name.map(function(name) {
+       return {
+           name: name,
+           values: vis.filteredData.map(function(d) {
+               return {dept: d.dept, y: d[name]};
+           })
+       }
+    });
+
+    vis.displayData = vis.transposedData;
+
     // Update the visualization
     vis.updateVis();
 
@@ -97,23 +107,46 @@ TaxRevenue.prototype.updateVis = function() {
 
     var vis = this;
 
-    vis.barHeight = vis.height/vis.displayData.length;
+    var stack = d3.layout.stack()
+        .values(function(d) {return d.values});
 
-    vis.x.domain([0, d3.max(vis.displayData, function(d) {return d.total;})]);
+    vis.stackedData = stack(vis.transposedData);
 
-    vis.stackData = vis.displayData.filter(function(d) {
-        return (d.dept == "Hotel Tax Revenue");
-    });
+    // vis.stackedData = vis.stackedData.map(function (group) {
+    //     return group.map(function (d) {
+    //         return {
+    //             x: d.y,
+    //             y: d.dept,
+    //             x0: d.y0
+    //         };
+    //     });
+    // });
 
-    vis.stackIndex = 0;
+    vis.barHeight = vis.height/vis.stackedData.length;
 
-    for (i = 0; i < vis.displayData.length; i++) {
-        if (vis.displayData[i].dept == "Hotel Tax Revenue") {
-            vis.stackIndex = i;
-        }
-    }
+    vis.x.domain([0, d3.max(vis.stackedData, function(d) {
+        return d3.max(d.values, function (e) {
+            return e.y0 + e.y;
+            });
+        })
+    ]);
 
-    console.log(vis.stackIndex);
+    console.log(vis.x.domain());
+
+    // vis.stackData = vis.displayData.filter(function(d) {
+    //     return (d.dept == "Hotel Tax Revenue");
+    // });
+
+    // vis.stackIndex = 0;
+
+
+    // for (i = 0; i < vis.displayData.length; i++) {
+    //     if (vis.displayData[i].dept == "Hotel Tax Revenue") {
+    //         vis.stackIndex = i;
+    //     }
+    // }
+
+    console.log(vis.stackedData);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
@@ -140,16 +173,11 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("class", "vis-title");
 
     vis.tip.html(function(d) {
-        if (vis.bars.attr("class") == "bar") {
-            return formatCurrency(d.actual.toLocaleString());
-        }
-        if (vis.bars.attr("class") == "stack") {
-            return formatCurrency(d.projection.toLocaleString());
-        }
+        return formatCurrency(d.x.toLocaleString());
     });
 
     vis.bars = vis.svg.selectAll("rect")
-        .data(vis.displayData);
+        .data(vis.stackedData);
 
     vis.bars
         .enter()
@@ -159,36 +187,20 @@ TaxRevenue.prototype.updateVis = function() {
     vis.bars
         .transition()
         .duration(800)
+        .attr("x", function(d) { return vis.x(d.y0); })
+        .attr("y", function(d, index) {
+            return (index * vis.barHeight);
+        })
+        .attr("height", vis.barHeight - 3)
+        .attr("width", function(d) { return vis.x(d.y); })
         .attr("fill", function(d) {
-            if (d.dept == "Hotel Tax Revenue") {
+            if (d.values.dept == "Hotel Tax Revenue") {
                 return "#F16664";
             }
             else {
                 return "#FFF6E6";
             }
         })
-        .attr("x", 0)
-        .attr("y", function(d, index) {
-            return (index * vis.barHeight);
-        })
-        .attr("height", vis.barHeight - 3)
-        .attr("width", function(d) { return vis.x(d.actual); })
-    ;
-
-    vis.bars
-        .append("rect")
-        .attr("class", "stack");
-
-    vis.bars
-        .transition()
-        .duration(800)
-        .attr("fill", "#79CCCD")
-        .attr("x", function(d) { return vis.x(d.actual); })
-        .attr("y", function() {
-            return (vis.stackIndex * vis.barHeight);
-        })
-        .attr("height", vis.barHeight - 3)
-        .attr("width", function(d) { return vis.x(d.projection); })
     ;
 
     vis.bars
@@ -206,9 +218,51 @@ TaxRevenue.prototype.updateVis = function() {
 
     vis.bars.exit().remove();
 
+    // vis.bars = vis.svg.selectAll("rect")
+    //     .data(vis.displayData);
+    //
+    // vis.bars
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", "bar");
+    //
+    // vis.bars
+    //     .transition()
+    //     .duration(800)
+    //     .attr("fill", function(d) {
+    //         if (d.dept == "Hotel Tax Revenue") {
+    //             return "#F16664";
+    //         }
+    //         else {
+    //             return "#FFF6E6";
+    //         }
+    //     })
+    //     .attr("x", 0)
+    //     .attr("y", function(d, index) {
+    //         return (index * vis.barHeight);
+    //     })
+    //     .attr("height", vis.barHeight - 3)
+    //     .attr("width", function(d) { return vis.x(d.actual); })
+    // ;
+    //
+    // vis.bars
+    //     .on("mouseover", function(d) {
+    //         d3.select(this)
+    //             .attr("opacity", .5);
+    //         vis.tip.show(d);
+    //     })
+    //     .on("mouseout", function(d) {
+    //         d3.select(this)
+    //             .attr("opacity", 1);
+    //         vis.tip.hide(d);
+    //     })
+    // ;
+    //
+    // vis.bars.exit().remove();
+    //
     // vis.stack = vis.svg.selectAll(".stack")
     //     .data(vis.stackData);
-
+    //
     // vis.stack
     //     .enter()
     //     .append("rect")
@@ -225,7 +279,7 @@ TaxRevenue.prototype.updateVis = function() {
     //     .attr("height", vis.barHeight - 3)
     //     .attr("width", function(d) { return vis.x(d.projection); })
     // ;
-
+    //
     // vis.stack
     //     .on("mouseover", function(d) {
     //         d3.select(this)
@@ -242,7 +296,7 @@ TaxRevenue.prototype.updateVis = function() {
     // vis.stack.exit().remove();
 
     vis.labels = vis.svg.selectAll(".text")
-        .data(vis.displayData);
+        .data(vis.stackedData);
 
     vis.labels
         .enter()

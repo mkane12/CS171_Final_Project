@@ -27,12 +27,13 @@ function loadData() {
         .defer(d3.json, "data/2014-05-10.json")
         .defer(d3.csv, "data/fy16-nyc-depts-stacked.csv")
         .defer(d3.csv, "data/neighborhood-lines/housing_prices_by_neighborhood.csv")
+        .defer(d3.csv, "data/neighborhood-lines/percent_change_by_neighborhood.csv")
         .defer(d3.json, "data/2016-10-01_with_analyses.json")
         .defer(d3.json, "data/AirBNB-neighbourhoods.geojson")
         .defer(d3.json, "data/ny-neighborhoods.json")
         .defer(d3.csv, "data/timeline.csv")
         .defer(d3.csv, "data/neighborhood-lines/neighborhood_info.csv")
-        .await(function(error, data1, data2, data3, data4, data5, data6, data7, data8, data9) {
+        .await(function(error, data1, data2, data3, NRentPrice, NRentChange, data5, data6, data7, data8, data9) {
 
             if (error) throw error;
 
@@ -48,7 +49,8 @@ function loadData() {
 
             //console.log(taxData);
 
-            neighborhoodData = data4;
+            neighborhoodRentPrice = NRentPrice;
+            neighborhoodRentChange = NRentChange;
 
             newestDataset = data5;
 
@@ -89,9 +91,14 @@ function createVis() {
 
     mySankey = new customSankey("#sankey", newestDataset);
 
-    neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodData, neighborhood_dict);
+    neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
     $(function () {
         $("#neighborhood-line-selected-borough").change(function () { 
+            neighborhoodrent.wrangleData();
+        });
+    });
+    $(function () {
+        $("#neighborhood-line-data-type").change(function () { 
             neighborhoodrent.wrangleData();
         });
     });

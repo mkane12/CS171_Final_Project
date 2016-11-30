@@ -1,0 +1,55 @@
+unit,fy,dept,total,source,actual,projection
+city,2016,Campaign Finance Board,14481042,fy16,14481042,0
+city,2016,Department of City Planning,38111737,fy16,38111737,0
+city,2016,City Council,61023705,fy16,61023705,0
+city,2016,District Attorney - New York,98575081,fy16,98575081,0
+city,2016,New York Public Library,132235696,fy16,132235696,0
+city,2016,Department of Parks and Recreation,454680535,fy16,454680535,0
+city,2016,Hotel Tax Revenue,635000000,fy17,570000000,65000000
+city,2016,Department of Transportation,880011843,fy16,880011843,0
+city,2016,City University,993201681,fy16,993201681,0
+state,2016,Division of Veterans' Affairs,13612000,fy16,13612000,0
+state,2016,Office of the Governor,13704000,fy16,13704000,0
+state,2016,Hotel Tax Revenue,110714603,fy17,45714603,65000000
+state,2016,Department of Economic Development,90925000,fy16,90925000,0
+state,2016,Department of Law,225402000,fy16,225402000,0
+state,2016,Department of Motor Vehicles,292446000,fy16,292446000,0
+state,2016,Office of Parks and Recreation,344508000,fy16,344508000,0
+state,2016,Department of Labor,546390000,fy16,546390000,0
+state,2016,Division of State Police,733484000,fy16,733484000,0
+city,2015,Campaign Finance Board,12293277,fy15,12293277,0
+city,2015,Department of City Planning,28363441,fy15,28363441,0
+city,2015,City Council,57087008,fy15,57087008,0
+city,2015,District Attorney - New York,92541033,fy15,92541033,0
+city,2015,New York Public Library,115885307,fy15,115885307,0
+city,2015,Department of Parks and Recreation,413019393,fy15,413019393,0
+city,2015,Hotel Tax Revenue,629000000,fy16,563000000,66000000
+city,2015,Department of Transportation,831836798,fy15,831836798,0
+city,2015,City University,944131050,fy15,944131050,0
+state,2015,Division of Veterans' Affairs,13518000,fy15,13518000,0
+state,2015,Office of the Governor,13966000,fy15,13966000,0
+state,2015,Hotel Tax Revenue,110521939,fy16,45521939,65000000
+state,2015,Department of Economic Development,62634000,fy15,62634000,0
+state,2015,Department of Law,213118000,fy15,213118000,0
+state,2015,Department of Motor Vehicles,280755000,fy15,280755000,0
+state,2015,Office of Parks and Recreation,295237000,fy15,295237000,0
+state,2015,Department of Labor,618986000,fy15,618986000,0
+state,2015,Division of State Police,697545000,fy15,697545000,0
+city,2014,Department of City Planning,20849081,fy14,20849081,0
+city,2014,City Council,51516737,fy14,51516737,0
+city,2014,Campaign Finance Board,71864424,fy14,71864424,0
+city,2014,District Attorney - New York,85013117,fy14,85013117,0
+city,2014,New York Public Library,88335998,fy14,88335998,0
+city,2014,Department of Parks and Recreation,380379023,fy14,380379023,0
+city,2014,Hotel Tax Revenue,559000000,fy15,534000000,25000000
+city,2014,Department of Transportation,728944601,fy14,728944601,0
+city,2014,City University,889864046,fy14,889864046,0
+state,2014,Division of Veterans' Affairs,13084000,fy14,13084000,0
+state,2014,Office of the Governor,13673000,fy14,13673000,0
+state,2014,Hotel Tax Revenue,106845045,fy15,41845045,65000000
+state,2014,Department of Economic Development,76435000,fy14,76435000,0
+state,2014,Department of Law,212783000,fy14,212783000,0
+state,2014,Department of Motor Vehicles,305726000,fy14,305726000,0
+state,2014,Office of Parks and Recreation,341467000,fy14,341467000,0
+state,2014,Department of Labor,666793000,fy14,666793000,0
+state,2014,Division of State Police,685293000,fy14,685293000,0

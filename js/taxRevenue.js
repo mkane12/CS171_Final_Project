@@ -70,12 +70,14 @@ TaxRevenue.prototype.wrangleData = function() {
     });
 
     vis.filteredData.forEach(function(d) {
-        d.amount = +d.amount;
+        d.total = +d.total;
         d.fy = +d.fy;
+        d.projection = +d.projection;
+        d.actual = +d.actual;
     });
 
     vis.filteredData.sort(function (a,b) {
-        return a.amount - b.amount;
+        return a.total - b.total;
     });
 
     vis.displayData = vis.filteredData;
@@ -97,7 +99,21 @@ TaxRevenue.prototype.updateVis = function() {
 
     vis.barHeight = vis.height/vis.displayData.length;
 
-    vis.x.domain([0, d3.max(vis.displayData, function(d) {return d.amount;})]);
+    vis.x.domain([0, d3.max(vis.displayData, function(d) {return d.total;})]);
+
+    vis.stackData = vis.displayData.filter(function(d) {
+        return (d.dept == "Hotel Tax Revenue");
+    });
+
+    vis.stackIndex = 0;
+
+    for (i = 0; i < vis.displayData.length; i++) {
+        if (vis.displayData[i].dept == "Hotel Tax Revenue") {
+            vis.stackIndex = i;
+        }
+    }
+
+    console.log(vis.stackIndex);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
@@ -124,10 +140,15 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("class", "vis-title");
 
     vis.tip.html(function(d) {
-        return formatCurrency(d.amount.toLocaleString());
+        if (vis.bars.attr("class") == "bar") {
+            return formatCurrency(d.actual.toLocaleString());
+        }
+        if (vis.bars.attr("class") == "stack") {
+            return formatCurrency(d.projection.toLocaleString());
+        }
     });
 
-    vis.bars = vis.svg.selectAll(".bar")
+    vis.bars = vis.svg.selectAll("rect")
         .data(vis.displayData);
 
     vis.bars
@@ -139,7 +160,7 @@ TaxRevenue.prototype.updateVis = function() {
         .transition()
         .duration(800)
         .attr("fill", function(d) {
-            if (d.dept == "Airbnb Tax Revenue - Airbnb Projection" || d.dept == "Actual Hotel Tax Revenue" || d.dept == "Airbnb Tax Revenue - Our Projection") {
+            if (d.dept == "Hotel Tax Revenue") {
                 return "#F16664";
             }
             else {
@@ -151,7 +172,23 @@ TaxRevenue.prototype.updateVis = function() {
             return (index * vis.barHeight);
         })
         .attr("height", vis.barHeight - 3)
-        .attr("width", function(d) { return vis.x(d.amount); })
+        .attr("width", function(d) { return vis.x(d.actual); })
+    ;
+
+    vis.bars
+        .append("rect")
+        .attr("class", "stack");
+
+    vis.bars
+        .transition()
+        .duration(800)
+        .attr("fill", "#79CCCD")
+        .attr("x", function(d) { return vis.x(d.actual); })
+        .attr("y", function() {
+            return (vis.stackIndex * vis.barHeight);
+        })
+        .attr("height", vis.barHeight - 3)
+        .attr("width", function(d) { return vis.x(d.projection); })
     ;
 
     vis.bars
@@ -168,6 +205,41 @@ TaxRevenue.prototype.updateVis = function() {
     ;
 
     vis.bars.exit().remove();
+
+    // vis.stack = vis.svg.selectAll(".stack")
+    //     .data(vis.stackData);
+
+    // vis.stack
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", "stack");
+    //
+    // vis.stack
+    //     .transition()
+    //     .duration(800)
+    //     .attr("fill", "#79CCCD")
+    //     .attr("x", function(d) { return vis.x(d.actual); })
+    //     .attr("y", function() {
+    //         return (vis.stackIndex * vis.barHeight);
+    //     })
+    //     .attr("height", vis.barHeight - 3)
+    //     .attr("width", function(d) { return vis.x(d.projection); })
+    // ;
+
+    // vis.stack
+    //     .on("mouseover", function(d) {
+    //         d3.select(this)
+    //             .attr("opacity", .5);
+    //         vis.tip.show(d);
+    //     })
+    //     .on("mouseout", function(d) {
+    //         d3.select(this)
+    //             .attr("opacity", 1);
+    //         vis.tip.hide(d);
+    //     })
+    // ;
+    //
+    // vis.stack.exit().remove();
 
     vis.labels = vis.svg.selectAll(".text")
         .data(vis.displayData);

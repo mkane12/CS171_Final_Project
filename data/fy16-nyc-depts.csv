@@ -1,63 +1,61 @@
-unit,fy,dept,amount,source
-city,2016,Campaign Finance Board,14481042,fy16
-city,2016,Department of City Planning,38111737,fy16
-city,2016,City Council,61023705,fy16
-city,2016,Airbnb Tax Revenue - Our Projection,65000000,Us
-city,2016,District Attorney - New York,98575081,fy16
-city,2016,New York Public Library,132235696,fy16
-city,2016,Department of Parks and Recreation,454680535,fy16
-city,2016,Actual Hotel Tax Revenue,570000000,fy17
-city,2016,Department of Transportation,880011843,fy16
-city,2016,City University,993201681,fy16
-state,2016,Division of Veterans' Affairs,13612000,fy16
-state,2016,Office of the Governor,13704000,fy16
-state,2016,Actual Hotel Tax Revenue,45714603,fy17
-state,2016,Airbnb Tax Revenue - Our Projection,65000000,Us
-state,2016,Department of Economic Development,90925000,fy16
-state,2016,Department of Law,225402000,fy16
-state,2016,Department of Motor Vehicles,292446000,fy16
-state,2016,Office of Parks and Recreation,344508000,fy16
-state,2016,Department of Labor,546390000,fy16
-state,2016,Division of State Police,733484000,fy16
-city,2015,Campaign Finance Board,12293277,fy15
-city,2015,Department of City Planning,28363441,fy15
-city,2015,City Council,57087008,fy15
-city,2015,Airbnb Tax Revenue - Airbnb Projection,65000000,Airbnb
-city,2015,Airbnb Tax Revenue - Our Projection,66000000,Us
-city,2015,District Attorney - New York,92541033,fy15
-city,2015,New York Public Library,115885307,fy15
-city,2015,Department of Parks and Recreation,413019393,fy15
-city,2015,Actual Hotel Tax Revenue,563000000,fy16
-city,2015,Department of Transportation,831836798,fy15
-city,2015,City University,944131050,fy15
-state,2015,Division of Veterans' Affairs,13518000,fy15
-state,2015,Office of the Governor,13966000,fy15
-state,2015,Actual Hotel Tax Revenue,45521939,fy16
-state,2015,Department of Economic Development,62634000,fy15
-state,2015,Airbnb Tax Revenue - Our Projection,65000000,Us
-state,2015,Department of Law,213118000,fy15
-state,2015,Department of Motor Vehicles,280755000,fy15
-state,2015,Office of Parks and Recreation,295237000,fy15
-state,2015,Department of Labor,618986000,fy15
-state,2015,Division of State Police,697545000,fy15
-city,2014,Department of City Planning,20849081,fy14
-city,2014,Airbnb Tax Revenue - Airbnb Projection,21000000,Airbnb
-city,2014,Airbnb Tax Revenue - Our Projection,25000000,Us
-city,2014,City Council,51516737,fy14
-city,2014,Campaign Finance Board,71864424,fy14
-city,2014,District Attorney - New York,85013117,fy14
-city,2014,New York Public Library,88335998,fy14
-city,2014,Department of Parks and Recreation,380379023,fy14
-city,2014,Actual Hotel Tax Revenue,534000000,fy15
-city,2014,Department of Transportation,728944601,fy14
-city,2014,City University,889864046,fy14
-state,2014,Division of Veterans' Affairs,13084000,fy14
-state,2014,Office of the Governor,13673000,fy14
-state,2014,Actual Hotel Tax Revenue,41845045,fy15
-state,2014,Airbnb Tax Revenue - Our Projection,65000000,Us
-state,2014,Department of Economic Development,76435000,fy14
-state,2014,Department of Law,212783000,fy14
-state,2014,Department of Motor Vehicles,305726000,fy14
-state,2014,Office of Parks and Recreation,341467000,fy14
-state,2014,Department of Labor,666793000,fy14
-state,2014,Division of State Police,685293000,fy14
+unit,fy,dept,amount,source,stack
+city,2016,Campaign Finance Board,14481042,fy16,0
+city,2016,Department of City Planning,38111737,fy16,0
+city,2016,City Council,61023705,fy16,0
+city,2016,Airbnb Tax Revenue Projection,65000000,Us,2
+city,2016,District Attorney - New York,98575081,fy16,0
+city,2016,New York Public Library,132235696,fy16,0
+city,2016,Department of Parks and Recreation,454680535,fy16,0
+city,2016,Actual Hotel Tax Revenue,570000000,fy17,1
+city,2016,Department of Transportation,880011843,fy16,0
+city,2016,City University,993201681,fy16,0
+state,2016,Division of Veterans' Affairs,13612000,fy16,0
+state,2016,Office of the Governor,13704000,fy16,0
+state,2016,Actual Hotel Tax Revenue,45714603,fy17,1
+state,2016,Airbnb Tax Revenue Projection,65000000,Us,2
+state,2016,Department of Economic Development,90925000,fy16,0
+state,2016,Department of Law,225402000,fy16,0
+state,2016,Department of Motor Vehicles,292446000,fy16,0
+state,2016,Office of Parks and Recreation,344508000,fy16,0
+state,2016,Department of Labor,546390000,fy16,0
+state,2016,Division of State Police,733484000,fy16,0
+city,2015,Campaign Finance Board,12293277,fy15,0
+city,2015,Department of City Planning,28363441,fy15,0
+city,2015,City Council,57087008,fy15,0
+city,2015,Airbnb Tax Revenue Projection,66000000,Us,2
+city,2015,District Attorney - New York,92541033,fy15,0
+city,2015,New York Public Library,115885307,fy15,0
+city,2015,Department of Parks and Recreation,413019393,fy15,0
+city,2015,Actual Hotel Tax Revenue,563000000,fy16,1
+city,2015,Department of Transportation,831836798,fy15,0
+city,2015,City University,944131050,fy15,0
+state,2015,Division of Veterans' Affairs,13518000,fy15,0
+state,2015,Office of the Governor,13966000,fy15,0
+state,2015,Actual Hotel Tax Revenue,45521939,fy16,1
+state,2015,Department of Economic Development,62634000,fy15,0
+state,2015,Airbnb Tax Revenue Projection,65000000,Us,2
+state,2015,Department of Law,213118000,fy15,0
+state,2015,Department of Motor Vehicles,280755000,fy15,0
+state,2015,Office of Parks and Recreation,295237000,fy15,0
+state,2015,Department of Labor,618986000,fy15,0
+state,2015,Division of State Police,697545000,fy15,0
+city,2014,Department of City Planning,20849081,fy14,0
+city,2014,Airbnb Tax Revenue Projection,25000000,Us,2
+city,2014,City Council,51516737,fy14,0
+city,2014,Campaign Finance Board,71864424,fy14,0
+city,2014,District Attorney - New York,85013117,fy14,0
+city,2014,New York Public Library,88335998,fy14,0
+city,2014,Department of Parks and Recreation,380379023,fy14,0
+city,2014,Actual Hotel Tax Revenue,534000000,fy15,1
+city,2014,Department of Transportation,728944601,fy14,0
+city,2014,City University,889864046,fy14,0
+state,2014,Division of Veterans' Affairs,13084000,fy14,0
+state,2014,Office of the Governor,13673000,fy14,0
+state,2014,Actual Hotel Tax Revenue,41845045,fy15,1
+state,2014,Airbnb Tax Revenue Projection,65000000,Us,2
+state,2014,Department of Economic Development,76435000,fy14,0
+state,2014,Department of Law,212783000,fy14,0
+state,2014,Department of Motor Vehicles,305726000,fy14,0
+state,2014,Office of Parks and Recreation,341467000,fy14,0
+state,2014,Department of Labor,666793000,fy14,0
+state,2014,Division of State Police,685293000,fy14,0

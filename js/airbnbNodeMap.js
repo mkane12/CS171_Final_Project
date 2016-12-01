@@ -70,15 +70,25 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     vis.neigh.selectAll("path").data(vis.neighborhoodMap.features).enter().append("path")
         .attr("d", vis.path)
-        .style("fill", "#3498db")
-        .style("stroke-width", "1")
-        .style("stroke", "black");
+        .style("fill", "#ddd")
+        .style("stroke-width", "0.5")
+        .style("stroke", "#555");
 
     // draw boroughs
     vis.bor.selectAll("path").data(vis.boroughMap.features).enter().append("path")
         .attr("d", vis.path)
+<<<<<<< HEAD
         .style("fill", "gray")
         .style("opacity", 0.2);
+=======
+        .style("fill", "#888")
+        .style("opacity", 0.2)
+        .on("click", function(d) {
+                console.log(d);
+                vis.clicked(d);
+            }
+        );
+>>>>>>> ca4521bba1128055cbce3d5b7a8590c0727b73cb
 
 
     vis.tip.html(function(d) {
@@ -160,13 +170,16 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         .attr("r", 2)
         .attr("fill", function(d) {
             if (vis.val == "None") {
-                return '#9b59b6';
+                return '#007D8C';
             }
             else {
                 return vis.colorScale(d[vis.val]);
             }
         })
-        .attr("opacity", 0.5)
+        .attr("stroke", "#79CCCD")
+        .attr("stroke-width", 0.7)
+        .attr("opacity", 0.2)
+        .attr("stroke-opacity", 0.7)
         .attr("transform", function(d) {
             return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         })

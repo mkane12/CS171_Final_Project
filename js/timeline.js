@@ -85,13 +85,6 @@ Timeline.prototype.updateVis = function() {
 
     vis.x.domain([startDate, endDate]);
 
-    vis.svg.append("rect")
-        .attr("class", "timelineBackground")
-        .attr("x", -10)
-        .attr("y", 0)
-        .attr("height", vis.height)
-        .attr("width", vis.width + vis.margin.right + vis.margin.left);
-
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom")

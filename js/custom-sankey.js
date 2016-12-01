@@ -265,8 +265,8 @@ customSankey.prototype.updateVis = function() {
         .attr("class", function(d) { return "node " + d.id; })
         .attr("width", vis.barWidth)
         .attr("height", function(d) { return d.height; })
-        .attr("fill", "#79CCCD")
-        .attr("stroke", d3.rgb("#79CCCD").darker(2))
+        .attr("fill", "#F16664")
+        .attr("stroke", d3.rgb("#F16664").darker(2))
         .attr("opacity", 0);
 
     // add in the title for the nodes
@@ -332,7 +332,7 @@ customSankey.prototype.updateVis = function() {
     vis.legendLabels.enter().append("text");
 
     vis.legendLabels
-        .attr("class", function(d) { return "sankey-legend" + d.id; })
+        .attr("class", function(d) { return "sankey-legend " + d.id; })
         .attr("text-anchor", "start")
         .attr("transform", function(d, i) { return "translate(" + (vis.width - 200) + "," + (20 + i * 16) + ")";})
         .text(function(d) { return d.code + " = " + d.label + " (" + vis.formatNum(d.num) + ")"; })
@@ -474,7 +474,11 @@ customSankey.prototype.initAnim = function() {
             if(vis.counter == 1) vis.Draw1();
             else if(vis.counter == 2) vis.Draw2();
             else if(vis.counter == 3) vis.Draw3();
-            //else if(vis.counter == 4) vis.Draw4();
+            else if(vis.counter == 4) vis.Draw4();
+            else if(vis.counter == 5) vis.Draw5();
+            else if(vis.counter == 6) vis.Draw6();
+            else if(vis.counter == 7) vis.Draw7();
+            else if(vis.counter == 8) vis.Draw8();
 
             else vis.DrawLast();
 
@@ -576,6 +580,160 @@ customSankey.prototype.Draw3 = function() {
     vis.textBottom
         .transition().delay(1400)
         .text("We had three methods of estimating when they're not.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
+
+}
+
+customSankey.prototype.Draw4 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(1400).attr("opacity", 0);
+
+    vis.node.selectAll(".full-apt")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.legend.selectAll(".full-apt")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.main.selectAll(".link-short-full-apt")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.textTop
+        .transition().delay(1400)
+        .text("Renting a full home/apartment means the host probably isn't there.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(1400)
+        .text("This accounts for " + vis.formatNum(vis.fullApt.length) + " listings.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
+
+}
+
+customSankey.prototype.Draw5 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(1400).attr("opacity", 0);
+
+    vis.node.selectAll(".host-mult")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.legend.selectAll(".host-mult")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.main.selectAll(".link-short-host-mult")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.textTop
+        .transition().delay(1400)
+        .text("Hosts with multiple listings definitely aren't living in all of them.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(1400)
+        .text("That's another " + vis.formatNum(vis.hostMult.length) + " listings.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
+
+}
+
+customSankey.prototype.Draw6 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(1400).attr("opacity", 0);
+
+    vis.node.selectAll(".host-away")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.legend.selectAll(".host-away")
+        .transition().delay(1400).duration(1400).attr("opacity", 1);
+
+    vis.main.selectAll(".link-short-host-away")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.textTop
+        .transition().delay(1400)
+        .text("If the host isn't located in NYC, they aren't living at the listed property.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(1400)
+        .text(vis.formatNum(vis.hostAway.length) + " listings met this criterion.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
+
+}
+
+customSankey.prototype.Draw7 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(1400).attr("opacity", 0);
+
+    vis.main.selectAll(".link-short-legal")
+        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+
+    vis.textTop
+        .transition().delay(1400)
+        .text(vis.formatNum(vis.shortTerm.length - vis.illegals.length) + " short-term apartments didn't meet any of these three tests.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(1400)
+        .text("Those listings are most likely legal.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textCenter
+        .transition().delay(2100).duration(1400).attr("opacity", 1);
+
+}
+
+customSankey.prototype.Draw8 = function() {
+    var vis = this;
+
+    vis.textCenter
+        .transition().duration(1400).attr("opacity", 0);
+
+    vis.nextText
+        .transition().duration(1400).text("End");
+
+    vis.main.selectAll(".node")
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    vis.main.selectAll(".node-label")
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    vis.legendLabels
+        .transition().duration(1400)
+        .attr("opacity", 1);
+
+    vis.main.selectAll(".link")
+        .transition().duration(1400)
+        .attr("stroke-opacity", 0.1);
+
+    vis.textTop
+        .transition().delay(1400)
+        .text("Combining the results of those three tests gives us " + vis.formatNum(vis.illegals.length) + " illegal listings.")
+        .call(wrap, vis.width*0.4);
+
+    vis.textBottom
+        .transition().delay(1400)
+        .text("They represent " + (vis.illegals.length/vis.dataset.length * 100).toFixed(1) + "% of the original " + vis.formatNum(vis.dataset.length) + " listings.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
@@ -753,3 +911,4 @@ function wrap(text, width) {
         };
     };
 };
+

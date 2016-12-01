@@ -15,7 +15,7 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
     this.sel_bor = "All";
 
     this.initVis();
-}
+};
 
 
 /*
@@ -77,18 +77,8 @@ AirBnBNodeMap.prototype.initVis = function() {
     // draw boroughs
     vis.bor.selectAll("path").data(vis.boroughMap.features).enter().append("path")
         .attr("d", vis.path)
-<<<<<<< HEAD
         .style("fill", "gray")
         .style("opacity", 0.2);
-=======
-        .style("fill", "#888")
-        .style("opacity", 0.2)
-        .on("click", function(d) {
-                console.log(d);
-                vis.clicked(d);
-            }
-        );
->>>>>>> ca4521bba1128055cbce3d5b7a8590c0727b73cb
 
 
     vis.tip.html(function(d) {
@@ -117,7 +107,7 @@ AirBnBNodeMap.prototype.getColorScheme = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var color = ['#9b59b6'];
+        var color = ['#007D8C'];
     }
     else if (vis.val == "illegal") {
         var color = ['white', 'black'];
@@ -176,10 +166,8 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
                 return vis.colorScale(d[vis.val]);
             }
         })
-        .attr("stroke", "#79CCCD")
-        .attr("stroke-width", 0.7)
+        .attr("stroke", "None")
         .attr("opacity", 0.2)
-        .attr("stroke-opacity", 0.7)
         .attr("transform", function(d) {
             return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         })
@@ -194,7 +182,7 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         .on("mouseout", function(d) {
             d3.select(this)
                 .attr("r", 2)
-                .attr("opacity", 0.5)
+                .attr("opacity", 0.2)
                 .style("stroke", "none");
             vis.tip.hide(d);
         });
@@ -210,13 +198,12 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         .attr('class', 'legendEntry');
 
     vis.legend
-        .append('rect')
-        .attr("x", 1)
-        .attr("y", function(d, i) {
-            return i * 20 + 200;
+        .append('circle')
+        .attr("cx", 10)
+        .attr("cy", function(d, i) {
+            return i * 20 + 205;
         })
-        .attr("width", 10)
-        .attr("height", 10)
+        .attr("r", 5)
         .style("stroke", "black")
         .style("stroke-width", 1)
         .style("fill", function(d){return d;});
@@ -233,7 +220,7 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
                 return "Listing";
             }
             else if (vis.val == "illegal") {
-                return "Illegal";
+                return "Illegal"; // make this some sort of function
             }
             else {
                 var extent = vis.colorScale.invertExtent(d);
@@ -243,7 +230,7 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
             }
         });
 
-}
+};
 
 
 /*
@@ -269,7 +256,7 @@ AirBnBNodeMap.prototype.zoom = function() {
         if (e[i].geometry.coordinates[0].length > max_val) {
             max_val = e[i].geometry.coordinates[0].length;
             max_ind = i;
-        };
+        }
     }
 
     e = e[max_ind];

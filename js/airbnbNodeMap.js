@@ -12,7 +12,7 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
     this.neighborhoodMap = _neighborhoodMap;
     this.airbnbData = _airbnbData;
     this.val = "None";
-    this.sel_bor = "All"
+    this.sel_bor = "All";
 
     this.initVis();
 }
@@ -78,12 +78,7 @@ AirBnBNodeMap.prototype.initVis = function() {
     vis.bor.selectAll("path").data(vis.boroughMap.features).enter().append("path")
         .attr("d", vis.path)
         .style("fill", "gray")
-        .style("opacity", 0.2)
-        .on("click", function(d) {
-                console.log(d);
-                vis.clicked(d);
-            }
-        );
+        .style("opacity", 0.2);
 
 
     vis.tip.html(function(d) {
@@ -242,45 +237,7 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
  *  The zooming function
  */
 
-AirBnBNodeMap.prototype.clicked = function(d) {
-    // var vis = this;
-    //
-    // var x, y, k;
-    //
-    // if (d && vis.centered !== d) {
-    //     var centroid = vis.path.centroid(d);
-    //     x = centroid[0];
-    //     y = centroid[1];
-    //     k = 2;
-    //     vis.centered = d;
-    // } else {
-    //     x = vis.width / 2;
-    //     y = vis.height / 2;
-    //     k = 1;
-    //     vis.centered = null;
-    // }
-    //
-    // // zoom into neighborhoods
-    // vis.neigh.transition()
-    //     .duration(750)
-    //     .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-    //     .style("stroke-width", 1.5 / k + "px");
-    //
-    // // zoom into borough
-    // vis.bor.transition()
-    //     .duration(750)
-    //     .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-    //     .style("stroke-width", 1.5 / k + "px");
-    //
-    //
-    // // REDRAW NODES
-    // vis.node.transition()
-    //     .duration(750)
-    //     .attr("transform", function(d) {
-    //         return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
-    //     });
-
-    // REDRAW TIPS ****
+AirBnBNodeMap.prototype.zoom = function() {
 
     var vis = this;
 

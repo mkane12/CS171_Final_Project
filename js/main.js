@@ -113,7 +113,7 @@ function dataManipulation() {
 
 // update airbnb node map to zoom into borough
 function zoom() {
-    airbnbNodeMap.clicked();
+    airbnbNodeMap.zoom();
 }
 
 

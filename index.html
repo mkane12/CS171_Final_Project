@@ -77,49 +77,68 @@
             <h2>Airbnb is facing controversy across the country over hotel taxes.</h2>
             <p>Airbnb could owe up to $200 million dollars in hotel taxes across the country. Airbnb hosts are supposed to be paying these taxes on their own, but many don’t. As of 2016, in a move to increase its legitimacy and strengthen its position for other legal battles, Airbnb has agreed to collect taxes on behalf of hosts for over 200 cities around the world. The most visible tax battle to date has been between Airbnb and San Francisco, where Airbnb had been operating without paying the 14% tax the city levies on hotels. In February 2015, Airbnb agreed to pay millions of dollars in back taxes. In October, as San Francisco was preparing to vote on a proposition to restrict Airbnb, the company ran a series of advertisements that fell flat with SF residents, who viewed them as the company bragging about doing its civic duty.</p>
 
-            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="5"></li>
-                </ol>
-
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner" role="listbox">
-                    <div class="item active">
-                        <img src="img/art-schools.jpg" class="center">
-                    </div>
-                    <div class="item">
-                        <img src="img/bike-lane.jpg" class="center">
-                    </div>
-                    <div class="item">
-                        <img src="img/library.jpg" class="center">
-                    </div>
-                    <div class="item">
-                        <img src="img/escalator.jpg" class="center">
-                    </div>
-                    <div class="item">
-                        <img src="img/parking-meters.jpg" class="center">
-                    </div>
-                    <div class="item">
-                        <img src="img/charging-station.jpg" class="center">
-                    </div>
+            <div class="row">
+                <div class="span12">
+                    <div class="well">
+                        <div id="myCarousel" class="carousel fdi-Carousel slide">
+                            <!-- Carousel items -->
+                            <div class="carousel fdi-Carousel slide" id="eventCarousel" data-interval="0">
+                                <div class="carousel-inner onebyone-carosel">
+                                    <div class="item active">
+                                        <div class="col-md-4">
+                                            <a href="#"><img src="img/art-schools.jpg" class="img-responsive center-block"></a>
+                                            <div class="text-center">1</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="col-md-6">
+                                            <a href="#"><img src="img/bike-lane.jpg" class="img-responsive center-block"></a>
+                                            <div class="text-center">2</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="col-md-4">
+                                            <a href="#"><img src="img/library.jpg" class="img-responsive center-block"></a>
+                                            <div class="text-center">3</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="col-md-4">
+                                            <a href="#"><img src="img/escalator.jpg" class="img-responsive center-block"></a>
+                                            <div class="text-center">4</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="col-md-4">
+                                            <a href="#"><img src="img/parking-meters.jpg" class="img-responsive center-block"></a>
+                                            <div class="text-center">5</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="col-md-4">
+                                            <a href="#"><img src="img/charging-station.jpg" class="img-responsive center-block"></a>
+                                            <div class="text-center">6</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<a class="left carousel-control" href="#eventCarousel" data-slide="prev"></a>-->
+                                <!--<a class="right carousel-control" href="#eventCarousel" data-slide="next"></a>-->
+                                <a class="left carousel-control" href="#eventCarousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#eventCarousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <!--/carousel-inner-->
+                        </div><!--/myCarousel-->
+                    </div><!--/well-->
                 </div>
-
-                <!-- Controls -->
-                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
+
+        </div>
 
             <h2>New York City and State lose $X in unpaid taxes.</h2>
             <p>Under current laws, Airbnb is not permitted to collect and remit taxes to New York City. New York city and state lawmakers, and well as the New York hotel association, oppose Airbnb’s attempt to be allowed to do so. They fear legitimizing Airbnb’s operations when a large proportion of their listings are illegal, and argue that such an action would put hosts at risk by providing evidence of their illegal activity, and doesn’t address the issue of housing shortages. If Airbnb illegal listings are reducing demand for legal hotels in New York City, then the city is also losing tax revenues that would be paid on legal hotel rooms.</p>
@@ -233,6 +252,28 @@
             // Hook up the current state to the nav bar
             $('.horizontal-page-navigation').onePageNav();
 
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myCarousel').carousel({
+                interval: 10000
+            })
+            $('.fdi-Carousel .item').each(function () {
+                var next = $(this).next();
+                if (!next.length) {
+                    next = $(this).siblings(':first');
+            }
+            next.children(':first-child').clone().appendTo($(this));
+
+                if (next.next().length > 0) {
+                    next.next().children(':first-child').clone().appendTo($(this));
+                }
+                else {
+                    $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+                }
+            });
         });
     </script>
 

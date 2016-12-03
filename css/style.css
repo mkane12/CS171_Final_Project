@@ -6,12 +6,17 @@ body {
     padding-right: 50px;
 }
 
+#section0 {
+    background-image: url("header-image-6.png");
+    background-size:cover;
+}
+
 
 h1 {
     font-size: 60px;
     font-weight: 100;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -19,8 +24,16 @@ h2 {
     font-size: 40px;
     font-weight: 200;
     text-align: left;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 30px;
+    font-weight: 200;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 p {
@@ -30,13 +43,14 @@ p {
 }
 
 .section {
-    padding-top: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
-#timeline {
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
+/*#timeline {*/
+    /*margin-top: 50px;*/
+    /*margin-bottom: 20px;*/
+/*}*/
 
 .center {
     margin: auto;
@@ -53,38 +67,39 @@ p {
 
 /** NAV **/
 
-nav.horizontal-page-navigation ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 8px 16px;
-    background-color: #f1f1f1;
-}
+/*nav.horizontal-page-navigation ul {*/
+    /*list-style-type: none;*/
+    /*margin: 0;*/
+    /*padding: 8px 16px;*/
+    /*background-color: #f1f1f1;*/
+/*}*/
 
 
-nav.horizontal-page-navigation {
-    width: 100%;
-    background-color: #ebebeb;
-    position: fixed;
-    top:0;
-    left:0;
-    text-align: center;
-}
+/*nav.horizontal-page-navigation {*/
+    /*width: 100%;*/
+    /*background-color: #ebebeb;*/
+    /*position: fixed;*/
+    /*top:0;*/
+    /*left:0;*/
+    /*text-align: center;*/
+/*}*/
 
-nav.horizontal-page-navigation li {
-    display: inline;
-    padding: 8px 16px;
-}
+/*nav.horizontal-page-navigation li {*/
+    /*display: inline;*/
+    /*padding: 8px 16px;*/
+/*}*/
 
-nav.horizontal-page-navigation a {
-    color: #000;
-    padding: 8px 16px;
-    text-decoration: none;
-}
+/*nav.horizontal-page-navigation a {*/
+    /*color: #000;*/
+    /*padding: 8px 16px;*/
+    /*text-decoration: none;*/
+/*}*/
 
-nav.horizontal-page-navigation .current a {
-    background-color: #d2d2d2;
-    color: #fff;
-}
+/*nav.horizontal-page-navigation .current a {*/
+    /*background-color: #d2d2d2;*/
+    /*color: #fff;*/
+/*}*/
+
 
 /** AIRBNB MAP **/
 

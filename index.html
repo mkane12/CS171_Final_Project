@@ -196,33 +196,45 @@
         <div id="section6" data-anchor="s6" class="section">
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
             <div id="vis4">
+                <div id="borough-checkboxes">
+                    <input type="checkbox" id="select_all" value="all" checked="checked"/> Selecct All
+                    <input class="checkbox-inline" type="checkbox" value="Bronx" checked="checked"/>Bronx
+                    <input class="checkbox-inline" type="checkbox" value="Brooklyn" checked="checked"/>Brooklyn
+                    <input class="checkbox-inline" type="checkbox" value="Manhattan" checked="checked"/>Manhattan
+                    <input class="checkbox-inline" type="checkbox" value="Queens" checked="checked"/>Queens
+                    <input class="checkbox-inline" type="checkbox" value="Staten Island" checked="checked"/>Staten Island
+                </div>
                 <div id="neighborhood-line-chart-area" class="col-sm-10"></div>
                 <div class="col-sm-2">
                     <div class="row">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="dataType">Group by</label>
-                                <select class="form-control" id="neighborhood-line-selected-borough">
-                                    <option value="all">All</option>
-                                    <option value="Bronx">Bronx</option>
-                                    <option value="Brooklyn">Brooklyn</option>
-                                    <option value="Manhattan">Manhattan</option>
-                                    <option value="Queens">Queens</option>
-                                    <option value="Staten Island">Staten Island</option>
-                                </select>
+                        <form id="neighborhood-line-data-type">
+                            <label>Data to display (y-axis):</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-primary active">
+                                    <input type="radio" name="options" value="abs_price" id="option1" autocomplete="off" checked> Price
+                                </label>
+                                <label class="btn btn-primary">
+                                    <input type="radio" name="options" value="percent_change" id="option2" autocomplete="off"> Percent Change
+                                </label>
                             </div>
                         </form>
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="dataType">Show data for</label>
-                                <select class="form-control" id="neighborhood-line-data-type">
-                                    <option value="abs_price">Price</option>
-                                    <option value="percent_change">Percent Change</option>
-                                </select>
+                        <form id="neighborhood-line-color-type">
+                            <label>Data to display (y-axis):</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-primary active">
+                                    <input type="radio" name="options" value="percent_illegal" id="option1" autocomplete="off" checked> Percent Illegal
+                                </label>
+                                <label class="btn btn-primary">
+                                    <input type="radio" name="options" value="proportion_of_posts" id="option2" autocomplete="off"> Posting Density
+                                </label>
+                                <label class="btn btn-primary">
+                                    <input type="radio" name="options" value="proportion_of_illegal_posts" id="option2" autocomplete="off"> Illegal Posting Density
+                                </label>
                             </div>
                         </form>
                     </div>
                     <div class="row" id="neighborhood-line-legend"> </div>
+
                 </div>
             </div>
         </div>

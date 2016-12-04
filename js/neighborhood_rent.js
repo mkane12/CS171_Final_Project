@@ -44,29 +44,13 @@ NeighborhoodLine.prototype.initVis = function(){
     vis.x = d3.time.scale().range([0, vis.width]);
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
-    vis.percent_illegal_color_scale = d3.scale.linear().domain([0, 1]).range(["#aaaaFF", "#FF0000"]);
-
+    vis.color_scale = d3.scale.linear().domain([0, 1]).range(["#aaaaFF", "#FF0000"]);
 
 
     vis.line = d3.svg.line()
         .x(function(d) { return x(d.Date); })
         .y(function(d) { return y(d.price); })
         .interpolate("linear");
-
-    // vis.tip = d3.tip().attr('class', 'd3-tip')
-    //     .offset([0,0])
-    //     .html(function (d) {
-    //         return d.neighborhood +
-    //         "<table><tr><td > Number of Posts: </td><td>" + neighborhood_dict[d.neighborhood].number_of_posts + "</td></tr>" +
-    //         "<tr><td > Number of Illegal Posts: </td><td>" + neighborhood_dict[d.neighborhood].number_of_illegal_posts + "</td></tr>" +
-    //             "<tr><td > Percent Illegal: </td><td>" + (neighborhood_dict[d.neighborhood].percent_illegal*100).toFixed(1) + "%</td></tr>" +
-    //             "<tr><td > Proportion of Posts: </td><td>" + neighborhood_dict[d.neighborhood].proportion_of_posts.toFixed(3) + "</td></tr>" +
-    //             "<tr><td > Proportion of Illegal Posts: </td><td>" + neighborhood_dict[d.neighborhood].proportion_of_illegal_posts.toFixed(3) + "</td></tr></table>";
-    //     });
-    //
-    // /* Invoke the tip in the context of your visualization */
-    // vis.svg.call(vis.tip);
-
 
 
     vis.tip = d3.select("body").append("div")
@@ -181,26 +165,34 @@ NeighborhoodLine.prototype.initialWrangleData = function(){
 
 NeighborhoodLine.prototype.wrangleData = function(){
     var vis = this;
-    
 
-    // Filter For Selected Borough
-    borough_selectBox_area = document.getElementById("neighborhood-line-selected-borough");
-    vis.selected_borough = borough_selectBox_area.options[borough_selectBox_area.selectedIndex].value;
+    // Get selected boroughs
+    vis.selected_boroughs = {};
 
-    var in_borough = function(borough) {
-        return function(datum) {
-            return vis.neighborhood_dict[datum.id].borough==borough;
-        }
+
+    $('.checkbox-inline').each(function(){
+        vis.selected_boroughs[($(this).attr("value"))] = $(this).is(":checked")
+    });
+
+    console.log(vis.selected_boroughs)
+
+    var in_borough = function(datum) {
+            return vis.selected_boroughs[vis.neighborhood_dict[datum.id].borough];
     }
 
+    vis.all_boroughs_selected = $("#select_all").is(":checked")
+    console.log(vis.all_boroughs_selected);
 
     // Filter for selected datatype
-    dtype_selectBox_area = document.getElementById("neighborhood-line-data-type");
-    vis.selected_dtype = dtype_selectBox_area.options[dtype_selectBox_area.selectedIndex].value;
-    
-    if (vis.selected_borough != "all") {vis.displayData = vis.neighborhoods[vis.selected_dtype].filter(in_borough(vis.selected_borough))}
-    else {vis.displayData = vis.neighborhoods[vis.selected_dtype]}
-    
+    vis.selected_dtype = $('input[name="options"]:checked', '#neighborhood-line-data-type').val()
+
+
+    console.log(vis.selected_boroughs[vis.neighborhood_dict["West Village"].borough])
+
+    if (vis.all_boroughs_selected) {vis.displayData = vis.neighborhoods[vis.selected_dtype]}
+    else {vis.displayData = vis.neighborhoods[vis.selected_dtype].filter(in_borough)}
+
+    console.log(vis.neighborhoods["abs_price"])
     vis.updateVis();
 }
 
@@ -221,6 +213,12 @@ NeighborhoodLine.prototype.updateVis = function(){
         d3.min(vis.displayData, function(c) { return d3.min(c.values, function(d) { return d.price; }); }),
         d3.max(vis.displayData, function(c) { return d3.max(c.values, function(d) { return d.price; }); })
     ]);
+
+
+    var selected_color_type = $('input[name="options"]:checked', '#neighborhood-line-color-type').val();
+
+
+    vis.color_scale.domain(d3.extent(vis.displayData, function(d) {return vis.neighborhood_dict[d.id][selected_color_type]}));
 
 
     vis.svg.append("g")
@@ -255,7 +253,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     vis.neighborhood
         .attr("d", function(d) { return vis.dataline(d.values); })
-        .style("stroke", function(d) { return vis.percent_illegal_color_scale(neighborhood_dict[d.id].percent_illegal); })
+        .style("stroke", function(d) { return vis.color_scale(vis.neighborhood_dict[d.id][selected_color_type]); })
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
 
@@ -266,8 +264,8 @@ NeighborhoodLine.prototype.updateVis = function(){
         vis.tip.transition()
             .duration(200)
             .style("opacity", .9)
-            .style("background-color", vis.percent_illegal_color_scale(neighborhood_dict[d.id].percent_illegal));
-        vis.tip.html(d.id + "<br/>")
+            .style("background-color", vis.color_scale(vis.neighborhood_dict[d.id][selected_color_type]));
+        vis.tip.html(d.id + "<br/>" + vis.neighborhood_dict[d.id][selected_color_type])
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
 
@@ -287,9 +285,9 @@ NeighborhoodLine.prototype.updateVis = function(){
 
 
     // UPDATE LEGEND!
-    vis.highcolor.attr("stop-color", vis.percent_illegal_color_scale.range()[1]);
+    vis.highcolor.attr("stop-color", vis.color_scale.range()[1]);
 
-    vis.lowcolor.attr("stop-color", vis.percent_illegal_color_scale.range()[0]);
+    vis.lowcolor.attr("stop-color", vis.color_scale.range()[0]);
 
     // add legend rectangle and fill with gradient
     vis.key.append("rect")
@@ -303,7 +301,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     // create a scale to map from data values to legend in order to
     vis.legendy = d3.scale.linear().range([vis.legend_height, 0])
-        .domain([0, 1]);
+        .domain(d3.extent(vis.displayData, function(d) {return vis.neighborhood_dict[d.id][selected_color_type]}));
 
     vis.legendyAxis = d3.svg.axis()
         .scale(vis.legendy)

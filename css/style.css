@@ -143,6 +143,37 @@ p {
     stroke-width: 3px;
 }
 
+
+.n-line {
+    fill: none;
+    stroke-width: 3px;
+    opacity: 1;
+}
+
+.n-line-hovered {
+    fill: none;
+    stroke-width: 6px;
+    opacity: 1;
+}
+
+.n-line-unhovered {
+    fill: none;
+    stroke-width: 3px;
+    opacity: .3;
+}
+
+.lines-tooltip{
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    color: white;
+    border: 1px;
+    border-radius: 8px;
+    border-color: black;
+    pointer-events: none;
+}
+
+
 /** TIMELINE **/
 
 .timelineBackground {

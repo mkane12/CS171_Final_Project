@@ -166,15 +166,11 @@ TaxRevenue.prototype.updateVis = function() {
      */
 
     vis.bars = vis.svg.selectAll(".bar")
-        .data(vis.displayData);
+        .data(function() { return vis.displayData} );
 
-    vis.bars.enter().append("g")
+    vis.bars
+        .enter().append("rect")
         .attr("class", "bar");
-
-    vis.bars.selectAll("rect")
-        .data(function (d) { return d; })
-        .enter()
-        .append("rect");
 
     vis.bars
         .transition()
@@ -312,7 +308,7 @@ TaxRevenue.prototype.updateVis = function() {
     // vis.stack.exit().remove();
 
     vis.labels = vis.svg.selectAll(".text")
-        .data(vis.displayData);
+        .data(vis.displayData[0]);
 
     vis.labels
         .enter()
@@ -376,7 +372,6 @@ TaxRevenue.prototype.changeData = function() {
     var vis = this;
 
     vis.unitValue = d3.select("#budgetUnit").property("value");
-    vis.yearValue = d3.select("#budgetYear").property("value");
 
     vis.wrangleData();
 }

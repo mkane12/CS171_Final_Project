@@ -62,7 +62,7 @@ AirBnBNodeMap.prototype.initVis = function() {
     });
 
     vis.slider.noUiSlider.on('update', function(value) {
-        // format date
+        // format date **TO DO**
 
 
         // print selected date
@@ -113,11 +113,8 @@ AirBnBNodeMap.prototype.initVis = function() {
     vis.bor = vis.svg.append("g")
         .attr("class", "borough");
 
-    // group for nodes
-    vis.node = vis.svg.append("g")
-        .attr("class", "node");
 
-
+    // draw neighborhoods
     vis.neigh.selectAll("path").data(vis.neighborhoodMap.features).enter().append("path")
         .attr("d", vis.path)
         .style("fill", "#ddd")
@@ -131,6 +128,44 @@ AirBnBNodeMap.prototype.initVis = function() {
         .style("opacity", 0.2);
 
 
+    // group for nodes
+    vis.node = vis.svg.append("g")
+        .attr("class", "node");
+
+    // draw nodes
+    vis.node.selectAll("circle").data(vis.airbnbData).enter().append("circle")
+        .attr("r", 2)
+        .attr("fill", function(d) {
+            if (vis.val == "None") {
+                return '#007D8C';
+            }
+            else {
+                return vis.colorScale(d[vis.val]);
+            }
+        })
+        .attr("stroke", "None")
+        .attr("opacity", 0.2)
+        .attr("transform", function(d) {
+            return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
+        })
+        // make node larger and darker on mouseover
+        .on("mouseover", function(d) {
+            d3.select(this)
+                .attr("r", 5)
+                .attr("opacity", 1)
+                .style("stroke", "black");
+            vis.tip.show(d);
+        })
+        .on("mouseout", function(d) {
+            d3.select(this)
+                .attr("r", 2)
+                .attr("opacity", 0.2)
+                .style("stroke", "none");
+            vis.tip.hide(d);
+        });
+
+
+    // Edit tip **TO DO**
     vis.tip.html(function(d) {
         return "<strong>Room type: </strong>" + d.room_type;
     });
@@ -142,8 +177,8 @@ AirBnBNodeMap.prototype.initVis = function() {
         $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {
             vis.airbnbData = json;
             $.holdReady(false);
+            vis.updateVis();
         });
-        vis.updateVis();
     });
 
     vis.updateVis();
@@ -217,40 +252,40 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
     vis.svg.selectAll(".node").remove();
 
     // group for nodes
-    vis.node = vis.svg.append("g")
-        .attr("class", "node");
+    // vis.node = vis.svg.append("g")
+    //     .attr("class", "node");
 
     // DRAW THE NODES (SVG CIRCLE)
-    vis.node.selectAll("circle").data(vis.airbnbData).enter().append("circle")
-        .attr("r", 2)
-        .attr("fill", function(d) {
-            if (vis.val == "None") {
-                return '#007D8C';
-            }
-            else {
-                return vis.colorScale(d[vis.val]);
-            }
-        })
-        .attr("stroke", "None")
-        .attr("opacity", 0.2)
-        .attr("transform", function(d) {
-            return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
-        })
-        // make node larger and darker on mouseover
-        .on("mouseover", function(d) {
-            d3.select(this)
-                .attr("r", 5)
-                .attr("opacity", 1)
-                .style("stroke", "black");
-            vis.tip.show(d);
-        })
-        .on("mouseout", function(d) {
-            d3.select(this)
-                .attr("r", 2)
-                .attr("opacity", 0.2)
-                .style("stroke", "none");
-            vis.tip.hide(d);
-        });
+    // vis.node.selectAll("circle").data(vis.airbnbData).enter().append("circle")
+    //     .attr("r", 2)
+    //     .attr("fill", function(d) {
+    //         if (vis.val == "None") {
+    //             return '#007D8C';
+    //         }
+    //         else {
+    //             return vis.colorScale(d[vis.val]);
+    //         }
+    //     })
+    //     .attr("stroke", "None")
+    //     .attr("opacity", 0.2)
+    //     .attr("transform", function(d) {
+    //         return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
+    //     })
+    //     // make node larger and darker on mouseover
+    //     .on("mouseover", function(d) {
+    //         d3.select(this)
+    //             .attr("r", 5)
+    //             .attr("opacity", 1)
+    //             .style("stroke", "black");
+    //         vis.tip.show(d);
+    //     })
+    //     .on("mouseout", function(d) {
+    //         d3.select(this)
+    //             .attr("r", 2)
+    //             .attr("opacity", 0.2)
+    //             .style("stroke", "none");
+    //         vis.tip.hide(d);
+    //     });
 
     // DRAW LEGEND
 

@@ -24,7 +24,7 @@ function loadData() {
 
     queue()
         .defer(d3.json, "data/ny-borough.json")
-        .defer(d3.json, "data/2014-05-10.json")
+        .defer(d3.json, "data/json_files_by_date/2014-05-10.json")
         .defer(d3.csv, "data/fy16-nyc-depts-stacked.csv")
         .defer(d3.csv, "data/neighborhood-lines/housing_prices_by_neighborhood.csv")
         .defer(d3.csv, "data/neighborhood-lines/percent_change_by_neighborhood.csv")
@@ -67,9 +67,6 @@ function loadData() {
                 neighborhoodInfo[i].proportion_of_illegal_posts = +neighborhoodInfo[i].proportion_of_illegal_posts
                 neighborhood_dict[neighborhoodInfo[i].neighborhood] = neighborhoodInfo[i]
             }
-
-            // print number of listings to listing-count
-            $("#listing-count").text(airbnbData.length);
 
             createVis();
         });

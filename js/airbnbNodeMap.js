@@ -14,7 +14,27 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
     this.val = "None";
     this.sel_bor = "All";
 
+    var vis = this;
+
+    // create list of dates for which we have data
+    vis.dates = [new Date(2014, 4, 10), new Date(2014, 7, 31), new Date(2014, 9, 17), new Date(2014, 11, 2),
+        new Date(2015, 0, 1), new Date(2015, 1, 27), new Date(2015, 2, 1), new Date(2015, 2, 14), new Date(2015, 3, 1), new Date(2015, 4, 1),
+        new Date(2015, 5, 1), new Date(2015, 7, 1), new Date(2015, 7, 10), new Date(2015, 8, 1), new Date(2015, 8, 9),
+        new Date(2015, 9, 1), new Date(2015, 9, 11), new Date(2015, 10, 1), new Date(2015, 10, 20), new Date(2015, 11, 1),
+        new Date(2015, 11, 2), new Date(2015, 11, 21),
+        new Date(2016, 0, 1), new Date(2016, 0, 20), new Date(2016, 1, 2), new Date(2016, 3, 3), new Date(2016, 4, 2),
+        new Date(2016, 5, 2), new Date(2016, 6, 2), new Date(2016, 9, 1)];
+
     this.initVis();
+};
+
+
+// Convert a date object to a string of the format YYYY-MM-DD
+AirBnBNodeMap.prototype.yyyymmdd = function(date) {
+    var mm = date.getMonth() + 1; // getMonth() is zero-based
+    var dd = date.getDate();
+
+    return (date.getFullYear() + "-" + (mm>9 ? '' : '0') + mm + "-" + (dd>9 ? '' : '0') + dd);
 };
 
 
@@ -25,6 +45,36 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
 AirBnBNodeMap.prototype.initVis = function() {
     var vis = this;
 
+
+    // SLIDER //
+    // Add a slider to the page using the minimum and maximum years appearing in the data
+    vis.slider = document.getElementById('slider');
+
+    noUiSlider.create(vis.slider, {
+        start: 0,
+        connect: true,
+        step: 1,
+        range: {
+            'min': 0,
+            'max': vis.dates.length - 1
+        }
+
+    });
+
+    vis.slider.noUiSlider.on('update', function(value) {
+        // format date
+
+
+        // print selected date
+        document.getElementById('sel-date').innerHTML = (vis.dates[+value]).toString();
+
+        // update what the selected date is
+        vis.selDate = vis.yyyymmdd(vis.dates[+value]);
+    });
+
+
+
+    // NODE MAP //
     vis.width = 1000;
     vis.height = 600;
 
@@ -82,14 +132,26 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
     vis.tip.html(function(d) {
-        var string = "<strong>Room type: </strong>" + d.room_type;
-        return string;
+        return "<strong>Room type: </strong>" + d.room_type;
+    });
+
+    // Add a listener to the slider submit button -- when selected, data from that date will be uploaded to the map
+    document.getElementById('slider-submit-button').addEventListener('click', function(){
+        // wait until new dataset is loaded before drawing map
+        $.holdReady(true);
+        $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {
+            vis.airbnbData = json;
+            $.holdReady(false);
+        });
+        vis.updateVis();
     });
 
     vis.updateVis();
 
 
-}
+};
+
+
 
 // function to determine what category the user selected
 AirBnBNodeMap.prototype.dataManipulation = function() {
@@ -144,6 +206,9 @@ AirBnBNodeMap.prototype.getExtent = function() {
 AirBnBNodeMap.prototype.updateVis = function(d) {
 
     var vis = this;
+
+    // print number of listings to listing-count
+    document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
 
     vis.colorScale = d3.scale.quantize()
         .domain(vis.getExtent())
@@ -298,4 +363,4 @@ AirBnBNodeMap.prototype.zoom = function() {
 
     // REDRAW TIPS ****
 
-}
+};

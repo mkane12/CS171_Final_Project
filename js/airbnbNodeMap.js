@@ -128,6 +128,11 @@ AirBnBNodeMap.prototype.initVis = function() {
         .style("opacity", 0.2);
 
 
+    // create color scale for nodes
+    vis.colorScale = d3.scale.quantize()
+        .domain(vis.getExtent())
+        .range(vis.getColorScheme());
+
     // group for nodes
     vis.node = vis.svg.append("g")
         .attr("class", "node");
@@ -175,6 +180,7 @@ AirBnBNodeMap.prototype.initVis = function() {
         // wait until new dataset is loaded before drawing map
         $.holdReady(true);
         $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {
+            // change data for visualization
             vis.airbnbData = json;
             $.holdReady(false);
             vis.updateVis();
@@ -188,6 +194,7 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
 
+
 // function to determine what category the user selected
 AirBnBNodeMap.prototype.dataManipulation = function() {
     var vis = this;
@@ -195,7 +202,7 @@ AirBnBNodeMap.prototype.dataManipulation = function() {
 
     vis.val = box.options[box.selectedIndex].value;
 
-    vis.updateVis();
+    vis.colorNodes();
 };
 
 
@@ -233,6 +240,36 @@ AirBnBNodeMap.prototype.getExtent = function() {
     return extent;
 }
 
+AirBnBNodeMap.prototype.colorNodes = function () {
+    var vis = this;
+
+    // vis.colorScale = d3.scale.quantize()
+    //     .domain(vis.getExtent())
+    //     .range(vis.getColorScheme());
+
+    // remove old nodes
+    vis.svg.selectAll(".node").remove();
+
+    // group for nodes
+    vis.node = vis.svg.append("g")
+        .attr("class", "node");
+
+    // recolor
+    vis.node.transition()
+        .duration(500)
+        .attr("fill", function(d) {
+            if (vis.val == "None") {
+                return '#007D8C';
+            }
+            else {
+                return vis.colorScale(d[vis.val]);
+            }
+        });
+
+
+    vis.updateVis();
+};
+
 
 /*
  *  The drawing function
@@ -245,11 +282,11 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
     // print number of listings to listing-count
     document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
 
-    vis.colorScale = d3.scale.quantize()
-        .domain(vis.getExtent())
-        .range(vis.getColorScheme());
+    // vis.colorScale = d3.scale.quantize()
+    //     .domain(vis.getExtent())
+    //     .range(vis.getColorScheme());
 
-    vis.svg.selectAll(".node").remove();
+    // vis.svg.selectAll(".node").remove();
 
     // group for nodes
     // vis.node = vis.svg.append("g")

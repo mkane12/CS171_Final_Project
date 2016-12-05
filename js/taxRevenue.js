@@ -174,7 +174,9 @@ TaxRevenue.prototype.updateVis = function() {
     vis.bars.selectAll("rect")
         .data(function (d) { return d; })
         .enter()
-        .append("rect")
+        .append("rect");
+
+    vis.bars
         .transition()
         .duration(800)
         .attr("x", function(d) { return vis.x(d.y0); })

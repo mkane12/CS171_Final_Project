@@ -138,7 +138,11 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr("class", "node");
 
     // draw nodes
-    vis.node.selectAll("circle").data(vis.airbnbData).enter().append("circle")
+    vis.circles = vis.node.selectAll("circle").data(vis.airbnbData);
+
+    vis.circles.enter().append("circle");
+
+    vis.circles
         .attr("r", 2)
         .attr("fill", function(d) {
             if (vis.val == "None") {
@@ -169,6 +173,8 @@ AirBnBNodeMap.prototype.initVis = function() {
             vis.tip.hide(d);
         });
 
+    vis.circles.exit().remove();
+
 
     // Edit tip **TO DO**
     vis.tip.html(function(d) {
@@ -183,7 +189,7 @@ AirBnBNodeMap.prototype.initVis = function() {
             // change data for visualization
             vis.airbnbData = json;
             $.holdReady(false);
-            vis.updateVis();
+            vis.colorNodes();
         });
     });
 
@@ -243,19 +249,20 @@ AirBnBNodeMap.prototype.getExtent = function() {
 AirBnBNodeMap.prototype.colorNodes = function () {
     var vis = this;
 
-    // vis.colorScale = d3.scale.quantize()
-    //     .domain(vis.getExtent())
-    //     .range(vis.getColorScheme());
+    // update colorScale
+    vis.colorScale
+        .domain(vis.getExtent())
+        .range(vis.getColorScheme());
 
     // remove old nodes
-    vis.svg.selectAll(".node").remove();
+    // vis.svg.selectAll(".node").remove();
 
     // group for nodes
-    vis.node = vis.svg.append("g")
-        .attr("class", "node");
+    // vis.node = vis.svg.append("g")
+    //     .attr("class", "node");
 
     // recolor
-    vis.node.transition()
+    vis.circles.transition()
         .duration(500)
         .attr("fill", function(d) {
             if (vis.val == "None") {
